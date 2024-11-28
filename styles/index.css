@@ -28,7 +28,6 @@
 		text-rendering: optimizeLegibility;
 		text-size-adjust: none;
 		-webkit-tap-highlight-color: transparent;
-		/* stylelint-disable-next-line property-no-unknown */
 		interpolate-size: allow-keywords;
 	}
 
@@ -138,7 +137,7 @@
 		}
 	}
 
-	/* stylelint-disable-next-line media-query-no-invalid, order/order */
+	/* stylelint-disable-next-line order/order */
 	@media screen(sm) {
 		.layout-grid {
 			--max-content-width: 100%;
@@ -148,7 +147,6 @@
 		}
 	}
 
-	/* stylelint-disable-next-line media-query-no-invalid */
 	@media screen(xl) {
 		.layout-grid {
 			--max-content-width: 75rem; /** 1200px */

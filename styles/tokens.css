@@ -363,7 +363,6 @@
 	--font-family-mono: var(--font-mono, ui-monospace), monospace;
 }
 
-/* stylelint-disable-next-line media-query-no-invalid */
 @media screen("md") {
 	:root {
 		--font-size-display: 3.5rem;
