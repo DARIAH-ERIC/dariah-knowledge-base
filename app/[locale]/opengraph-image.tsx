@@ -14,18 +14,20 @@ export const size = {
 };
 
 interface OpenGraphImageProps {
-	params: {
+	params: Promise<{
 		locale: Locale;
-	};
+	}>;
 }
 
-export default async function OpenGraphImage(props: OpenGraphImageProps): Promise<ImageResponse> {
+export default async function OpenGraphImage(
+	props: Readonly<OpenGraphImageProps>,
+): Promise<ImageResponse> {
 	const { params } = props;
 
-	const { locale } = params;
-	const t = await getTranslations({ locale, namespace: "LocaleLayout" });
+	const { locale } = await params;
+	const meta = await getTranslations({ locale, namespace: "metadata" });
 
-	const title = t("meta.title");
+	const title = meta("title");
 
 	return MetadataImage({ locale, size, title });
 }

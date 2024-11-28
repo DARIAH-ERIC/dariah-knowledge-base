@@ -1,7 +1,7 @@
 import { createUrl } from "@acdh-oeaw/lib";
 
 import { env } from "@/config/env.config";
-import { locales } from "@/config/i18n.config";
+import { defaultLocale, locales } from "@/config/i18n.config";
 import { expect, test } from "@/e2e/lib/test";
 
 test.describe("app", () => {
@@ -64,16 +64,17 @@ test.describe("app", () => {
 		}
 	});
 
-	test("should serve a webmanifest", async ({ request }) => {
+	test("should serve a webmanifest", async ({ createI18n, request }) => {
 		const response = await request.get("/manifest.webmanifest");
 		const body = await response.body();
 
-		// TODO: use toMatchSnapshot
+		const i18n = await createI18n(defaultLocale);
+
 		expect(body.toString()).toEqual(
 			JSON.stringify({
-				name: "DARIAH Unified National Reporting",
-				short_name: "DARIAH UNR",
-				description: "Key performance indicators for DARIAH member countries.",
+				name: i18n.t("metadata.manifest.name"),
+				short_name: i18n.t("metadata.manifest.short-name"),
+				description: i18n.t("metadata.manifest.description"),
 				start_url: "/",
 				display: "standalone",
 				background_color: "#fff",
@@ -112,34 +113,35 @@ test.describe("app", () => {
 	test.describe("should set color mode according to system preference", () => {
 		test.use({ colorScheme: "no-preference" });
 
-		test("with no preference", async ({ page }) => {
-			await page.goto("/en");
-			await expect(page.locator("html")).toHaveAttribute("data-ui-color-scheme", "light");
+		test("with no preference", async ({ createIndexPage }) => {
+			const { indexPage } = await createIndexPage(defaultLocale);
+			await indexPage.goto();
+			await expect(indexPage.page.locator("html")).toHaveAttribute("data-ui-color-scheme", "light");
 		});
 	});
 
 	test.describe("should set color mode according to system preference", () => {
 		test.use({ colorScheme: "light" });
 
-		test("in light mode", async ({ page }) => {
-			await page.goto("/en");
-			await expect(page.locator("html")).toHaveAttribute("data-ui-color-scheme", "light");
+		test("in light mode", async ({ createIndexPage }) => {
+			const { indexPage } = await createIndexPage(defaultLocale);
+			await indexPage.goto();
+			await expect(indexPage.page.locator("html")).toHaveAttribute("data-ui-color-scheme", "light");
 		});
 	});
 
 	test.describe("should set color mode according to system preference", () => {
 		test.use({ colorScheme: "dark" });
 
-		test("in dark mode", async ({ page }) => {
-			await page.goto("/en");
-			await expect(page.locator("html")).toHaveAttribute("data-ui-color-scheme", "dark");
+		test("in dark mode", async ({ createIndexPage }) => {
+			const { indexPage } = await createIndexPage(defaultLocale);
+			await indexPage.goto();
+			await expect(indexPage.page.locator("html")).toHaveAttribute("data-ui-color-scheme", "dark");
 		});
 	});
 
 	test("should skip to main content with skip-link", async ({ createIndexPage }) => {
-		const locale = "en";
-
-		const { indexPage } = await createIndexPage(locale);
+		const { indexPage } = await createIndexPage(defaultLocale);
 		await indexPage.goto();
 
 		await indexPage.page.keyboard.press("Tab");
@@ -147,5 +149,27 @@ test.describe("app", () => {
 
 		await indexPage.skipLink.click();
 		await expect(indexPage.mainContent).toBeFocused();
+	});
+
+	test("should add aria-current attribute to nav links", async ({ createIndexPage }) => {
+		const { indexPage, i18n } = await createIndexPage(defaultLocale);
+		await indexPage.goto();
+
+		const homeLink = indexPage.page
+			.getByRole("link", {
+				name: i18n.t("AppHeader.links.home"),
+			})
+			.first();
+		const imprintLink = indexPage.page.getByRole("link", {
+			name: i18n.t("AppFooter.links.imprint"),
+		});
+
+		await expect(homeLink).toHaveAttribute("aria-current", "page");
+		await expect(imprintLink).not.toHaveAttribute("aria-current", "page");
+
+		await imprintLink.click();
+
+		await expect(homeLink).not.toHaveAttribute("aria-current", "page");
+		await expect(imprintLink).toHaveAttribute("aria-current", "page");
 	});
 });

@@ -6,11 +6,13 @@ node_modules/
 *.log
 
 # non-public environment variables
+.env.keys
 .env.local
 .env.*.local
 
 # caches
 .eslintcache
+.prettiercache
 .stylelintcache
 *.tsbuildinfo
 

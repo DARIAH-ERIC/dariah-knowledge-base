@@ -1,66 +1,65 @@
 import { pick } from "@acdh-oeaw/lib";
+import { cn } from "@acdh-oeaw/style-variants";
 import type { Metadata, ResolvingMetadata } from "next";
-import { useMessages, useTranslations } from "next-intl";
-import { getTranslations, unstable_setRequestLocale as setRequestLocale } from "next-intl/server";
+import { notFound } from "next/navigation";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 import { LocalizedStringProvider as Translations } from "react-aria-components/i18n";
 import { jsonLdScriptProps } from "react-schemaorg";
 
-import { Providers } from "@/app/[locale]/providers";
-import { AppFooter } from "@/components/app-footer";
-import { AppHeader } from "@/components/app-header";
-import { AppLayout } from "@/components/app-layout";
+import { Providers } from "@/app/[locale]/_components/providers";
+import { TailwindIndicator } from "@/app/[locale]/_components/tailwind-indicator";
 import { id } from "@/components/main-content";
 import { SkipLink } from "@/components/skip-link";
 import { env } from "@/config/env.config";
-import { type Locale, locales } from "@/config/i18n.config";
+import { isValidLocale, type Locale, locales } from "@/config/i18n.config";
 import { AnalyticsScript } from "@/lib/analytics-script";
 import { ColorSchemeScript } from "@/lib/color-scheme-script";
 import * as fonts from "@/lib/fonts";
-import { cn } from "@/lib/styles";
+import { getToastMessage } from "@/lib/i18n/redirect-with-message";
 
 interface LocaleLayoutProps {
 	children: ReactNode;
-	params: {
+	params: Promise<{
 		locale: Locale;
-	};
+	}>;
 }
 
-// export const dynamicParams = false;
+export const dynamicParams = false;
 
-export function generateStaticParams(): Array<LocaleLayoutProps["params"]> {
+export function generateStaticParams(): Array<Awaited<LocaleLayoutProps["params"]>> {
 	return locales.map((locale) => {
 		return { locale };
 	});
 }
 
 export async function generateMetadata(
-	props: Omit<LocaleLayoutProps, "children">,
+	props: Omit<Readonly<LocaleLayoutProps>, "children">,
 	_parent: ResolvingMetadata,
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
-	const t = await getTranslations({ locale, namespace: "LocaleLayout" });
+	const { locale } = await params;
+	const meta = await getTranslations({ locale, namespace: "metadata" });
 
 	const metadata: Metadata = {
 		title: {
-			default: t("meta.title"),
-			template: ["%s", t("meta.title")].join(" | "),
+			default: meta("title"),
+			template: ["%s", meta("title")].join(" | "),
 		},
-		description: t("meta.description"),
+		description: meta("description"),
 		openGraph: {
-			title: t("meta.title"),
-			description: t("meta.description"),
+			title: meta("title"),
+			description: meta("description"),
 			url: "./",
-			siteName: t("meta.title"),
+			siteName: meta("title"),
 			locale,
 			type: "website",
 		},
 		twitter: {
 			card: "summary_large_image",
-			creator: t("meta.twitter.creator"),
-			site: t("meta.twitter.site"),
+			creator: meta("twitter.creator"),
+			site: meta("twitter.site"),
 		},
 		verification: {
 			google: env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
@@ -70,18 +69,31 @@ export async function generateMetadata(
 	return metadata;
 }
 
-export default function LocaleLayout(props: LocaleLayoutProps): ReactNode {
+export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): Promise<ReactNode> {
 	const { children, params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
+	if (!isValidLocale(locale)) {
+		return notFound();
+	}
 	setRequestLocale(locale);
 
-	const t = useTranslations("LocaleLayout");
-	const messages = useMessages() as IntlMessages;
+	const t = await getTranslations("LocaleLayout");
+	const meta = await getTranslations("metadata");
+	const messages = (await getMessages()) as IntlMessages;
+	const errorPageMessages = pick(messages, ["Error"]);
+
+	// TODO:
+	const _toastMessage = await getToastMessage();
 
 	return (
 		<html
-			className={cn(fonts.body.variable, fonts.heading.variable)}
+			className={cn(
+				fonts.body.variable,
+				fonts.heading.variable,
+				fonts.mono.variable,
+				"bg-background-base text-text-strong antialiased",
+			)}
 			lang={locale}
 			/**
 			 * Suppressing hydration warning because we add `data-ui-color-scheme` before first paint.
@@ -94,8 +106,8 @@ export default function LocaleLayout(props: LocaleLayoutProps): ReactNode {
 					{...jsonLdScriptProps({
 						"@context": "https://schema.org",
 						"@type": "WebSite",
-						name: t("meta.title"),
-						description: t("meta.description"),
+						name: meta("title"),
+						description: meta("description"),
 					})}
 				/>
 
@@ -114,13 +126,11 @@ export default function LocaleLayout(props: LocaleLayoutProps): ReactNode {
 				 */}
 				<Translations locale={locale} />
 
-				<Providers locale={locale} messages={pick(messages, ["Error"])}>
-					<AppLayout>
-						<AppHeader />
-						{children}
-						<AppFooter />
-					</AppLayout>
+				<Providers locale={locale} messages={errorPageMessages}>
+					{children}
 				</Providers>
+
+				<TailwindIndicator />
 			</body>
 		</html>
 	);

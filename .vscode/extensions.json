@@ -5,10 +5,8 @@
 		"editorconfig.editorconfig",
 		"esbenp.prettier-vscode",
 		"lokalise.i18n-ally",
-		"matt-meyers.vscode-dbml",
 		"mikestead.dotenv",
 		"ms-playwright.playwright",
-		"stylelint.vscode-stylelint",
-		"unifiedjs.vscode-mdx"
+		"stylelint.vscode-stylelint"
 	]
 }

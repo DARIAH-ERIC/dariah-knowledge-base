@@ -2,14 +2,15 @@ import { createUrl } from "@acdh-oeaw/lib";
 import { jsonLdScriptProps } from "react-schemaorg";
 
 import { env } from "@/config/env.config";
-import { locales } from "@/config/i18n.config";
+import { defaultLocale, locales } from "@/config/i18n.config";
 import { expect, test } from "@/e2e/lib/test";
 
-test("should set a canonical url", async ({ page }) => {
+test("should set a canonical url", async ({ createIndexPage }) => {
 	for (const locale of locales) {
-		await page.goto(`/${locale}`);
+		const { indexPage } = await createIndexPage(locale);
+		await indexPage.goto();
 
-		const canonicalUrl = page.locator('link[rel="canonical"]');
+		const canonicalUrl = indexPage.page.locator('link[rel="canonical"]');
 		await expect(canonicalUrl).toHaveAttribute(
 			"href",
 			String(createUrl({ baseUrl: env.NEXT_PUBLIC_APP_BASE_URL, pathname: `/${locale}` })),
@@ -17,13 +18,19 @@ test("should set a canonical url", async ({ page }) => {
 	}
 });
 
-/** FIXME: @see https://github.com/vercel/next	.js/issues/45620 */
-test.fixme("should set document title on not-found page", async ({ page }) => {
+/** FIXME: @see https://github.com/vercel/next.js/issues/45620 */
+test.fixme("should set document title on not-found page", async ({ createI18n, page }) => {
+	const en = await createI18n(defaultLocale);
 	await page.goto("/unknown");
-	await expect(page).toHaveTitle("Page not found | DARIAH Unified National Reporting");
+	await expect(page).toHaveTitle(
+		[en.t("NotFoundPage.meta.title"), en.t("metadata.title")].join(" | "),
+	);
 
+	const de = await createI18n("de");
 	await page.goto("/de/unknown");
-	await expect(page).toHaveTitle("Seite nicht gefunden | DARIAH Unified National Reporting");
+	await expect(page).toHaveTitle(
+		[de.t("NotFoundPage.meta.title"), de.t("metadata.title")].join(" | "),
+	);
 });
 
 /** FIXME: @see https://github.com/vercel/next.js/issues/45620 */
@@ -36,9 +43,14 @@ test.fixme("should disallow indexing of not-found page", async ({ page }) => {
 	}
 });
 
-test.describe("should set page metadata", () => {
-	test("static", async ({ page }) => {
-		await page.goto("/en");
+test("should set page metadata", async ({ createIndexPage }) => {
+	for (const locale of locales) {
+		const { indexPage, i18n } = await createIndexPage(locale);
+		await indexPage.goto();
+		const { page } = indexPage;
+
+		expect(i18n.t("metadata.title")).toBeTruthy();
+		expect(i18n.t("metadata.description")).toBeTruthy();
 
 		const ogType = page.locator('meta[property="og:type"]');
 		await expect(ogType).toHaveAttribute("content", "website");
@@ -47,119 +59,67 @@ test.describe("should set page metadata", () => {
 		await expect(twCard).toHaveAttribute("content", "summary_large_image");
 
 		const twCreator = page.locator('meta[name="twitter:creator"]');
-		await expect(twCreator).toHaveAttribute("content", "@dariaheu");
+		await expect(twCreator).toHaveAttribute("content", i18n.t("metadata.twitter.creator"));
 
 		const twSite = page.locator('meta[name="twitter:site"]');
-		await expect(twSite).toHaveAttribute("content", "@dariaheu");
+		await expect(twSite).toHaveAttribute("content", i18n.t("metadata.twitter.site"));
 
 		// const googleSiteVerification = page.locator('meta[name="google-site-verification"]');
 		// await expect(googleSiteVerification).toHaveAttribute("content", "");
-	});
 
-	test("with en locale", async ({ page }) => {
-		await page.goto("/en");
-
-		await expect(page).toHaveTitle("DARIAH Unified National Reporting");
+		await expect(page).toHaveTitle(i18n.t("metadata.title"));
 
 		const metaDescription = page.locator('meta[name="description"]');
-		await expect(metaDescription).toHaveAttribute(
-			"content",
-			"Key performance indicators for DARIAH member countries.",
-		);
+		await expect(metaDescription).toHaveAttribute("content", i18n.t("metadata.description"));
 
 		const ogTitle = page.locator('meta[property="og:title"]');
-		await expect(ogTitle).toHaveAttribute("content", "DARIAH Unified National Reporting");
+		await expect(ogTitle).toHaveAttribute("content", i18n.t("metadata.title"));
 
 		const ogDescription = page.locator('meta[property="og:description"]');
-		await expect(ogDescription).toHaveAttribute(
-			"content",
-			"Key performance indicators for DARIAH member countries.",
-		);
+		await expect(ogDescription).toHaveAttribute("content", i18n.t("metadata.description"));
 
 		const ogUrl = page.locator('meta[property="og:url"]');
 		await expect(ogUrl).toHaveAttribute(
 			"content",
-			String(createUrl({ baseUrl: env.NEXT_PUBLIC_APP_BASE_URL, pathname: "/en" })),
+			String(createUrl({ baseUrl: env.NEXT_PUBLIC_APP_BASE_URL, pathname: `/${locale}` })),
 		);
 
 		const ogLocale = page.locator('meta[property="og:locale"]');
-		await expect(ogLocale).toHaveAttribute("content", "en");
-	});
-
-	// eslint-disable-next-line playwright/no-skipped-test
-	test.skip("with de locale", async ({ page }) => {
-		await page.goto("/de");
-
-		await expect(page).toHaveTitle("DARIAH Unified National Reporting");
-
-		const metaDescription = page.locator('meta[name="description"]');
-		await expect(metaDescription).toHaveAttribute(
-			"content",
-			"Wichtige Leistungsindikatoren für DARIAH-Mitgliedsländer.",
-		);
-
-		const ogTitle = page.locator('meta[property="og:title"]');
-		await expect(ogTitle).toHaveAttribute("content", "DARIAH Unified National Reporting");
-
-		const ogDescription = page.locator('meta[property="og:description"]');
-		await expect(ogDescription).toHaveAttribute(
-			"content",
-			"Wichtige Leistungsindikatoren für DARIAH-Mitgliedsländer.",
-		);
-
-		const ogUrl = page.locator('meta[property="og:url"]');
-		await expect(ogUrl).toHaveAttribute(
-			"content",
-			String(createUrl({ baseUrl: env.NEXT_PUBLIC_APP_BASE_URL, pathname: "/de" })),
-		);
-
-		const ogLocale = page.locator('meta[property="og:locale"]');
-		await expect(ogLocale).toHaveAttribute("content", "de");
-	});
+		await expect(ogLocale).toHaveAttribute("content", locale);
+	}
 });
 
-test.describe("should add json+ld metadata", () => {
-	test("with en locale", async ({ page }) => {
-		await page.goto("/en");
+test("should add json+ld metadata", async ({ createIndexPage }) => {
+	for (const locale of locales) {
+		const { indexPage, i18n } = await createIndexPage(locale);
+		await indexPage.goto();
 
-		const metadata = await page.locator('script[type="application/ld+json"]').textContent();
+		const metadata = await indexPage.page
+			.locator('script[type="application/ld+json"]')
+			.textContent();
+
 		// eslint-disable-next-line playwright/prefer-web-first-assertions
 		expect(metadata).toBe(
 			jsonLdScriptProps({
 				"@context": "https://schema.org",
 				"@type": "WebSite",
-				name: "DARIAH Unified National Reporting",
-				description: "Key performance indicators for DARIAH member countries.",
+				name: i18n.t("metadata.title"),
+				description: i18n.t("metadata.description"),
 			}).dangerouslySetInnerHTML?.__html,
 		);
-	});
-
-	// eslint-disable-next-line playwright/no-skipped-test
-	test.skip("with de locale", async ({ page }) => {
-		await page.goto("/de");
-
-		const metadata = await page.locator('script[type="application/ld+json"]').textContent();
-		// eslint-disable-next-line playwright/prefer-web-first-assertions
-		expect(metadata).toBe(
-			jsonLdScriptProps({
-				"@context": "https://schema.org",
-				"@type": "WebSite",
-				name: "DARIAH Unified National Reporting",
-				description: "Wichtige Leistungsindikatoren für DARIAH-Mitgliedsländer.",
-			}).dangerouslySetInnerHTML?.__html,
-		);
-	});
+	}
 });
 
-test("should serve an open-graph image", async ({ page, request }) => {
+test("should serve an open-graph image", async ({ createIndexPage, request }) => {
 	for (const locale of locales) {
 		const imagePath = `/${locale}/opengraph-image`;
 
-		await page.goto(`/${locale}`);
-		await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+		const { indexPage } = await createIndexPage(locale);
+		await indexPage.goto();
+		await expect(indexPage.page.locator('meta[property="og:image"]')).toHaveAttribute(
 			"content",
 			expect.stringContaining(
-				String(createUrl({ baseUrl: env.NEXT_PUBLIC_APP_BASE_URL, pathname: imagePath })) + `?`,
+				`${String(createUrl({ baseUrl: env.NEXT_PUBLIC_APP_BASE_URL, pathname: imagePath }))}?`,
 			),
 		);
 

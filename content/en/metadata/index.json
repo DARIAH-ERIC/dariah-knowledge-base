@@ -1,0 +1,13 @@
+{
+	"description": "DARIAH Knowledge Base application",
+	"title": "DARIAH Knowledge Base",
+	"twitter": {
+		"creator": "@dariaheu",
+		"site": "@dariaheu"
+	},
+	"manifest": {
+		"description": "DARIAH Knowledge Base application",
+		"name": "DARIAH Knowledge Base",
+		"short-name": "DARIAH Knowledge Base"
+	}
+}

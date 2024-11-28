@@ -8,7 +8,7 @@ test.describe("imprint page", () => {
 			await imprintPage.goto();
 
 			await expect(imprintPage.page).toHaveTitle(
-				[i18n.t("ImprintPage.meta.title"), i18n.t("LocaleLayout.meta.title")].join(" | "),
+				[i18n.t("ImprintPage.meta.title"), i18n.t("metadata.title")].join(" | "),
 			);
 		}
 	});
@@ -30,15 +30,7 @@ test.describe("imprint page", () => {
 	test("should not have any automatically detectable accessibility issues", async ({
 		createAccessibilityScanner,
 		createImprintPage,
-		browserName,
 	}) => {
-		/**
-		 * FIXME: This test is flaky in webkit, but seems to always pass
-		 * when setting `--trace on`.
-		 */
-		// eslint-disable-next-line playwright/no-skipped-test
-		test.skip(browserName === "webkit");
-
 		for (const locale of locales) {
 			const { imprintPage } = await createImprintPage(locale);
 			await imprintPage.goto();

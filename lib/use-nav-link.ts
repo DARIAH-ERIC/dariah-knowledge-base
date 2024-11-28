@@ -1,7 +1,7 @@
 import type { LinkProps } from "@/components/link";
 import { env } from "@/config/env.config";
 import { createFullUrl } from "@/lib/create-full-url";
-import { usePathname } from "@/lib/navigation";
+import { usePathname } from "@/lib/i18n/navigation";
 
 interface UseNavLinkParams extends Pick<LinkProps, "aria-current" | "href"> {}
 

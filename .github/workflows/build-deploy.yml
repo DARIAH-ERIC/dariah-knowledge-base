@@ -11,7 +11,7 @@ on:
 jobs:
   env:
     name: Generate environment variables
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Derive environment from git ref
         id: environment
@@ -33,16 +33,16 @@ jobs:
           echo "APP_NAME_SUFFIX=$APP_NAME_SUFFIX" >> $GITHUB_OUTPUT
     outputs:
       environment: "${{ steps.environment.outputs.ENVIRONMENT }}"
-      app_name: "dariah-unr${{ steps.environment.outputs.APP_NAME_SUFFIX }}"
+      app_name: "dariah-knowledge-base${{ steps.environment.outputs.APP_NAME_SUFFIX }}"
       registry: "ghcr.io"
       image: "${{ github.repository }}"
 
   vars:
     name: Generate public url
     needs: [env]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     environment:
-      name: ${{ needs.env.outputs.environment }}
+      name: "${{ needs.env.outputs.environment }}"
     steps:
       - name: Generate public URL
         id: public_url
@@ -60,7 +60,7 @@ jobs:
   build:
     name: Build and push docker image
     needs: [env, vars]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: read
       packages: write
@@ -77,9 +77,9 @@ jobs:
       - name: Log in to the Container registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ needs.env.outputs.registry }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: "${{ needs.env.outputs.registry }}"
+          username: "${{ github.actor }}"
+          password: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -95,37 +95,19 @@ jobs:
           #   type=raw,value=latest
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: "${{ steps.meta.outputs.tags }}"
+          labels: "${{ steps.meta.outputs.labels }}"
           build-args: |
             "NEXT_PUBLIC_APP_BASE_URL=${{ needs.vars.outputs.public_url }}"
             "NEXT_PUBLIC_BOTS=${{ vars.NEXT_PUBLIC_BOTS }}"
             "NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=${{ vars.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }}"
-            "NEXT_PUBLIC_KEYSTATIC_GITHUB_APP_SLUG=${{ vars.NEXT_PUBLIC_KEYSTATIC_GITHUB_APP_SLUG }}"
-            "NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO_NAME=${{ vars.NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO_NAME }}"
-            "NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO_OWNER=${{ vars.NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO_OWNER }}"
-            "NEXT_PUBLIC_KEYSTATIC_MODE=${{ vars.NEXT_PUBLIC_KEYSTATIC_MODE }}"
             "NEXT_PUBLIC_MATOMO_BASE_URL=${{ vars.NEXT_PUBLIC_MATOMO_BASE_URL }}"
             "NEXT_PUBLIC_MATOMO_ID=${{ vars.NEXT_PUBLIC_MATOMO_ID }}"
             "NEXT_PUBLIC_REDMINE_ID=${{ vars.SERVICE_ID }}"
-          secrets: |
-            "AUTH_SECRET=${{ secrets.K8S_SECRET_AUTH_SECRET }}"
-            "EMAIL_CONTACT_ADDRESS=${{ secrets.K8S_SECRET_EMAIL_CONTACT_ADDRESS }}"
-            "EMAIL_SMTP_PORT=${{ vars.K8S_SECRET_EMAIL_SMTP_PORT }}"
-            "EMAIL_SMTP_SERVER=${{ vars.K8S_SECRET_EMAIL_SMTP_SERVER }}"
-            "DATABASE_DIRECT_URL=${{ secrets.K8S_SECRET_DATABASE_DIRECT_URL }}"
-            "DATABASE_URL=${{ secrets.K8S_SECRET_DATABASE_URL }}"
-            "KEYSTATIC_GITHUB_CLIENT_ID=${{ secrets.K8S_SECRET_KEYSTATIC_GITHUB_CLIENT_ID }}"
-            "KEYSTATIC_GITHUB_CLIENT_SECRET=${{ secrets.K8S_SECRET_KEYSTATIC_GITHUB_CLIENT_SECRET }}"
-            "KEYSTATIC_SECRET=${{ secrets.K8S_SECRET_KEYSTATIC_SECRET }}"
-            "SSHOC_MARKETPLACE_API_BASE_URL=${{ vars.K8S_SECRET_SSHOC_MARKETPLACE_API_BASE_URL }}"
-            "SSHOC_MARKETPLACE_BASE_URL=${{ vars.K8S_SECRET_SSHOC_MARKETPLACE_BASE_URL }}"
-            "SSHOC_MARKETPLACE_PASSWORD=${{ secrets.K8S_SECRET_SSHOC_MARKETPLACE_PASSWORD }}"
-            "SSHOC_MARKETPLACE_USER_NAME=${{ secrets.K8S_SECRET_SSHOC_MARKETPLACE_USER_NAME }}"
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

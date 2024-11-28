@@ -41,12 +41,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		routes.push(segments.join("/"));
 	});
 
-	return locales.flatMap((locale) => {
+	const entries = locales.flatMap((locale) => {
 		return routes.map((pathname) => {
 			return {
 				url: String(createUrl({ baseUrl, pathname: `/${locale}/${pathname}` })),
+				/**
+				 * Only add `lastmod` when the publication date is actually known.
+				 * Don't use the build date instead.
+				 */
 				// lastModified: new Date(),
 			};
 		});
 	});
+
+	return entries;
 }

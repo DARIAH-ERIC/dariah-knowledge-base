@@ -1,10 +1,10 @@
 import "client-only";
 
 import { assert } from "@acdh-oeaw/lib";
+import { useLocale } from "next-intl";
 import { useLayoutEffect, useSyncExternalStore } from "react";
 
 import type { ColorScheme, ColorSchemeState } from "@/lib/color-scheme-script";
-import { useLocale } from "@/lib/navigation";
 
 interface UseColorSchemeReturnValue {
 	colorSchemeState: ColorSchemeState;
@@ -17,7 +17,7 @@ export function useColorScheme(): UseColorSchemeReturnValue {
 	 * .
 	 * @see https://react.dev/reference/react/Suspense#providing-a-fallback-for-server-errors-and-client-only-content
 	 */
-	assert(typeof window !== "undefined");
+	assert(typeof document !== "undefined");
 
 	const locale = useLocale();
 

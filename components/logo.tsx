@@ -4,7 +4,7 @@ interface LogoProps {
 	className?: string;
 }
 
-export function Logo(props: LogoProps): ReactNode {
+export function Logo(props: Readonly<LogoProps>): ReactNode {
 	const { className } = props;
 
 	return (

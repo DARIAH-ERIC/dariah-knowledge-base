@@ -1,6 +1,4 @@
-import "tailwindcss/tailwind.css";
 import "@/styles/index.css";
-import "@/styles/content.css";
 
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
@@ -28,7 +26,7 @@ export const metadata: Metadata = {
  * Since we have a root `not-found.tsx` page, a layout file is required,
  * even if it's just passing children through.
  */
-export default function RootLayout(props: RootLayoutProps): ReactNode {
+export default function RootLayout(props: Readonly<RootLayoutProps>): ReactNode {
 	const { children } = props;
 
 	return children;

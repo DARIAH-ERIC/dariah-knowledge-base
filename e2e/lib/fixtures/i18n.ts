@@ -11,8 +11,14 @@ export interface I18n {
 export async function createI18n(_page: Page, locale = defaultLocale): Promise<I18n> {
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	const _messages = await import(`@/messages/${locale}.json`, { with: { type: "json" } });
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-	const messages = _messages.default as IntlMessages;
+
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+	const _metadata = await import(`@/content/${locale}/metadata/index.json`, {
+		with: { type: "json" },
+	});
+
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
+	const messages = { metadata: _metadata.default, ..._messages.default } as IntlMessages;
 
 	return {
 		t: createTranslator({ locale, messages }),

@@ -2,6 +2,7 @@
 
 import baseConfig from "@acdh-oeaw/eslint-config";
 import nextConfig from "@acdh-oeaw/eslint-config-next";
+import nodeConfig from "@acdh-oeaw/eslint-config-node";
 import playwrightConfig from "@acdh-oeaw/eslint-config-playwright";
 import reactConfig from "@acdh-oeaw/eslint-config-react";
 import tailwindcssConfig from "@acdh-oeaw/eslint-config-tailwindcss";
@@ -45,7 +46,7 @@ const config = [
 				"error",
 				{
 					name: "next/image",
-					message: "Please use `@/components/image` instead.",
+					message: "Please use `@/components/image` or `@/components/server-image` instead.",
 				},
 				{
 					name: "next/link",
@@ -54,11 +55,11 @@ const config = [
 				{
 					name: "next/navigation",
 					importNames: ["redirect", "permanentRedirect", "useRouter", "usePathname"],
-					message: "Please use `@/lib/navigation` instead.",
+					message: "Please use `@/lib/i18n/navigation` instead.",
 				},
 				{
 					name: "next/router",
-					message: "Please use `@/lib/navigation` instead.",
+					message: "Please use `@/lib/i18n/navigation` instead.",
 				},
 			],
 			"no-restricted-syntax": [
@@ -74,6 +75,12 @@ const config = [
 			"react/jsx-sort-props": ["error", { reservedFirst: true }],
 		},
 	},
+	...nodeConfig.map((config) => {
+		return {
+			files: ["db/**/*.ts", "lib/server/**/*.ts", "**/_actions/**/*.ts"],
+			...config,
+		};
+	}),
 ];
 
 export default config;

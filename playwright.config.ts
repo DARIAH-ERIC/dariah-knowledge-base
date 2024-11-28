@@ -1,5 +1,17 @@
+import { join } from "node:path";
+
 import { defineConfig, devices } from "@playwright/test";
 import { isCI } from "ci-info";
+import { config as dotenv } from "dotenv";
+import { expand } from "dotenv-expand";
+
+/**
+ * Reading `.env` files here instead of using `dotenv-cli` so environment variables are
+ * available to the vs code plugin as well.
+ */
+for (const envFilePath of [".env.test.local", ".env.local", ".env.test", ".env"]) {
+	expand(dotenv({ path: join(process.cwd(), envFilePath) }));
+}
 
 const port = 3000;
 const baseUrl = `http://localhost:${String(port)}`;
@@ -12,9 +24,10 @@ export default defineConfig({
 	retries: isCI ? 2 : 0,
 	maxFailures: 10,
 	workers: isCI ? 1 : undefined,
-	reporter: isCI ? "github" : "html",
+	reporter: isCI ? [["github"], ["html", { open: "never" }]] : [["html"]],
 	use: {
 		baseURL: baseUrl,
+		screenshot: "on-first-failure",
 		trace: "on-first-retry",
 	},
 	projects: [
@@ -24,7 +37,7 @@ export default defineConfig({
 		},
 		{
 			name: "chromium",
-			use: { ...devices["Desktop Chrome"] },
+			use: { ...devices["Desktop Chrome"], channel: "chromium" },
 			dependencies: ["setup"],
 		},
 		{
@@ -60,11 +73,9 @@ export default defineConfig({
 		// 	dependencies: ["setup"],
 		// },
 	],
-	webServer: [
-		{
-			command: "pnpm run start",
-			url: baseUrl,
-			reuseExistingServer: !isCI,
-		},
-	],
+	webServer: {
+		command: "pnpm run start",
+		url: baseUrl,
+		reuseExistingServer: !isCI,
+	},
 });
