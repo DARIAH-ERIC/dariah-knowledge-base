@@ -1,13 +1,14 @@
 "use server";
 
 import { getFormDataValues, log } from "@acdh-oeaw/lib";
+import { getTranslations } from "next-intl/server";
 import * as v from "valibot";
 
 import { env } from "@/config/env.config";
 import {
-	type ActionResult,
-	createErrorActionResult,
-	createSuccessActionResult,
+	type ActionState,
+	createErrorActionState,
+	createSuccessActionState,
 } from "@/lib/server/actions";
 import { sendEmail } from "@/lib/server/email/send-email";
 
@@ -18,13 +19,15 @@ const ContactFormSchema = v.object({
 });
 
 export async function sendContactFormEmailAction(
-	state: ActionResult,
+	state: ActionState,
 	formData: FormData,
-): Promise<ActionResult> {
+): Promise<ActionState> {
+	const t = await getTranslations("sendContactFormEmailAction");
+
 	const result = await v.safeParseAsync(ContactFormSchema, getFormDataValues(formData));
 
 	if (!result.success) {
-		return createErrorActionResult({ message: "Invalid input" });
+		return createErrorActionState({ message: t("invalid-input") });
 	}
 
 	const { email, message, subject } = result.output;
@@ -39,8 +42,8 @@ export async function sendContactFormEmailAction(
 	} catch (error) {
 		log.error(String(error));
 
-		return createErrorActionResult({ message: "Failed to send message." });
+		return createErrorActionState({ message: t("error") });
 	}
 
-	return createSuccessActionResult({ message: "Successfully sent message." });
+	return createSuccessActionState({ message: t("success") });
 }

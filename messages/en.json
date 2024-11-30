@@ -1,4 +1,9 @@
 {
+	"sendContactFormEmailAction": {
+		"error": "Failed to send message.",
+		"invalid-input": "Invalid input.",
+		"success": "Successfully sent message."
+	},
 	"AppFooter": {
 		"links": {
 			"contact": "Contact",

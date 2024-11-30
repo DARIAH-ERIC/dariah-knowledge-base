@@ -1,10 +1,10 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { Button } from "react-aria-components";
+import { Button, type ButtonProps } from "react-aria-components";
 import { useFormStatus } from "react-dom";
 
-interface SubmitButtonProps {
+interface SubmitButtonProps extends ButtonProps {
 	children: ReactNode;
 }
 
