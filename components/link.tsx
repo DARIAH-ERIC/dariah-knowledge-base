@@ -1,14 +1,7 @@
 "use client";
 
 import { filterDOMProps, mergeRefs } from "@react-aria/utils";
-import {
-	type ElementType,
-	type ForwardedRef,
-	forwardRef,
-	type ReactNode,
-	useMemo,
-	useRef,
-} from "react";
+import { type ElementType, type ReactNode, type Ref, useMemo, useRef } from "react";
 import {
 	mergeProps,
 	useFocusable,
@@ -26,6 +19,8 @@ import { useRenderProps } from "@/lib/use-render-props";
  * Not using `Link` from `react-aria-components` directly, because we want `next/link`'s built-in
  * prefetch behavior.
  *
+ * @see https://github.com/vercel/next.js/discussions/73381
+ *
  * @see https://github.com/adobe/react-spectrum/blob/main/packages/react-aria-components/src/Link.tsx
  * @see https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/link/src/useLink.ts
  */
@@ -35,12 +30,12 @@ export interface LinkProps
 			LocaleLinkProps,
 			"aria-current" | "href" | "id" | "locale" | "prefetch" | "replace" | "scroll" | "shallow"
 		>,
-		Omit<AriaLinkProps, "elementType" | "href" | "routerOptions" | "slot"> {}
+		Omit<AriaLinkProps, "elementType" | "href" | "routerOptions" | "slot"> {
+	ref?: Ref<HTMLAnchorElement | HTMLSpanElement> | undefined;
+}
 
-export const Link = forwardRef(function Link(
-	props: LinkProps,
-	forwardedRef: ForwardedRef<HTMLAnchorElement | HTMLSpanElement>,
-): ReactNode {
+export function Link(props: LinkProps): ReactNode {
+	const forwardedRef = props.ref;
 	const ref = useRef<HTMLAnchorElement | HTMLSpanElement>(null);
 	const linkRef = useObjectRef(
 		useMemo(() => {
@@ -75,6 +70,7 @@ export const Link = forwardRef(function Link(
 		<ElementType
 			ref={linkRef}
 			{...mergeProps(
+				renderProps,
 				filterDOMProps(props, { labelable: true, isLink: isLinkElement }),
 				focusableProps,
 				pressProps,
@@ -94,4 +90,4 @@ export const Link = forwardRef(function Link(
 			{renderProps.children}
 		</ElementType>
 	);
-});
+}

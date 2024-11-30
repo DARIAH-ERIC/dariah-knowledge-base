@@ -2,7 +2,9 @@
 
 import { cn } from "@acdh-oeaw/style-variants";
 import { ChevronDownIcon, ChevronRightIcon, MenuIcon, XIcon } from "lucide-react";
+import { PrefetchKind } from "next/dist/client/components/router-reducer/router-reducer-types";
 import { Fragment, type ReactNode } from "react";
+import { chain } from "react-aria";
 import {
 	Button,
 	Dialog,
@@ -12,6 +14,7 @@ import {
 	Heading,
 	Menu,
 	MenuItem,
+	type MenuItemProps,
 	MenuTrigger,
 	Modal,
 	ModalOverlay,
@@ -21,10 +24,11 @@ import {
 
 import { Logo } from "@/components/logo";
 import { NavLink, type NavLinkProps } from "@/components/nav-link";
+import { useRouter } from "@/lib/i18n/navigation";
 
 interface NavigationLink {
 	type: "link";
-	href: NavLinkProps["href"];
+	href: NonNullable<NavLinkProps["href"]>;
 	label: string;
 }
 
@@ -120,7 +124,7 @@ export function AppNavigation(props: AppNavigationProps): ReactNode {
 													switch (item.type) {
 														case "link": {
 															return (
-																<MenuItem
+																<NavigationMenuItem
 																	key={id}
 																	className={cn(
 																		"flex cursor-pointer select-none items-center gap-x-3 px-4 py-3 text-small text-text-strong",
@@ -130,7 +134,7 @@ export function AppNavigation(props: AppNavigationProps): ReactNode {
 																	textValue={item.label}
 																>
 																	{item.label}
-																</MenuItem>
+																</NavigationMenuItem>
 															);
 														}
 
@@ -154,6 +158,37 @@ export function AppNavigation(props: AppNavigationProps): ReactNode {
 				})}
 			</ul>
 		</nav>
+	);
+}
+
+interface NavigationMenuItemProps extends MenuItemProps {
+	href: string;
+}
+
+function NavigationMenuItem(props: NavigationMenuItemProps): ReactNode {
+	const { href, onHoverStart } = props;
+
+	const router = useRouter();
+
+	/**
+	 * Adds prefetch behavior similar to `next/link`.
+	 *
+	 * @see https://github.com/vercel/next.js/discussions/73381
+	 *
+	 * @see https://github.com/adobe/react-spectrum/blob/main/packages/react-aria-components/src/Link.tsx
+	 * @see https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/link/src/useLink.ts
+	 */
+	function prefetch() {
+		router.prefetch(href, { kind: PrefetchKind.AUTO });
+	}
+
+	return (
+		<MenuItem
+			{...props}
+			// @ts-expect-error @see https://github.com/adobe/react-spectrum/issues/7453
+			onFocus={chain(prefetch, props.onFocus)}
+			onHoverStart={chain(prefetch, onHoverStart)}
+		/>
 	);
 }
 

@@ -9,9 +9,8 @@ import {
 	TwitterLogo,
 	YouTubeLogo,
 } from "@/app/[locale]/_components/social-media-logos";
-import type { LinkProps } from "@/components/link";
 import { Logo } from "@/components/logo";
-import { NavLink } from "@/components/nav-link";
+import { NavLink, type NavLinkProps } from "@/components/nav-link";
 import type { Locale } from "@/config/i18n.config";
 import { createHref } from "@/lib/create-href";
 
@@ -36,7 +35,7 @@ export function AppFooter(): ReactNode {
 			href: createHref({ pathname: "/imprint" }),
 			label: t("links.imprint"),
 		},
-	} satisfies Record<string, { href: LinkProps["href"]; label: string }>;
+	} satisfies Record<string, { href: NavLinkProps["href"]; label: string }>;
 
 	const socialMedia = {
 		// bluesky: {
@@ -75,7 +74,7 @@ export function AppFooter(): ReactNode {
 			// icon: "/assets/images/logo-youtube.svg",
 			icon: YouTubeLogo,
 		},
-	} satisfies Record<string, { href: LinkProps["href"]; label: string; icon: FC }>;
+	} satisfies Record<string, { href: string; label: string; icon: FC }>;
 
 	const dariahLinks = {
 		en: { href: "https://www.dariah.eu" },

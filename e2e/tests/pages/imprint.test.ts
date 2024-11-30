@@ -40,7 +40,20 @@ test.describe("imprint page", () => {
 		}
 	});
 
-	test("should not have visible changes", async ({ createImprintPage }) => {
+	test("should not have visible changes (light mode)", async ({ createImprintPage }) => {
+		test.use({ colorScheme: "light" });
+
+		for (const locale of locales) {
+			const { imprintPage } = await createImprintPage(locale);
+			await imprintPage.goto();
+
+			await expect(imprintPage.page).toHaveScreenshot();
+		}
+	});
+
+	test("should not have visible changes (dark mode)", async ({ createImprintPage }) => {
+		test.use({ colorScheme: "dark" });
+
 		for (const locale of locales) {
 			const { imprintPage } = await createImprintPage(locale);
 			await imprintPage.goto();

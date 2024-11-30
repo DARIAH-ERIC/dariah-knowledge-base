@@ -1,30 +1,30 @@
 export type ValidationErrors = Record<string, string | Array<string>>;
 
-export interface InitialActionResult {
+export interface InitialActionState {
 	status: "initial";
 	formData: FormData | null;
 }
 
-export function createInitialActionResult({
+export function createInitialActionState({
 	formData,
-}: Partial<Pick<InitialActionResult, "formData">>): InitialActionResult {
+}: Partial<Pick<InitialActionState, "formData">>): InitialActionState {
 	return {
 		status: "initial",
 		formData: formData ?? null,
 	};
 }
 
-export interface SuccessActionResult {
+export interface SuccessActionState {
 	status: "success";
 	timestamp: number;
 	message: string | Array<string> | null;
 	formData: FormData | null;
 }
 
-export function createSuccessActionResult({
+export function createSuccessActionState({
 	formData,
 	message,
-}: Partial<Pick<SuccessActionResult, "formData" | "message">>): SuccessActionResult {
+}: Partial<Pick<SuccessActionState, "formData" | "message">>): SuccessActionState {
 	return {
 		status: "success",
 		timestamp: Date.now(),
@@ -33,7 +33,7 @@ export function createSuccessActionResult({
 	};
 }
 
-export interface ErrorActionResult {
+export interface ErrorActionState {
 	status: "error";
 	timestamp: number;
 	message: string | Array<string> | null;
@@ -41,11 +41,11 @@ export interface ErrorActionResult {
 	formData: FormData | null;
 }
 
-export function createErrorActionResult({
+export function createErrorActionState({
 	errors,
 	formData,
 	message,
-}: Partial<Pick<ErrorActionResult, "errors" | "formData" | "message">>): ErrorActionResult {
+}: Partial<Pick<ErrorActionState, "errors" | "formData" | "message">>): ErrorActionState {
 	return {
 		status: "error",
 		timestamp: Date.now(),
@@ -56,18 +56,18 @@ export function createErrorActionResult({
 	};
 }
 
-export type ActionResult = InitialActionResult | SuccessActionResult | ErrorActionResult;
+export type ActionState = InitialActionState | SuccessActionState | ErrorActionState;
 
-export function getSuccessMessage(state: ActionResult): string | Array<string> | null | undefined {
+export function getSuccessMessage(state: ActionState): string | Array<string> | null | undefined {
 	return state.status === "success" ? state.message : undefined;
 }
 
-export function getErrorMessage(state: ActionResult): string | Array<string> | null | undefined {
+export function getErrorMessage(state: ActionState): string | Array<string> | null | undefined {
 	return state.status === "error" ? state.message : undefined;
 }
 
 export function getFieldErrors(
-	state: ActionResult,
+	state: ActionState,
 ): Record<string, string | Array<string>> | undefined {
 	return state.status === "error"
 		? /** `valibot` validation errors include `undefined`, but `react-aria-components` don't.  */

@@ -1,32 +1,35 @@
-"use client";
+import "client-only";
 
 import type { ReactNode } from "react";
-import { Form as AriaForm } from "react-aria-components";
+import { Form as AriaForm, type FormProps as AriaFormProps } from "react-aria-components";
 import { useFormState as useActionState } from "react-dom";
 
-import { type ActionResult, createInitialActionResult } from "@/lib/server/actions";
+import { type ActionState, createInitialActionState } from "@/lib/server/actions";
+import { useRenderProps } from "@/lib/use-render-props";
 
-interface FormProps {
-	action: (state: ActionResult, formData: FormData) => Promise<ActionResult>;
+interface FormProps extends Omit<AriaFormProps, "action"> {
+	action: (state: ActionState, formData: FormData) => Promise<ActionState>;
 	children: ReactNode;
 }
 
 export function Form(props: FormProps): ReactNode {
-	const { action, children } = props;
+	const { action } = props;
 
-	const [state, formAction] = useActionState(action, createInitialActionResult({}));
+	const [state, formAction] = useActionState(action, createInitialActionState({}));
+
+	// TODO:
+	// Alternatively, consider a custom context provider - `ActionStateContext` - which
+	// can e.g. be read in `FormStatusMessage`.
+	const renderProps = useRenderProps({
+		...props,
+		values: {
+			state,
+		},
+	});
 
 	return (
-		<AriaForm action={formAction} className="grid gap-y-12">
-			{children}
-
-			<div aria-atomic={true} aria-live="polite">
-				{state.status === "error" ? (
-					<div className="text-text-error">{state.message}</div>
-				) : state.status === "success" ? (
-					<div className="text-text-success">{state.message}</div>
-				) : null}
-			</div>
+		<AriaForm {...renderProps} action={formAction}>
+			{renderProps.children}
 		</AriaForm>
 	);
 }

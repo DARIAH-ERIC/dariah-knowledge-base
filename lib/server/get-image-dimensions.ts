@@ -2,10 +2,10 @@ import "server-only";
 
 import { createReadStream } from "node:fs";
 import { join } from "node:path";
+import { ReadableStream } from "node:stream/web";
 
 import { assert } from "@acdh-oeaw/lib";
 import { imageDimensionsFromStream } from "image-dimensions";
-import { ReadableStream } from "stream/web";
 
 const publicFolder = join(process.cwd(), "public");
 
