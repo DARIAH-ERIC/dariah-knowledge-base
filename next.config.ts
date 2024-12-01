@@ -34,6 +34,17 @@ const config: NextConfig = {
 		},
 	},
 	output: env.BUILD_MODE,
+	redirects() {
+		const redirects: Awaited<ReturnType<NonNullable<NextConfig["redirects"]>>> = [
+			{
+				source: "/admin",
+				destination: "/keystatic",
+				permanent: false,
+			},
+		];
+
+		return Promise.resolve(redirects);
+	},
 	typescript: {
 		ignoreBuildErrors: true,
 	},
