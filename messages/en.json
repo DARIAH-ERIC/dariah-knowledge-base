@@ -1,7 +1,8 @@
 {
 	"mdx": {
 		"footnote-back-label": "Back to reference {reference}",
-		"footnotes": "Footnotes"
+		"footnotes": "Footnotes",
+		"table-of-contents": "Table of contents"
 	},
 	"sendContactFormEmailAction": {
 		"error": "Failed to send message.",

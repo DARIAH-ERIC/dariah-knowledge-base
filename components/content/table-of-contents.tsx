@@ -12,7 +12,7 @@ interface TableOfContentsProps {
 export function TableOfContents(props: TableOfContentsProps): ReactNode {
 	const { tableOfContents, title } = props;
 
-	const t = useTranslations("TableOfContents");
+	const t = useTranslations("mdx");
 	const id = useId();
 
 	if (!isNonEmptyArray(tableOfContents)) return null;
@@ -20,7 +20,10 @@ export function TableOfContents(props: TableOfContentsProps): ReactNode {
 	const hasTitle = title != null;
 
 	return (
-		<nav aria-label={hasTitle ? undefined : t("title")} aria-labelledby={hasTitle ? id : undefined}>
+		<nav
+			aria-label={hasTitle ? undefined : t("table-of-contents")}
+			aria-labelledby={hasTitle ? id : undefined}
+		>
 			{hasTitle ? <h2 id={id}>{title}</h2> : null}
 			<div className="not-prose mb-12">
 				<TableOfContentsLevel headings={tableOfContents} />
