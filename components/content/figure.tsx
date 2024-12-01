@@ -17,7 +17,6 @@ export function Figure(props: Readonly<FigureProps>): ReactNode {
 
 	return (
 		<figure>
-			{/* @ts-expect-error @see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/69970 */}
 			<Image alt={alt} height={height} src={src} width={width} />
 			<figcaption>{children}</figcaption>
 		</figure>
