@@ -25,26 +25,30 @@ test.describe("index page", () => {
 	});
 
 	// eslint-disable-next-line playwright/no-skipped-test
-	test.skip("should not have visible changes (light mode)", async ({ createIndexPage }) => {
+	test.describe.skip("should not have visible changes", () => {
 		test.use({ colorScheme: "light" });
 
-		for (const locale of locales) {
-			const { indexPage } = await createIndexPage(locale);
-			await indexPage.goto();
+		test("in light mode", async ({ createIndexPage }) => {
+			for (const locale of locales) {
+				const { indexPage } = await createIndexPage(locale);
+				await indexPage.goto();
 
-			await expect(indexPage.page).toHaveScreenshot();
-		}
+				await expect(indexPage.page).toHaveScreenshot();
+			}
+		});
 	});
 
 	// eslint-disable-next-line playwright/no-skipped-test
-	test.skip("should not have visible changes (dark mode)", async ({ createIndexPage }) => {
+	test.describe.skip("should not have visible changes", () => {
 		test.use({ colorScheme: "dark" });
 
-		for (const locale of locales) {
-			const { indexPage } = await createIndexPage(locale);
-			await indexPage.goto();
+		test("in dark mode", async ({ createIndexPage }) => {
+			for (const locale of locales) {
+				const { indexPage } = await createIndexPage(locale);
+				await indexPage.goto();
 
-			await expect(indexPage.page).toHaveScreenshot();
-		}
+				await expect(indexPage.page).toHaveScreenshot();
+			}
+		});
 	});
 });

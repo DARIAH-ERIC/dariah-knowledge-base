@@ -1,4 +1,8 @@
 {
+	"mdx": {
+		"footnote-back-label": "Back to reference {reference}",
+		"footnotes": "Footnotes"
+	},
 	"sendContactFormEmailAction": {
 		"error": "Failed to send message.",
 		"invalid-input": "Invalid input.",

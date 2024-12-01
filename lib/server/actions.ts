@@ -2,6 +2,7 @@ export type ValidationErrors = Record<string, string | Array<string>>;
 
 export interface InitialActionState {
 	status: "initial";
+	timestamp: null;
 	formData: FormData | null;
 }
 
@@ -10,6 +11,7 @@ export function createInitialActionState({
 }: Partial<Pick<InitialActionState, "formData">>): InitialActionState {
 	return {
 		status: "initial",
+		timestamp: null,
 		formData: formData ?? null,
 	};
 }

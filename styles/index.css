@@ -1,4 +1,5 @@
 @import url("@/styles/tokens.css");
+@import url("@/styles/content.css");
 
 @tailwind base;
 @tailwind components;
@@ -166,6 +167,14 @@
 		}
 	}
 
+	.max-w-text {
+		max-width: var(--max-width-text, 42rem);
+	}
+
+	.content-max-w-text > * {
+		max-width: var(--max-width-text, 42rem);
+	}
+
 	/** Interaction states. */
 
 	.focus-outline {
@@ -209,17 +218,12 @@
 	/** Typography. */
 
 	.typography {
-		--max-content-width: 42rem;
 		--color-typography-strong: var(--color-text-strong);
 		--color-typography-weak: var(--color-text-weak);
 
 		color: var(--color-typography-weak);
 		font-size: var(--font-size-small);
 		line-height: var(--line-height-small);
-
-		& > * {
-			max-width: var(--max-content-width);
-		}
 
 		& > :first-child {
 			margin-block-start: 0;
@@ -269,9 +273,11 @@
 			font-weight: var(--font-weight-strong);
 			font-size: var(--font-size-heading-1);
 			line-height: var(--line-height-heading-1);
+			letter-spacing: -0.5px;
 
 			& code {
 				font-size: 75%;
+				letter-spacing: unset;
 			}
 		}
 

@@ -16,7 +16,7 @@ export function ActionStateProvider(props: ActionStateProviderProps): ReactNode 
 	return <ActionStateContext.Provider value={state}>{children}</ActionStateContext.Provider>;
 }
 
-export function useActionState(): ActionState {
+export function useActionStateContext(): ActionState {
 	const value = useContext(ActionStateContext);
 
 	assert(value != null);

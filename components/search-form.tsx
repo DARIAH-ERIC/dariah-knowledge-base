@@ -1,7 +1,6 @@
-import Form, { type FormProps } from "next/form";
-import type { ReactNode } from "react";
+import type { ComponentPropsWithoutRef, ReactNode } from "react";
 
-interface SearchFormProps extends FormProps {
+interface SearchFormProps extends ComponentPropsWithoutRef<"form"> {
 	children: ReactNode;
 	/** @default "search" */
 	role?: "form" | "search";
@@ -11,8 +10,8 @@ export function SearchForm(props: SearchFormProps): ReactNode {
 	const { children, role = "search", ...rest } = props;
 
 	return (
-		<Form {...rest} role={role}>
+		<form {...rest} role={role}>
 			{children}
-		</Form>
+		</form>
 	);
 }

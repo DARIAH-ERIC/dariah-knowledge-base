@@ -18,7 +18,7 @@ export function FormSuccessMessage(props: FormSuccessMessageProps): ReactNode {
 			aria-live="polite"
 			className={cn(className, { "sr-only": state.status !== "success" })}
 		>
-			{state.status === "success" ? state.message : null}
+			<div key={state.timestamp}>{state.status === "success" ? state.message : null}</div>
 		</div>
 	);
 }

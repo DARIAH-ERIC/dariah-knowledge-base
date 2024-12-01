@@ -119,9 +119,12 @@ const config = {
 			fontSize: {
 				display: [
 					"var(--font-size-display)",
-					{ letterSpacing: "-0.0175em", lineHeight: "var(--line-height-display)" },
+					{ letterSpacing: "-1px", lineHeight: "var(--line-height-display)" },
 				],
-				"heading-1": ["var(--font-size-heading-1)", { lineHeight: "var(--line-height-heading-1)" }],
+				"heading-1": [
+					"var(--font-size-heading-1)",
+					{ letterSpacing: "-0.5px", lineHeight: "var(--line-height-heading-1)" },
+				],
 				"heading-2": ["var(--font-size-heading-2)", { lineHeight: "var(--line-height-heading-2)" }],
 				"heading-3": ["var(--font-size-heading-3)", { lineHeight: "var(--line-height-heading-3)" }],
 				"heading-4": ["var(--font-size-heading-4)", { lineHeight: "var(--line-height-heading-4)" }],

@@ -18,7 +18,7 @@ export function FormErrorMessage(props: FormErrorMessageProps): ReactNode {
 			aria-live="assertive"
 			className={cn(className, { "sr-only": state.status !== "error" })}
 		>
-			{state.status === "error" ? state.message : null}
+			<div key={state.timestamp}>{state.status === "error" ? state.message : null}</div>
 		</div>
 	);
 }
