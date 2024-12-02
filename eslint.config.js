@@ -9,6 +9,8 @@ import tailwindcssConfig from "@acdh-oeaw/eslint-config-tailwindcss";
 import gitignore from "eslint-config-flat-gitignore";
 // @ts-expect-error Missing type declaration.
 import checkFilePlugin from "eslint-plugin-check-file";
+// @ts-expect-error Missing type declarations.
+import drizzle from "eslint-plugin-drizzle";
 
 /** @type {Config} */
 const config = [
@@ -81,6 +83,16 @@ const config = [
 			...config,
 		};
 	}),
+	{
+		plugins: {
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+			drizzle,
+		},
+		rules: {
+			"drizzle/enforce-delete-with-where": ["error", { drizzleObjectName: ["db"] }],
+			"drizzle/enforce-update-with-where": ["error", { drizzleObjectName: ["db"] }],
+		},
+	},
 ];
 
 export default config;

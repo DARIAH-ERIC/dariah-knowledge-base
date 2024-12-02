@@ -3,7 +3,15 @@
 import type { ReactNode } from "react";
 import { Button, Menu, MenuItem, MenuTrigger, Popover } from "react-aria-components";
 
-export function AccountMenu(): ReactNode {
+import type { User } from "@/lib/server/auth/users";
+
+interface AccountMenuProps {
+	user: User;
+}
+
+export function AccountMenu(props: AccountMenuProps): ReactNode {
+	const { user } = props;
+
 	return (
 		<MenuTrigger>
 			<Button>Stefan Probst</Button>

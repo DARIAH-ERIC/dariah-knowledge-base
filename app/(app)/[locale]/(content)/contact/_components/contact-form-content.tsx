@@ -10,7 +10,7 @@ import { FormErrorMessage } from "@/components/form-error-message";
 import { FormSuccessMessage } from "@/components/form-success-message";
 import { SubmitButton } from "@/components/submit-button";
 import { Honeypot } from "@/lib/honeypot";
-import { createInitialActionState } from "@/lib/server/actions";
+import { createInitialActionState, getFieldErrors } from "@/lib/server/actions";
 
 interface ContactFormContentProps {
 	emailLabel: string;
@@ -25,7 +25,7 @@ export function ContactFormContent(props: ContactFormContentProps): ReactNode {
 	const [state, action] = useActionState(sendContactFormEmailAction, createInitialActionState({}));
 
 	return (
-		<Form action={action} className="grid gap-y-8">
+		<Form action={action} className="grid gap-y-8" validationErrors={getFieldErrors(state)}>
 			<FormErrorMessage
 				className="min-h-12 border border-stroke-error-weak bg-fill-error-weak px-4 py-2.5 text-small font-strong text-text-error"
 				state={state}
