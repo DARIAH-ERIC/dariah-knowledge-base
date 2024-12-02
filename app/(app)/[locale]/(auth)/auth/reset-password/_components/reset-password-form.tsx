@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
-import { ResetPasswordFormContent } from "@/app/[locale]/auth/reset-password/_components/reset-password-form-content";
+import { ResetPasswordFormContent } from "@/app/(app)/[locale]/(auth)/auth/reset-password/_components/reset-password-form-content";
 
 export function ResetPasswordForm(): ReactNode {
 	const t = useTranslations("ResetPasswordForm");

@@ -3,7 +3,7 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
-import { TwoFactorResetForm } from "@/app/[locale]/auth/2fa/reset/_components/two-factor-reset-form";
+import { TwoFactorResetForm } from "@/app/(app)/[locale]/(auth)/auth/2fa/reset/_components/two-factor-reset-form";
 import { MainContent } from "@/components/main-content";
 import { urls } from "@/config/auth.config";
 import type { Locale } from "@/config/i18n.config";
@@ -12,9 +12,9 @@ import { globalGETRateLimit } from "@/lib/server/auth/requests";
 import { getCurrentSession } from "@/lib/server/auth/sessions";
 
 interface TwoFactorResetPageProps {
-	params: {
+	params: Promise<{
 		locale: Locale;
-	};
+	}>;
 }
 
 export async function generateMetadata(
@@ -23,7 +23,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 
 	const t = await getTranslations({ locale, namespace: "TwoFactorResetPage" });
 
@@ -39,14 +39,14 @@ export default async function TwoFactorResetPage(
 ): Promise<ReactNode> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 
 	setRequestLocale(locale);
 
 	const t = await getTranslations("TwoFactorResetPage");
 	const e = await getTranslations("errors");
 
-	if (!globalGETRateLimit()) {
+	if (!(await globalGETRateLimit())) {
 		return e("too-many-requests");
 	}
 

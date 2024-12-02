@@ -8,7 +8,7 @@ import {
 	MastodonLogo,
 	TwitterLogo,
 	YouTubeLogo,
-} from "@/app/[locale]/_components/social-media-logos";
+} from "@/app/(app)/[locale]/_components/social-media-logos";
 import { Logo } from "@/components/logo";
 import { NavLink, type NavLinkProps } from "@/components/nav-link";
 import type { Locale } from "@/config/i18n.config";
@@ -83,7 +83,7 @@ export function AppFooter(): ReactNode {
 	return (
 		<footer className="layout-grid grid gap-y-6 border-t border-stroke-weak py-12">
 			<div className="grid gap-y-8 xs:flex xs:items-center xs:justify-between">
-				<Logo className="h-8 w-auto shrink-0" />
+				<Logo className="h-8 w-auto shrink-0 text-text-brand" />
 
 				<nav aria-label="navigation-social-media">
 					<ul className="flex flex-wrap items-center gap-x-6" role="list">

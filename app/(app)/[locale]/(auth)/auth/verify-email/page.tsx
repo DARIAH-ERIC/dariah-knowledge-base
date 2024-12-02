@@ -2,8 +2,8 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
-import { EmailVerificationForm } from "@/app/[locale]/auth/verify-email/_components/email-verification-form";
-import { ResendEmailVerificationCodeForm } from "@/app/[locale]/auth/verify-email/_components/resend-email-verification-code-form";
+import { EmailVerificationForm } from "@/app/(app)/[locale]/(auth)/auth/verify-email/_components/email-verification-form";
+import { ResendEmailVerificationCodeForm } from "@/app/(app)/[locale]/(auth)/auth/verify-email/_components/resend-email-verification-code-form";
 import { Link } from "@/components/link";
 import { MainContent } from "@/components/main-content";
 import { urls } from "@/config/auth.config";
@@ -14,9 +14,9 @@ import { globalGETRateLimit } from "@/lib/server/auth/requests";
 import { getCurrentSession } from "@/lib/server/auth/sessions";
 
 interface VerifyEmailPageProps {
-	params: {
+	params: Promise<{
 		locale: Locale;
-	};
+	}>;
 }
 
 export async function generateMetadata(
@@ -25,7 +25,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 
 	const t = await getTranslations({ locale, namespace: "VerifyEmailPage" });
 
@@ -41,14 +41,14 @@ export default async function VerifyEmailPage(
 ): Promise<ReactNode> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 
 	setRequestLocale(locale);
 
 	const t = await getTranslations("VerifyEmailPage");
 	const e = await getTranslations("errors");
 
-	if (!globalGETRateLimit()) {
+	if (!(await globalGETRateLimit())) {
 		return e("too-many-requests");
 	}
 

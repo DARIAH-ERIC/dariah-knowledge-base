@@ -14,7 +14,7 @@ import { resetUserRecoveryCode } from "@/lib/server/auth/users";
 export async function regenerateRecoveryCodeAction(): Promise<ActionState> {
 	const e = await getTranslations("errors");
 
-	if (!globalPOSTRateLimit()) {
+	if (!(await globalPOSTRateLimit())) {
 		return createErrorActionState({ message: e("too-many-requests"), formData: null });
 	}
 

@@ -3,9 +3,9 @@
 import { cn } from "@acdh-oeaw/style-variants";
 import type { ReactNode } from "react";
 import { FieldError, Input, Label, TextField } from "react-aria-components";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 
-import { signUpAction } from "@/app/[locale]/auth/sign-up/_actions/sign-up-action";
+import { signUpAction } from "@/app/(app)/[locale]/(auth)/auth/sign-up/_actions/sign-up-action";
 import { Form } from "@/components/form";
 import { FormErrorMessage } from "@/components/form-error-message";
 import { FormSuccessMessage } from "@/components/form-success-message";
@@ -25,16 +25,16 @@ interface SignUpFormContentProps {
 export function SignUpFormContent(props: SignUpFormContentProps): ReactNode {
 	const { confirmPasswordLabel, emailLabel, passwordLabel, submitLabel, usernameLabel } = props;
 
-	const [state, action] = useFormState(signUpAction, createInitialActionState({}));
+	const [state, action] = useActionState(signUpAction, createInitialActionState({}));
 
 	return (
 		<Form action={action} className="grid gap-y-8" validationErrors={getFieldErrors(state)}>
 			<FormErrorMessage
-				className="min-h-12 border border-stroke-error-weak bg-fill-error-weak px-4 py-2.5 text-small font-strong text-text-error"
+				className="min-h-12 border border-stroke-error-weak bg-fill-error-weak px-4 py-2.5 text-small font-strong text-text-error rounded-2"
 				state={state}
 			/>
 			<FormSuccessMessage
-				className="min-h-12 border border-stroke-success-weak bg-fill-success-weak px-4 py-2.5 text-small font-strong text-text-success"
+				className="min-h-12 border border-stroke-success-weak bg-fill-success-weak px-4 py-2.5 text-small font-strong text-text-success rounded-2"
 				state={state}
 			/>
 

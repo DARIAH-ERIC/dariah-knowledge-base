@@ -8,7 +8,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 import { renderSVG } from "uqr";
 
-import { TwoFactorSetUpForm } from "@/app/[locale]/auth/2fa/setup/_components/two-factor-set-up-form";
+import { TwoFactorSetUpForm } from "@/app/(app)/[locale]/(auth)/auth/2fa/setup/_components/two-factor-set-up-form";
 import { MainContent } from "@/components/main-content";
 import { issuer, urls } from "@/config/auth.config";
 import type { Locale } from "@/config/i18n.config";
@@ -17,9 +17,9 @@ import { globalGETRateLimit } from "@/lib/server/auth/requests";
 import { getCurrentSession } from "@/lib/server/auth/sessions";
 
 interface TwoFactorSetupPageProps {
-	params: {
+	params: Promise<{
 		locale: Locale;
-	};
+	}>;
 }
 
 export async function generateMetadata(
@@ -28,7 +28,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 
 	const t = await getTranslations({ locale, namespace: "TwoFactorSetupPage" });
 
@@ -44,14 +44,14 @@ export default async function TwoFactorSetupPage(
 ): Promise<ReactNode> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 
 	setRequestLocale(locale);
 
 	const t = await getTranslations("TwoFactorSetupPage");
 	const e = await getTranslations("errors");
 
-	if (!globalGETRateLimit()) {
+	if (!(await globalGETRateLimit())) {
 		return e("too-many-requests");
 	}
 

@@ -26,7 +26,7 @@ export async function verify2FAAction(
 	const t = await getTranslations("verify2FAAction");
 	const e = await getTranslations("errors");
 
-	if (!globalPOSTRateLimit()) {
+	if (!(await globalPOSTRateLimit())) {
 		return createErrorActionState({ message: e("too-many-requests") });
 	}
 

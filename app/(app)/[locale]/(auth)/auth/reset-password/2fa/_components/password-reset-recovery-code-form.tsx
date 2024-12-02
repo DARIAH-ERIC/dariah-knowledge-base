@@ -2,7 +2,7 @@
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
-import { PasswordResetRecoveryCodeFormContent } from "@/app/[locale]/auth/reset-password/2fa/_components/password-reset-recovery-code-form-content";
+import { PasswordResetRecoveryCodeFormContent } from "@/app/(app)/[locale]/(auth)/auth/reset-password/2fa/_components/password-reset-recovery-code-form-content";
 
 export function PasswordResetRecoveryCodeForm(): ReactNode {
 	const t = useTranslations("PasswordResetRecoveryCodeForm");

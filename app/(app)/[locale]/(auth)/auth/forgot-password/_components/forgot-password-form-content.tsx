@@ -3,9 +3,9 @@
 import { cn } from "@acdh-oeaw/style-variants";
 import type { ReactNode } from "react";
 import { FieldError, Input, Label, TextField } from "react-aria-components";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 
-import { forgotPasswordAction } from "@/app/[locale]/auth/forgot-password/_actions/forgot-password-action";
+import { forgotPasswordAction } from "@/app/(app)/[locale]/(auth)/auth/forgot-password/_actions/forgot-password-action";
 import { Form } from "@/components/form";
 import { FormErrorMessage } from "@/components/form-error-message";
 import { FormSuccessMessage } from "@/components/form-success-message";
@@ -21,16 +21,16 @@ interface ForgotPasswordFormContentProps {
 export function ForgotPasswordFormContent(props: ForgotPasswordFormContentProps): ReactNode {
 	const { emailLabel, submitLabel } = props;
 
-	const [state, action] = useFormState(forgotPasswordAction, createInitialActionState({}));
+	const [state, action] = useActionState(forgotPasswordAction, createInitialActionState({}));
 
 	return (
 		<Form action={action} className="grid gap-y-8" validationErrors={getFieldErrors(state)}>
 			<FormErrorMessage
-				className="min-h-12 border border-stroke-error-weak bg-fill-error-weak px-4 py-2.5 text-small font-strong text-text-error"
+				className="min-h-12 border border-stroke-error-weak bg-fill-error-weak px-4 py-2.5 text-small font-strong text-text-error rounded-2"
 				state={state}
 			/>
 			<FormSuccessMessage
-				className="min-h-12 border border-stroke-success-weak bg-fill-success-weak px-4 py-2.5 text-small font-strong text-text-success"
+				className="min-h-12 border border-stroke-success-weak bg-fill-success-weak px-4 py-2.5 text-small font-strong text-text-success rounded-2"
 				state={state}
 			/>
 

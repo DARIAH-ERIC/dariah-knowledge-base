@@ -28,7 +28,7 @@ export async function verifyPasswordReset2FAWithTOTPAction(
 	const t = await getTranslations("verifyPasswordReset2FAWithTOTPAction");
 	const e = await getTranslations("errors");
 
-	if (!globalPOSTRateLimit()) {
+	if (!(await globalPOSTRateLimit())) {
 		return createErrorActionState({ message: e("too-many-requests") });
 	}
 

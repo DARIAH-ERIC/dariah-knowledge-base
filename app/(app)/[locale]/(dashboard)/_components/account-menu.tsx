@@ -1,8 +1,7 @@
-"use client";
-
+import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
-import { Button, Menu, MenuItem, MenuTrigger, Popover } from "react-aria-components";
 
+import { AccountMenuContent } from "@/app/(app)/[locale]/(dashboard)/_components/account-menu-content";
 import type { User } from "@/lib/server/auth/users";
 
 interface AccountMenuProps {
@@ -12,14 +11,9 @@ interface AccountMenuProps {
 export function AccountMenu(props: AccountMenuProps): ReactNode {
 	const { user } = props;
 
+	const t = useTranslations("AccountMenu");
+
 	return (
-		<MenuTrigger>
-			<Button>Stefan Probst</Button>
-			<Popover>
-				<Menu>
-					<MenuItem>Sign out</MenuItem>
-				</Menu>
-			</Popover>
-		</MenuTrigger>
+		<AccountMenuContent settingsLabel={t("settings")} signOutLabel={t("sign-out")} user={user} />
 	);
 }

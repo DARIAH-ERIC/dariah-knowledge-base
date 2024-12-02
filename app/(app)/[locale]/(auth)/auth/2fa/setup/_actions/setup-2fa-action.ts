@@ -1,3 +1,4 @@
+// eslint-disable-next-line check-file/folder-naming-convention
 "use server";
 
 import { getFormDataValues } from "@acdh-oeaw/lib";
@@ -26,7 +27,7 @@ export async function setup2FAAction(_prev: ActionState, formData: FormData): Pr
 	const t = await getTranslations("setup2FAAction");
 	const e = await getTranslations("errors");
 
-	if (!globalPOSTRateLimit()) {
+	if (!(await globalPOSTRateLimit())) {
 		return createErrorActionState({ message: e("too-many-requests") });
 	}
 

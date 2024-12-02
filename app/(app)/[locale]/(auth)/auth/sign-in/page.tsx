@@ -2,7 +2,7 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
-import { SignInForm } from "@/app/[locale]/auth/sign-in/_components/sign-in-form";
+import { SignInForm } from "@/app/(app)/[locale]/(auth)/auth/sign-in/_components/sign-in-form";
 import { Link } from "@/components/link";
 import { MainContent } from "@/components/main-content";
 import { urls } from "@/config/auth.config";
@@ -12,9 +12,9 @@ import { globalGETRateLimit } from "@/lib/server/auth/requests";
 import { getCurrentSession } from "@/lib/server/auth/sessions";
 
 interface SignInPageProps {
-	params: {
+	params: Promise<{
 		locale: Locale;
-	};
+	}>;
 }
 
 export async function generateMetadata(
@@ -23,7 +23,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 
 	const t = await getTranslations({ locale, namespace: "SignInPage" });
 
@@ -37,14 +37,14 @@ export async function generateMetadata(
 export default async function SignInPage(props: Readonly<SignInPageProps>): Promise<ReactNode> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 
 	setRequestLocale(locale);
 
 	const t = await getTranslations("SignInPage");
 	const e = await getTranslations("errors");
 
-	if (!globalGETRateLimit()) {
+	if (!(await globalGETRateLimit())) {
 		return e("too-many-requests");
 	}
 

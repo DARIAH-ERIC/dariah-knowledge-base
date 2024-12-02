@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
-import { EmailVerificationFormContent } from "@/app/[locale]/auth/verify-email/_components/email-verification-form-content";
+import { EmailVerificationFormContent } from "@/app/(app)/[locale]/(auth)/auth/verify-email/_components/email-verification-form-content";
 
 export function EmailVerificationForm(): ReactNode {
 	const t = useTranslations("EmailVerificationForm");

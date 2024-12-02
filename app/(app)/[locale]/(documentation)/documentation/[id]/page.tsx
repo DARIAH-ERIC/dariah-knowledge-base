@@ -3,31 +3,29 @@ import { setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { MainContent } from "@/components/main-content";
-import { env } from "@/config/env.config";
 import type { Locale } from "@/config/i18n.config";
 import { createCollectionResource } from "@/lib/keystatic/resources";
 
 interface DocumentationPageProps {
-	params: {
+	params: Promise<{
 		id: string;
 		locale: Locale;
-	};
+	}>;
 }
 
 export const dynamicParams = false;
 
 export async function generateStaticParams(props: {
-	params: Pick<DocumentationPageProps["params"], "locale">;
-}): Promise<Awaited<Array<Pick<DocumentationPageProps["params"], "id">>>> {
+	params: Promise<Pick<Awaited<DocumentationPageProps["params"]>, "locale">>;
+}): Promise<Array<Pick<Awaited<DocumentationPageProps["params"]>, "id">>> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 
 	const ids = await createCollectionResource("documentation", locale).list();
 
 	return ids.map((id) => {
-		/** @see https://github.com/vercel/next.js/issues/63002 */
-		return { id: env.NODE_ENV === "production" ? id : encodeURIComponent(id) };
+		return { id };
 	});
 }
 
@@ -37,8 +35,8 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
-	const id = decodeURIComponent(params.id);
+	const { id: _id, locale } = await params;
+	const id = decodeURIComponent(_id);
 
 	const entry = await createCollectionResource("documentation", locale).read(id);
 	const { title } = entry.data;
@@ -55,8 +53,8 @@ export default async function DocumentationPage(
 ): Promise<ReactNode> {
 	const { params } = props;
 
-	const { locale } = params;
-	const id = decodeURIComponent(params.id);
+	const { id: _id, locale } = await params;
+	const id = decodeURIComponent(_id);
 
 	setRequestLocale(locale);
 

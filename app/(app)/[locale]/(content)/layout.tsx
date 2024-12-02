@@ -1,9 +1,9 @@
 import { setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
-import { AppFooter } from "@/app/[locale]/_components/app-footer";
-import { AppHeader } from "@/app/[locale]/_components/app-header";
-import { AppLayout } from "@/app/[locale]/_components/app-layout";
+import { AppFooter } from "@/app/(app)/[locale]/_components/app-footer";
+import { AppHeader } from "@/app/(app)/[locale]/_components/app-header";
+import { AppLayout } from "@/app/(app)/[locale]/_components/app-layout";
 import type { Locale } from "@/config/i18n.config";
 
 interface ContentLayoutProps {

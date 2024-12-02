@@ -34,7 +34,7 @@ export async function verifyEmailAction(
 	const t = await getTranslations("verifyEmailAction");
 	const e = await getTranslations("errors");
 
-	if (!globalPOSTRateLimit()) {
+	if (!(await globalPOSTRateLimit())) {
 		return createErrorActionState({ message: e("too-many-requests") });
 	}
 

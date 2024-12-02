@@ -12,9 +12,9 @@ import { getCurrentSession } from "@/lib/server/auth/sessions";
 import { getUserRecoverCode } from "@/lib/server/auth/users";
 
 interface RecoveryCodePageProps {
-	params: {
+	params: Promise<{
 		locale: Locale;
-	};
+	}>;
 }
 
 export async function generateMetadata(
@@ -23,7 +23,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 
 	const t = await getTranslations({ locale, namespace: "RecoveryCodePage" });
 
@@ -39,14 +39,14 @@ export default async function RecoveryCodePage(
 ): Promise<ReactNode> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 
 	setRequestLocale(locale);
 
 	const t = await getTranslations("RecoveryCodePage");
 	const e = await getTranslations("errors");
 
-	if (!globalGETRateLimit()) {
+	if (!(await globalGETRateLimit())) {
 		return e("too-many-requests");
 	}
 

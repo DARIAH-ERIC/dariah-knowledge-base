@@ -4,16 +4,16 @@ import { emailVerificationRequestCookieName } from "@/config/auth.config";
 import { env } from "@/config/env.config";
 import type { EmailVerificationRequest } from "@/lib/server/auth/email-verification-requests";
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export async function getEmailVerificationRequestId(): Promise<string | null> {
-	return cookies().get(emailVerificationRequestCookieName)?.value ?? null;
+	const cookieStore = await cookies();
+	return cookieStore.get(emailVerificationRequestCookieName)?.value ?? null;
 }
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export async function setEmailVerificationRequestCookie(
 	request: EmailVerificationRequest,
 ): Promise<void> {
-	cookies().set(emailVerificationRequestCookieName, request.id, {
+	const cookieStore = await cookies();
+	cookieStore.set(emailVerificationRequestCookieName, request.id, {
 		httpOnly: true,
 		sameSite: "lax",
 		secure: env.NODE_ENV === "production",
@@ -22,9 +22,9 @@ export async function setEmailVerificationRequestCookie(
 	});
 }
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export async function deleteEmailVerificationRequestCookie(): Promise<void> {
-	cookies().set(emailVerificationRequestCookieName, "", {
+	const cookieStore = await cookies();
+	cookieStore.set(emailVerificationRequestCookieName, "", {
 		httpOnly: true,
 		sameSite: "lax",
 		secure: env.NODE_ENV === "production",

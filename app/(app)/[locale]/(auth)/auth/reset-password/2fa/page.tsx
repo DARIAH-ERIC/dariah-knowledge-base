@@ -3,8 +3,8 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
-import { PasswordResetRecoveryCodeForm } from "@/app/[locale]/auth/reset-password/2fa/_components/password-reset-recovery-code-form";
-import { PasswordResetTOTPForm } from "@/app/[locale]/auth/reset-password/2fa/_components/password-reset-totp-form";
+import { PasswordResetRecoveryCodeForm } from "@/app/(app)/[locale]/(auth)/auth/reset-password/2fa/_components/password-reset-recovery-code-form";
+import { PasswordResetTOTPForm } from "@/app/(app)/[locale]/(auth)/auth/reset-password/2fa/_components/password-reset-totp-form";
 import { MainContent } from "@/components/main-content";
 import { urls } from "@/config/auth.config";
 import type { Locale } from "@/config/i18n.config";
@@ -13,9 +13,9 @@ import { validatePasswordResetSessionRequest } from "@/lib/server/auth/password-
 import { globalGETRateLimit } from "@/lib/server/auth/requests";
 
 interface PasswordResetTwoFactorPageProps {
-	params: {
+	params: Promise<{
 		locale: Locale;
-	};
+	}>;
 }
 
 export async function generateMetadata(
@@ -24,7 +24,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 
 	const t = await getTranslations({ locale, namespace: "PasswordResetTwoFactorPage" });
 
@@ -40,14 +40,14 @@ export default async function PasswordResetTwoFactorPage(
 ): Promise<ReactNode> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 
 	setRequestLocale(locale);
 
 	const t = await getTranslations("PasswordResetTwoFactorPage");
 	const e = await getTranslations("errors");
 
-	if (!globalGETRateLimit()) {
+	if (!(await globalGETRateLimit())) {
 		return e("too-many-requests");
 	}
 

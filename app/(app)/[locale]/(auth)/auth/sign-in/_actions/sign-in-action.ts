@@ -28,7 +28,7 @@ export async function signInAction(_prev: ActionState, formData: FormData): Prom
 	const t = await getTranslations("signInAction");
 	const e = await getTranslations("errors");
 
-	if (!globalPOSTRateLimit()) {
+	if (!(await globalPOSTRateLimit())) {
 		return createErrorActionState({ message: e("too-many-requests") });
 	}
 
@@ -38,7 +38,7 @@ export async function signInAction(_prev: ActionState, formData: FormData): Prom
 	 * In acdh-ch infrastructure, `x-forwarded-for` actually holds the ip of the nginx ingress.
 	 * Ask a sysadmin to enable "proxy-protocol" in haproxy to receive actual ip addresses.
 	 */
-	const clientIP = headers().get("X-Forwarded-For");
+	const clientIP = (await headers()).get("X-Forwarded-For");
 	if (clientIP != null && !ipBucket.check(clientIP, 1)) {
 		return createErrorActionState({ message: e("too-many-requests") });
 	}

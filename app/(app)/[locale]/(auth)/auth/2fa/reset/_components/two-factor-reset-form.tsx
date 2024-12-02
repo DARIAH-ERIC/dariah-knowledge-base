@@ -2,7 +2,7 @@
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
-import { TwoFactorResetFormContent } from "@/app/[locale]/auth/2fa/reset/_components/two-factor-reset-form-content";
+import { TwoFactorResetFormContent } from "@/app/(app)/[locale]/(auth)/auth/2fa/reset/_components/two-factor-reset-form-content";
 
 export function TwoFactorResetForm(): ReactNode {
 	const t = useTranslations("TwoFactorResetForm");

@@ -2,7 +2,7 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
-import { ResetPasswordForm } from "@/app/[locale]/auth/reset-password/_components/reset-password-form";
+import { ResetPasswordForm } from "@/app/(app)/[locale]/(auth)/auth/reset-password/_components/reset-password-form";
 import { MainContent } from "@/components/main-content";
 import { urls } from "@/config/auth.config";
 import type { Locale } from "@/config/i18n.config";
@@ -11,9 +11,9 @@ import { validatePasswordResetSessionRequest } from "@/lib/server/auth/password-
 import { globalGETRateLimit } from "@/lib/server/auth/requests";
 
 interface ResetPasswordPageProps {
-	params: {
+	params: Promise<{
 		locale: Locale;
-	};
+	}>;
 }
 
 export async function generateMetadata(
@@ -22,7 +22,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 
 	const t = await getTranslations({ locale, namespace: "ResetPasswordPage" });
 
@@ -38,14 +38,14 @@ export default async function ResetPasswordPage(
 ): Promise<ReactNode> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 
 	setRequestLocale(locale);
 
 	const t = await getTranslations("ResetPasswordPage");
 	const e = await getTranslations("errors");
 
-	if (!globalGETRateLimit()) {
+	if (!(await globalGETRateLimit())) {
 		return e("too-many-requests");
 	}
 

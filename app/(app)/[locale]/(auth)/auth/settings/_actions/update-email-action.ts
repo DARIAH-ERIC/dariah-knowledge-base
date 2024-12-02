@@ -29,7 +29,7 @@ export async function updateEmailAction(
 	const t = await getTranslations("updateEmailAction");
 	const e = await getTranslations("errors");
 
-	if (!globalPOSTRateLimit()) {
+	if (!(await globalPOSTRateLimit())) {
 		return createErrorActionState({ message: e("too-many-requests") });
 	}
 

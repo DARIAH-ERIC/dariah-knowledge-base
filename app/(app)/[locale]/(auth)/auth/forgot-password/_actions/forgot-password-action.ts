@@ -34,7 +34,7 @@ export async function forgotPasswordAction(
 	const t = await getTranslations("forgotPasswordAction");
 	const e = await getTranslations("errors");
 
-	if (!globalPOSTRateLimit()) {
+	if (!(await globalPOSTRateLimit())) {
 		return createErrorActionState({ message: e("too-many-requests") });
 	}
 
@@ -44,7 +44,7 @@ export async function forgotPasswordAction(
 	 * In acdh-ch infrastructure, `x-forwarded-for` actually holds the ip of the nginx ingress.
 	 * Ask a sysadmin to enable "proxy-protocol" in haproxy to receive actual ip addresses.
 	 */
-	const clientIP = headers().get("X-Forwarded-For");
+	const clientIP = (await headers()).get("X-Forwarded-For");
 	if (clientIP != null && !passwordResetEmailIPBucket.check(clientIP, 1)) {
 		return createErrorActionState({ message: e("too-many-requests") });
 	}

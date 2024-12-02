@@ -2,7 +2,7 @@
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
-import { TwoFactorSetUpFormContent } from "@/app/[locale]/auth/2fa/setup/_components/two-factor-set-up-form-content";
+import { TwoFactorSetUpFormContent } from "@/app/(app)/[locale]/(auth)/auth/2fa/setup/_components/two-factor-set-up-form-content";
 
 interface TwoFactorSetUpFormProps {
 	encodedTOTPKey: string;

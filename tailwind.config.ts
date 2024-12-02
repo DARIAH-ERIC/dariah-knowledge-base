@@ -162,6 +162,7 @@ const config = {
 				"12": "var(--spacing-48)",
 				"14": "var(--spacing-56)",
 				"16": "var(--spacing-64)",
+				"18": "var(--spacing-72)",
 				"20": "var(--spacing-80)",
 				"24": "var(--spacing-96)",
 				"32": "var(--spacing-128)",

@@ -41,7 +41,7 @@ export async function updatePasswordAction(
 	const t = await getTranslations("updatePasswordAction");
 	const e = await getTranslations("errors");
 
-	if (!globalPOSTRateLimit()) {
+	if (!(await globalPOSTRateLimit())) {
 		return createErrorActionState({ message: e("too-many-requests") });
 	}
 

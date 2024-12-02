@@ -24,7 +24,7 @@ export const passwordResetCookieName = "password_reset_session";
 export const emailVerificationRequestCookieName = "email_verification";
 
 /** 2fa app name. */
-export const issuer = "ACDH-CH App";
+export const issuer = "DARIAH Knowledge Base";
 
 export const urls = {
 	"2fa": "/auth/2fa",

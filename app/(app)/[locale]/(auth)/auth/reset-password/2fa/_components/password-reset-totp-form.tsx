@@ -2,7 +2,7 @@
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
-import { PasswordResetTOTPFormContent } from "@/app/[locale]/auth/reset-password/2fa/_components/password-reset-totp-form-content";
+import { PasswordResetTOTPFormContent } from "@/app/(app)/[locale]/(auth)/auth/reset-password/2fa/_components/password-reset-totp-form-content";
 
 export function PasswordResetTOTPForm(): ReactNode {
 	const t = useTranslations("PasswordResetTOTPForm");

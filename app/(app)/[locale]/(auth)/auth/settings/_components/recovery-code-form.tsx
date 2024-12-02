@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
-import { RecoveryCodeFormContent } from "@/app/[locale]/auth/settings/_components/recovery-code-form-content";
+import { RecoveryCodeFormContent } from "@/app/(app)/[locale]/(auth)/auth/settings/_components/recovery-code-form-content";
 
 interface RecoveryCodeFormProps {
 	recoveryCode: string;

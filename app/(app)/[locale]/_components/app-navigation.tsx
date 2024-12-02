@@ -61,7 +61,7 @@ export function AppNavigation(props: AppNavigationProps): ReactNode {
 				)}
 				href={navigation.home.href}
 			>
-				<Logo className="h-8 w-auto text-text-strong" />
+				<Logo className="h-8 w-auto text-text-brand" />
 				<span className="sr-only">{navigation.home.label}</span>
 			</NavLink>
 

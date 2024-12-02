@@ -2,7 +2,7 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
-import { PasswordResetEmailVerificationForm } from "@/app/[locale]/auth/reset-password/verify-email/_components/password-reset-email-verification-form";
+import { PasswordResetEmailVerificationForm } from "@/app/(app)/[locale]/(auth)/auth/reset-password/verify-email/_components/password-reset-email-verification-form";
 import { MainContent } from "@/components/main-content";
 import { urls } from "@/config/auth.config";
 import type { Locale } from "@/config/i18n.config";
@@ -11,9 +11,9 @@ import { validatePasswordResetSessionRequest } from "@/lib/server/auth/password-
 import { globalGETRateLimit } from "@/lib/server/auth/requests";
 
 interface PasswordResetVerifyEmailPageProps {
-	params: {
+	params: Promise<{
 		locale: Locale;
-	};
+	}>;
 }
 
 export async function generateMetadata(
@@ -22,7 +22,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 
 	const t = await getTranslations({ locale, namespace: "PasswordResetVerifyEmailPage" });
 
@@ -38,14 +38,14 @@ export default async function PasswordResetVerifyEmailPage(
 ): Promise<ReactNode> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 
 	setRequestLocale(locale);
 
 	const t = await getTranslations("PasswordResetVerifyEmailPage");
 	const e = await getTranslations("errors");
 
-	if (!globalGETRateLimit()) {
+	if (!(await globalGETRateLimit())) {
 		return e("too-many-requests");
 	}
 

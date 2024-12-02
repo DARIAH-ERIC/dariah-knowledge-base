@@ -2,9 +2,9 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
-import { RecoveryCodeForm } from "@/app/[locale]/auth/settings/_components/recovery-code-form";
-import { UpdateEmailForm } from "@/app/[locale]/auth/settings/_components/update-email-form";
-import { UpdatePasswordForm } from "@/app/[locale]/auth/settings/_components/update-password-form";
+import { RecoveryCodeForm } from "@/app/(app)/[locale]/(auth)/auth/settings/_components/recovery-code-form";
+import { UpdateEmailForm } from "@/app/(app)/[locale]/(auth)/auth/settings/_components/update-email-form";
+import { UpdatePasswordForm } from "@/app/(app)/[locale]/(auth)/auth/settings/_components/update-password-form";
 import { Link } from "@/components/link";
 import { MainContent } from "@/components/main-content";
 import { urls } from "@/config/auth.config";
@@ -15,9 +15,9 @@ import { getCurrentSession } from "@/lib/server/auth/sessions";
 import { getUserRecoverCode } from "@/lib/server/auth/users";
 
 interface SettingsPageProps {
-	params: {
+	params: Promise<{
 		locale: Locale;
-	};
+	}>;
 }
 
 export async function generateMetadata(
@@ -26,7 +26,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 
 	const t = await getTranslations({ locale, namespace: "SettingsPage" });
 
@@ -40,14 +40,14 @@ export async function generateMetadata(
 export default async function SettingsPage(props: Readonly<SettingsPageProps>): Promise<ReactNode> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 
 	setRequestLocale(locale);
 
 	const t = await getTranslations("SettingsPage");
 	const e = await getTranslations("errors");
 
-	if (!globalGETRateLimit()) {
+	if (!(await globalGETRateLimit())) {
 		return e("too-many-requests");
 	}
 
