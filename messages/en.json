@@ -37,6 +37,7 @@
 	},
 	"signUpAction": {
 		"email-in-use": "Email is already used.",
+		"sign-up-disabled": "Sign up is disabled.",
 		"weak-password": "Weak password."
 	},
 	"updateEmailAction": {

@@ -12,6 +12,7 @@ import {
 	usernameMaxLength,
 	usernameMinLength,
 } from "@/config/auth.config";
+import { env } from "@/config/env.config";
 import { redirect } from "@/lib/i18n/navigation";
 import { type ActionState, createErrorActionState } from "@/lib/server/actions";
 import { setEmailVerificationRequestCookie } from "@/lib/server/auth/email-verification-cookies";
@@ -48,6 +49,10 @@ export async function signUpAction(_prev: ActionState, formData: FormData): Prom
 	const locale = await getLocale();
 	const t = await getTranslations("signUpAction");
 	const e = await getTranslations("errors");
+
+	if (env.AUTH_SIGN_UP !== "enabled") {
+		return createErrorActionState({ message: t("sign-up-disabled") });
+	}
 
 	if (!(await globalPOSTRateLimit())) {
 		return createErrorActionState({ message: e("too-many-requests") });

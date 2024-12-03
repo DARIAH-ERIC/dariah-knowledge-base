@@ -14,6 +14,7 @@ export const env = createEnv({
 	},
 	private(input) {
 		const Schema = v.object({
+			AUTH_SIGN_UP: v.optional(v.picklist(["disabled", "enabled"]), "enabled"),
 			BUILD_MODE: v.optional(v.picklist(["export", "standalone"])),
 			BUNDLE_ANALYZER: v.optional(v.picklist(["disabled", "enabled"]), "disabled"),
 			CI: v.optional(v.pipe(v.unknown(), v.transform(Boolean), v.boolean())),
@@ -74,6 +75,7 @@ export const env = createEnv({
 		return v.parse(Schema, input);
 	},
 	environment: {
+		AUTH_SIGN_UP: process.env.AUTH_SIGN_UP,
 		BUILD_MODE: process.env.BUILD_MODE,
 		BUNDLE_ANALYZER: process.env.BUNDLE_ANALYZER,
 		CI: process.env.CI,
