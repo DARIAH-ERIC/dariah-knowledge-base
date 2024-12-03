@@ -1,21 +1,24 @@
-import { cn } from "@acdh-oeaw/style-variants";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 
+import { AccountMenu } from "@/app/(app)/[locale]/_components/account-menu";
 import {
 	AppNavigation,
 	AppNavigationMobile,
 	type NavigationItem,
 } from "@/app/(app)/[locale]/_components/app-navigation";
+import { AuthButtonGroup } from "@/app/(app)/[locale]/_components/auth-button-group";
 import { ColorSchemeSwitcher } from "@/app/(app)/[locale]/_components/color-scheme-switcher";
-import { NavLink } from "@/components/nav-link";
 // import { LocaleSwitcher } from "@/app/(app)/[locale]/_components/locale-switcher";
 import { createHref } from "@/lib/create-href";
+import { getCurrentSession } from "@/lib/server/auth/sessions";
 
-export function AppHeader(): ReactNode {
-	const t = useTranslations("AppHeader");
+export async function AppHeader(): Promise<ReactNode> {
+	const t = await getTranslations("AppHeader");
 
 	const label = t("navigation-primary");
+
+	const { user } = await getCurrentSession();
 
 	const navigation = {
 		home: {
@@ -48,27 +51,11 @@ export function AppHeader(): ReactNode {
 				/>
 
 				<div className="flex items-center gap-x-6">
-					<AuthButtonGroup />
 					<ColorSchemeSwitcher />
 					{/* <LocaleSwitcher /> */}
+					{user != null ? <AccountMenu user={user} /> : <AuthButtonGroup />}
 				</div>
 			</div>
 		</header>
-	);
-}
-
-function AuthButtonGroup(): ReactNode {
-	return (
-		<div className="flex items-center gap-x-2">
-			<NavLink
-				className={cn(
-					"inline-flex min-h-8 items-center rounded-2 border border-stroke-brand-strong px-3 py-1 text-tiny font-strong text-text-brand shadow-raised",
-					"interactive focus-visible:focus-outline hover:hover-overlay pressed:press-overlay",
-				)}
-				href={createHref({ pathname: "/auth/sign-in" })}
-			>
-				Sign in
-			</NavLink>
-		</div>
 	);
 }

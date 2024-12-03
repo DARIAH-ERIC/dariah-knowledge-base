@@ -4,15 +4,17 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
-import { AccountMenu } from "@/app/(app)/[locale]/(dashboard)/_components/account-menu";
-import { AuthButtonGroup } from "@/app/(app)/[locale]/(dashboard)/_components/auth-button-group";
+import { AccountMenu } from "@/app/(app)/[locale]/_components/account-menu";
 import { ReportsTable } from "@/app/(app)/[locale]/(dashboard)/_components/reports-table";
 import { Link } from "@/components/link";
 import { Logo } from "@/components/logo";
 import { MainContent } from "@/components/main-content";
 import { NavLink } from "@/components/nav-link";
+import { urls } from "@/config/auth.config";
 import type { Locale } from "@/config/i18n.config";
 import { createHref } from "@/lib/create-href";
+import { redirect } from "@/lib/i18n/navigation";
+import { globalGETRateLimit } from "@/lib/server/auth/requests";
 import { getCurrentSession } from "@/lib/server/auth/sessions";
 
 interface DashboardPageProps {
@@ -48,6 +50,26 @@ export default async function DashboardPage(
 	setRequestLocale(locale);
 
 	const t = await getTranslations("DashboardPage");
+	const e = await getTranslations("errors");
+
+	if (!(await globalGETRateLimit())) {
+		return e("too-many-requests");
+	}
+
+	const { session, user } = await getCurrentSession();
+
+	if (session == null) {
+		return redirect({ href: urls.signIn, locale });
+	}
+	if (!user.emailVerified) {
+		return redirect({ href: urls.verifyEmail, locale });
+	}
+	if (!user.registered2FA) {
+		return redirect({ href: urls["2faSetup"], locale });
+	}
+	if (!session.twoFactorVerified) {
+		return redirect({ href: urls["2fa"], locale });
+	}
 
 	const links = {
 		home: {
@@ -57,8 +79,6 @@ export default async function DashboardPage(
 			icon: HomeIcon,
 		},
 	};
-
-	const { user } = await getCurrentSession();
 
 	return (
 		<div className="grid min-h-full grid-cols-[20rem_1fr]">
@@ -112,7 +132,7 @@ export default async function DashboardPage(
 			<div>
 				<header className="border-b border-stroke-weak">
 					<div className="flex min-h-18 items-center justify-end px-8 py-3">
-						<nav>{user != null ? <AccountMenu user={user} /> : <AuthButtonGroup />}</nav>
+						<AccountMenu user={user} />
 					</div>
 				</header>
 
@@ -120,7 +140,7 @@ export default async function DashboardPage(
 					<header>
 						{/* <h1>{t("title")}</h1> */}
 						<h1 className="font-heading text-heading-1 font-strong text-text-strong">
-							Hi, {user?.username}
+							{t("hi", { name: user.username })}
 						</h1>
 					</header>
 

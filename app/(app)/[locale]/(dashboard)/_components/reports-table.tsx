@@ -25,12 +25,10 @@ const label = "Reports";
 
 export function ReportsTable(): ReactNode {
 	return (
-		<ResizableTableContainer className="relative w-full scroll-pt-[2.321rem] overflow-auto">
+		<ResizableTableContainer className="relative w-full overflow-auto">
 			<Table
 				aria-label={label}
-				className="border-separate border-spacing-0"
 				// onSortChange={setSortDescriptor}
-				selectionMode="none"
 				// sortDescriptor={sortDescriptor}
 			>
 				<TableHeader>

@@ -105,12 +105,14 @@ export default async function SettingsPage(props: Readonly<SettingsPageProps>): 
 							{t("update-2fa")}
 						</h2>
 
-						<Link
-							className="focus-visible:focus-outline inline-flex items-center gap-x-2 rounded-0.5 text-small text-text-brand underline hover:no-underline"
-							href={urls["2faSetup"]}
-						>
-							{t("update")}
-						</Link>
+						<div className="flex flex-wrap items-center gap-x-6">
+							<Link
+								className="focus-visible:focus-outline inline-flex items-center gap-x-2 rounded-0.5 text-small text-text-brand underline hover:no-underline"
+								href={urls["2faSetup"]}
+							>
+								{t("update")}
+							</Link>
+						</div>
 					</div>
 				</section>
 			) : null}

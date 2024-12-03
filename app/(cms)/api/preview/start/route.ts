@@ -25,5 +25,5 @@ export async function GET(_request: Request): Promise<Response> {
 	toUrl.protocol = url.protocol;
 	toUrl.host = url.host;
 
-	redirect(String(toUrl));
+	return redirect(String(toUrl));
 }

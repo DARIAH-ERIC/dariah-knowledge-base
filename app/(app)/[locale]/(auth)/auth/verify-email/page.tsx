@@ -81,6 +81,9 @@ export default async function VerifyEmailPage(
 
 			<section className="layout-subgrid content-max-w-text relative border-t border-stroke-weak py-16 xs:py-20">
 				<EmailVerificationForm />
+
+				<hr className="my-8" />
+
 				<ResendEmailVerificationCodeForm />
 
 				<hr className="my-8" />

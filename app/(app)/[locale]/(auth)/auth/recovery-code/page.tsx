@@ -86,12 +86,14 @@ export default async function RecoveryCodePage(
 
 					<p>{t("message")}</p>
 
-					<Link
-						className="focus-visible:focus-outline inline-flex items-center gap-x-2 rounded-0.5 text-small text-text-brand underline hover:no-underline"
-						href={urls.afterSignIn}
-					>
-						{t("next")}
-					</Link>
+					<div className="flex flex-wrap items-center gap-x-6">
+						<Link
+							className="focus-visible:focus-outline inline-flex items-center gap-x-2 rounded-0.5 text-small text-text-brand underline hover:no-underline"
+							href={urls.afterSignIn}
+						>
+							{t("next")}
+						</Link>
+					</div>
 				</div>
 			</section>
 		</MainContent>

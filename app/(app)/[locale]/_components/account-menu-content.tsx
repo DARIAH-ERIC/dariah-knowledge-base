@@ -5,6 +5,8 @@ import { ChevronDownIcon, LogOutIcon, SettingsIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { Button, Menu, MenuItem, MenuTrigger, Popover, Separator } from "react-aria-components";
 
+import { signOutAction } from "@/app/(app)/[locale]/_actions/sign-out-action";
+import { urls } from "@/config/auth.config";
 import type { User } from "@/lib/server/auth/users";
 
 interface AccountMenuContentProps {
@@ -60,6 +62,7 @@ export function AccountMenuContent(props: AccountMenuContentProps): ReactNode {
 								"flex cursor-pointer select-none items-center gap-x-3 px-4 py-3 text-small text-text-strong",
 								"interactive focus-visible:focus-outline focus-visible:-focus-outline-offset-2 hover:hover-overlay pressed:press-overlay",
 							)}
+							href={urls.settings}
 							textValue={settingsLabel}
 						>
 							<SettingsIcon aria-hidden={true} className="size-6 shrink-0 text-icon-neutral" />
@@ -71,6 +74,8 @@ export function AccountMenuContent(props: AccountMenuContentProps): ReactNode {
 								"flex cursor-pointer select-none items-center gap-x-3 px-4 py-3 text-small text-text-strong",
 								"interactive focus-visible:focus-outline focus-visible:-focus-outline-offset-2 hover:hover-overlay pressed:press-overlay",
 							)}
+							// eslint-disable-next-line @typescript-eslint/no-misused-promises
+							onAction={signOutAction}
 							textValue={signOutLabel}
 						>
 							<LogOutIcon aria-hidden={true} className="size-6 shrink-0 text-icon-neutral" />

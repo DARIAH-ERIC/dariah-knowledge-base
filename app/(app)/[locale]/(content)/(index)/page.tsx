@@ -1,11 +1,14 @@
+import { cn } from "@acdh-oeaw/style-variants";
 import type { Metadata, ResolvingMetadata } from "next";
 import { useTranslations } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
+import { Link } from "@/components/link";
 import { Logo } from "@/components/logo";
 import { MainContent } from "@/components/main-content";
 import type { Locale } from "@/config/i18n.config";
+import { createHref } from "@/lib/create-href";
 
 interface IndexPageProps {
 	params: Promise<{
@@ -61,6 +64,26 @@ function HeroSection(): ReactNode {
 					{t("title")}
 				</h1>
 				<p className="font-heading text-small text-text-weak xs:text-heading-4">{t("lead-in")}</p>
+				<div className="flex items-center gap-x-4">
+					<Link
+						className={cn(
+							"inline-flex min-h-12 items-center rounded-2 border border-stroke-brand-strong bg-fill-brand-strong px-6 py-2.5 font-strong text-text-inverse-strong shadow-raised",
+							"interactive focus-visible:focus-outline hover:hover-overlay pressed:press-overlay",
+						)}
+						href={createHref({ pathname: "/dashboard" })}
+					>
+						{t("links.dashboard")}
+					</Link>
+					<Link
+						className={cn(
+							"inline-flex min-h-12 items-center rounded-2 border border-stroke-brand-strong px-6 py-2.5 font-strong text-text-brand shadow-raised",
+							"interactive focus-visible:focus-outline hover:hover-overlay pressed:press-overlay",
+						)}
+						href={createHref({ pathname: "/documentation" })}
+					>
+						{t("links.documentation")}
+					</Link>
+				</div>
 			</div>
 		</section>
 	);

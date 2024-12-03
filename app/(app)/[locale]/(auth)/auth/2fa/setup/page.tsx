@@ -85,9 +85,11 @@ export default async function TwoFactorSetupPage(
 			</section>
 
 			<section className="layout-subgrid content-max-w-text relative border-t border-stroke-weak py-16 xs:py-20">
-				<div dangerouslySetInnerHTML={{ __html: qrcode }} className="size-48" />
+				<div className="max-w-text grid gap-y-8">
+					<div dangerouslySetInnerHTML={{ __html: qrcode }} className="size-48" />
 
-				<TwoFactorSetUpForm encodedTOTPKey={encodedTOTPKey} />
+					<TwoFactorSetUpForm encodedTOTPKey={encodedTOTPKey} />
+				</div>
 			</section>
 		</MainContent>
 	);

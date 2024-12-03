@@ -123,6 +123,7 @@
 		"title": "Contact"
 	},
 	"DashboardPage": {
+		"hi": "Hi, {name}",
 		"links": {
 			"overview": "Overview"
 		},
@@ -159,6 +160,10 @@
 	"IndexPage": {
 		"badge": "DARIAH Knowledge Base",
 		"lead-in": "Welcome to the DARIAH Knowledge App! This portal is designed to collect valuable data about the DARIAH-EU infrastructure. Some of the data collected here are published on the DARIAH-EU website, some others are necessary for the  evaluation and measurement of DARIAH-EU and its national consortia.\n\nIf  you are a National Coordinator, part of a National Consortium staff, or if you are a DARIAH Working Group chair, please login.",
+		"links": {
+			"dashboard": "Dashboard",
+			"documentation": "Documentation"
+		},
 		"title": "DARIAH Knowledge Base"
 	},
 	"Loading": {
