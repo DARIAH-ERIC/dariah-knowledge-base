@@ -13,7 +13,16 @@ const db = drizzle(client, {
 });
 
 async function main() {
-	for (const table of [schema.emailVerificationRequestsTable, schema.usersTable]) {
+	for (const table of [
+		schema.webHooksTable,
+		schema.appEventsTable,
+		schema.passwordResetSessionsTable,
+		schema.emailVerificationRequestsTable,
+		schema.sessionsTable,
+		schema.usersTable,
+		schema.institutionsTable,
+		schema.countriesTable,
+	]) {
 		// eslint-disable-next-line drizzle/enforce-delete-with-where
 		await db.delete(table);
 	}

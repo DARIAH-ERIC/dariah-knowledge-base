@@ -24,6 +24,7 @@ export default async function ContentLayout(
 
 	return (
 		<AppLayout>
+			{/* @ts-expect-error @see https://github.com/vercel/next.js/discussions/67365 */}
 			<AppHeader />
 			{children}
 			<AppFooter />

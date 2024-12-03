@@ -1,7 +1,9 @@
-import { boolean, index, pgEnum, pgTable, text } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
+import { boolean, index, pgEnum, pgTable, text, uuid } from "drizzle-orm/pg-core";
 
 import { bytea } from "@/db/data-types";
 import { id, timestamps } from "@/db/fields";
+import { countriesTable } from "@/db/schema/countries";
 
 export const userRoleEnum = pgEnum("user_role", ["admin", "user"]);
 
@@ -17,12 +19,27 @@ export const usersTable = pgTable(
 		emailVerified: boolean().notNull().default(false),
 		totpKey: bytea(),
 		recoveryCode: bytea().notNull(),
+		countryId: uuid().references(
+			() => {
+				return countriesTable.id;
+			},
+			{ onDelete: "set null" },
+		),
 		...timestamps,
 	},
 	(table) => {
 		return [index("email_index").on(table.email)];
 	},
 );
+
+export const userRelations = relations(usersTable, ({ one }) => {
+	return {
+		country: one(countriesTable, {
+			fields: [usersTable.countryId],
+			references: [countriesTable.id],
+		}),
+	};
+});
 
 export type DbUser = typeof usersTable.$inferSelect;
 export type DbUserInput = typeof usersTable.$inferInsert;

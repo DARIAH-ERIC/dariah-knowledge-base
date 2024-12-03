@@ -3,45 +3,45 @@ import { pgTable, primaryKey, text, uuid } from "drizzle-orm/pg-core";
 
 import { id, timestamps } from "@/db/fields";
 
-export const appEvents = pgTable("app-events", {
+export const appEventsTable = pgTable("app-events", {
 	id,
 	name: text().notNull(),
 	...timestamps,
 });
 
-export const appEventRelations = relations(appEvents, ({ many }) => {
+export const appEventRelations = relations(appEventsTable, ({ many }) => {
 	return {
-		webHooks: many(webHooksToAppEvents),
+		webHooks: many(webHooksToAppEventsTable),
 	};
 });
 
-export type DbAppEvent = typeof appEvents.$inferSelect;
-export type DbAppEventInput = typeof appEvents.$inferInsert;
+export type DbAppEvent = typeof appEventsTable.$inferSelect;
+export type DbAppEventInput = typeof appEventsTable.$inferInsert;
 
-export const webHooks = pgTable("web-hooks", {
+export const webHooksTable = pgTable("web-hooks", {
 	id,
 	url: text().notNull().unique(),
 	signKey: text().notNull(),
 	...timestamps,
 });
 
-export const webHookRelations = relations(webHooks, ({ many }) => {
+export const webHookRelations = relations(webHooksTable, ({ many }) => {
 	return {
-		appEvents: many(webHooksToAppEvents),
+		appEvents: many(webHooksToAppEventsTable),
 	};
 });
 
-export type DbWebHook = typeof webHooks.$inferSelect;
-export type DbWebHookInput = typeof webHooks.$inferInsert;
+export type DbWebHook = typeof webHooksTable.$inferSelect;
+export type DbWebHookInput = typeof webHooksTable.$inferInsert;
 
-export const webHooksToAppEvents = pgTable(
+export const webHooksToAppEventsTable = pgTable(
 	"web-hooks_app-events",
 	{
 		appEventId: uuid()
 			.notNull()
 			.references(
 				() => {
-					return appEvents.id;
+					return appEventsTable.id;
 				},
 				{ onDelete: "cascade" },
 			),
@@ -49,7 +49,7 @@ export const webHooksToAppEvents = pgTable(
 			.notNull()
 			.references(
 				() => {
-					return webHooks.id;
+					return webHooksTable.id;
 				},
 				{ onDelete: "cascade" },
 			),
@@ -59,18 +59,18 @@ export const webHooksToAppEvents = pgTable(
 	},
 );
 
-export const webHooksToAppEventsRelations = relations(webHooksToAppEvents, ({ one }) => {
+export const webHooksToAppEventsRelations = relations(webHooksToAppEventsTable, ({ one }) => {
 	return {
-		webHook: one(webHooks, {
-			fields: [webHooksToAppEvents.webHookId],
-			references: [webHooks.id],
+		webHook: one(webHooksTable, {
+			fields: [webHooksToAppEventsTable.webHookId],
+			references: [webHooksTable.id],
 		}),
-		appEvent: one(appEvents, {
-			fields: [webHooksToAppEvents.appEventId],
-			references: [appEvents.id],
+		appEvent: one(appEventsTable, {
+			fields: [webHooksToAppEventsTable.appEventId],
+			references: [appEventsTable.id],
 		}),
 	};
 });
 
-export type DbWebHookAppEventRelation = typeof webHooksToAppEvents.$inferSelect;
-export type DbWebHookAppEventRelationInput = typeof webHooksToAppEvents.$inferInsert;
+export type DbWebHookAppEventRelation = typeof webHooksToAppEventsTable.$inferSelect;
+export type DbWebHookAppEventRelationInput = typeof webHooksToAppEventsTable.$inferInsert;

@@ -1,4 +1,6 @@
+export * from "@/db/schema/countries";
 export * from "@/db/schema/email-verification-requests";
+export * from "@/db/schema/institutions";
 export * from "@/db/schema/password-reset-ssessions";
 export * from "@/db/schema/sessions";
 export * from "@/db/schema/users";

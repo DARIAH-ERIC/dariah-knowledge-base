@@ -36,6 +36,7 @@ export async function createUser(email: string, username: string, password: stri
 		role: row.role,
 		emailVerified: false,
 		registered2FA: false,
+		countryId: null,
 	};
 
 	return user;
@@ -148,6 +149,7 @@ export async function getUserFromEmail(email: string): Promise<User | null> {
 		username: row.username,
 		emailVerified: row.emailVerified,
 		registered2FA: row.totpKey != null,
+		countryId: null,
 	};
 
 	return user;

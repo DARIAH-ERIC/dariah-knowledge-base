@@ -46,6 +46,7 @@ export async function validateSessionToken(token: string): Promise<SessionValida
 		role: row.user.role,
 		emailVerified: row.user.emailVerified,
 		registered2FA: row.user.totpKey != null,
+		countryId: null,
 	};
 
 	if (Date.now() >= session.expiresAt.getTime()) {

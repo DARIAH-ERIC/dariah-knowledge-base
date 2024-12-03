@@ -1,6 +1,7 @@
 import { log, times } from "@acdh-oeaw/lib";
 import { faker } from "@faker-js/faker";
 import { drizzle } from "drizzle-orm/postgres-js";
+// import { seed } from "drizzle-seed";
 import postgres from "postgres";
 
 import { credentials } from "@/config/db.config";
@@ -17,10 +18,56 @@ const db = drizzle(client, {
 });
 
 async function main() {
-	for (const table of [schema.emailVerificationRequestsTable, schema.usersTable]) {
+	for (const table of [
+		schema.webHooksTable,
+		schema.appEventsTable,
+		schema.passwordResetSessionsTable,
+		schema.emailVerificationRequestsTable,
+		schema.sessionsTable,
+		schema.usersTable,
+		schema.institutionsTable,
+		schema.countriesTable,
+	]) {
 		// eslint-disable-next-line drizzle/enforce-delete-with-where
 		await db.delete(table);
 	}
+
+	/** Countries. */
+
+	const countries = times(10).map(() => {
+		const country: schema.DbCountryInput = {
+			code: faker.location.countryCode({ variant: "alpha-2" }),
+			name: faker.location.country(),
+			type: faker.helpers.arrayElement(["cooperating_partnership", "member_country", "other"]),
+		};
+
+		return country;
+	});
+
+	await db.insert(schema.countriesTable).values(countries);
+
+	/** Institutions. */
+
+	const institutions = times(10).map(() => {
+		const institution: schema.DbInstitutionInput = {
+			name: faker.company.name(),
+			types: faker.helpers.arrayElements([
+				"cooperating_partner",
+				"national_coordinating_institution",
+				"national_representative_institution",
+				"other",
+				"partner_institution",
+			]),
+			startDate: faker.date.between({ from: "2010-01-01", to: "2020-01-01" }),
+			endDate: faker.date.future({ refDate: "2020-01-01" }),
+			ror: faker.internet.url(),
+			url: [faker.internet.url()],
+		};
+
+		return institution;
+	});
+
+	await db.insert(schema.institutionsTable).values(institutions);
 
 	/** Users. */
 
@@ -39,9 +86,6 @@ async function main() {
 	});
 
 	await db.insert(schema.usersTable).values(users);
-
-	// eslint-disable-next-line no-console
-	console.table(users);
 }
 
 main()
