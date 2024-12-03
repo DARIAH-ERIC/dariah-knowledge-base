@@ -78,19 +78,23 @@ export default async function PasswordResetTwoFactorPage(
 			</section>
 
 			<section className="layout-subgrid content-max-w-text relative border-t border-stroke-weak py-16 xs:py-20">
-				<h2 className="text-balance font-heading text-heading-2 font-strong text-text-strong">
-					{t("enter-code")}
-				</h2>
+				<div className="max-w-text grid gap-y-8">
+					<h2 className="text-balance font-heading text-heading-2 font-strong text-text-strong">
+						{t("enter-code")}
+					</h2>
 
-				<PasswordResetTOTPForm />
+					<PasswordResetTOTPForm />
+				</div>
 			</section>
 
 			<section className="layout-subgrid content-max-w-text relative border-t border-stroke-weak py-16 xs:py-20">
-				<h2 className="text-balance font-heading text-heading-2 font-strong text-text-strong">
-					{t("use-recovery-code")}
-				</h2>
+				<div className="max-w-text grid gap-y-8">
+					<h2 className="text-balance font-heading text-heading-2 font-strong text-text-strong">
+						{t("use-recovery-code")}
+					</h2>
 
-				<PasswordResetRecoveryCodeForm />
+					<PasswordResetRecoveryCodeForm />
+				</div>
 			</section>
 		</MainContent>
 	);

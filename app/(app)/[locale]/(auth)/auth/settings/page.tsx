@@ -77,35 +77,53 @@ export default async function SettingsPage(props: Readonly<SettingsPageProps>): 
 			</section>
 
 			<section className="layout-subgrid content-max-w-text relative border-t border-stroke-weak py-16 xs:py-20">
-				<h2 className="text-balance font-heading text-heading-2 font-strong text-text-strong">
-					{t("update-email")}
-				</h2>
-				<p>{t("your-email", { email: user.email })}</p>
-				<UpdateEmailForm />
+				<div className="max-w-text grid gap-y-8">
+					<h2 className="text-balance font-heading text-heading-2 font-strong text-text-strong">
+						{t("update-email")}
+					</h2>
+
+					<p>{t("your-email", { email: user.email })}</p>
+
+					<UpdateEmailForm />
+				</div>
 			</section>
 
 			<section className="layout-subgrid content-max-w-text relative border-t border-stroke-weak py-16 xs:py-20">
-				<h2 className="text-balance font-heading text-heading-2 font-strong text-text-strong">
-					{t("update-password")}
-				</h2>
-				<UpdatePasswordForm />
+				<div className="max-w-text grid gap-y-8">
+					<h2 className="text-balance font-heading text-heading-2 font-strong text-text-strong">
+						{t("update-password")}
+					</h2>
+
+					<UpdatePasswordForm />
+				</div>
 			</section>
 
 			{user.registered2FA ? (
 				<section className="layout-subgrid content-max-w-text relative border-t border-stroke-weak py-16 xs:py-20">
-					<h2 className="text-balance font-heading text-heading-2 font-strong text-text-strong">
-						{t("update-2fa")}
-					</h2>
-					<Link href={urls["2faSetup"]}>{t("update")}</Link>
+					<div className="max-w-text grid gap-y-8">
+						<h2 className="text-balance font-heading text-heading-2 font-strong text-text-strong">
+							{t("update-2fa")}
+						</h2>
+
+						<Link
+							className="focus-visible:focus-outline inline-flex items-center gap-x-2 rounded-0.5 text-small text-text-brand underline hover:no-underline"
+							href={urls["2faSetup"]}
+						>
+							{t("update")}
+						</Link>
+					</div>
 				</section>
 			) : null}
 
 			{recoveryCode != null && (
 				<section className="layout-subgrid content-max-w-text relative border-t border-stroke-weak py-16 xs:py-20">
-					<h2 className="text-balance font-heading text-heading-2 font-strong text-text-strong">
-						{t("recovery-code")}
-					</h2>
-					<RecoveryCodeForm recoveryCode={recoveryCode} />
+					<div className="max-w-text grid gap-y-8">
+						<h2 className="text-balance font-heading text-heading-2 font-strong text-text-strong">
+							{t("recovery-code")}
+						</h2>
+
+						<RecoveryCodeForm recoveryCode={recoveryCode} />
+					</div>
 				</section>
 			)}
 		</MainContent>

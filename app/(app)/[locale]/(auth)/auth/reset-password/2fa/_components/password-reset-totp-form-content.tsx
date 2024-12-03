@@ -2,7 +2,7 @@
 "use client";
 
 import { cn } from "@acdh-oeaw/style-variants";
-import { type ReactNode , useActionState } from "react";
+import { type ReactNode, useActionState } from "react";
 import { FieldError, Input, Label, TextField } from "react-aria-components";
 
 import { verifyPasswordReset2faWithTOTPAction } from "@/app/(app)/[locale]/(auth)/auth/reset-password/2fa/_actions/verify-password-reset-2fa-with-totp-action";

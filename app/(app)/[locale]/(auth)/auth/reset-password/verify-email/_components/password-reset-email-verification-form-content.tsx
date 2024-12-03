@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@acdh-oeaw/style-variants";
-import { type ReactNode , useActionState } from "react";
+import { type ReactNode, useActionState } from "react";
 import { FieldError, Input, Label, TextField } from "react-aria-components";
 
 import { verifyPasswordResetEmailAction } from "@/app/(app)/[locale]/(auth)/auth/reset-password/verify-email/_actions/verify-password-reset-email-action";

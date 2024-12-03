@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@acdh-oeaw/style-variants";
-import { type ReactNode , useActionState } from "react";
+import { type ReactNode, useActionState } from "react";
 import { FieldError, Input, Label, TextField } from "react-aria-components";
 
 import { forgotPasswordAction } from "@/app/(app)/[locale]/(auth)/auth/forgot-password/_actions/forgot-password-action";

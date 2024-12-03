@@ -1,6 +1,7 @@
 "use client";
 
-import { type ReactNode , useActionState } from "react";
+import { cn } from "@acdh-oeaw/style-variants";
+import { type ReactNode, useActionState } from "react";
 
 import { regenerateRecoveryCodeAction } from "@/app/(app)/[locale]/(auth)/auth/settings/_actions/regenerate-recovery-code-action";
 import { Form } from "@/components/form";
@@ -46,7 +47,16 @@ export function RecoveryCodeFormContent(props: RecoveryCodeFormContentProps): Re
 				{yourCodeLabel} {newRecoveryCode ?? recoveryCode}
 			</p>
 
-			<SubmitButton>{generateNewCodeLabel}</SubmitButton>
+			<div>
+				<SubmitButton
+					className={cn(
+						"inline-flex min-h-12 items-center rounded-2 border border-stroke-brand-strong bg-fill-brand-strong px-5 py-2.5 text-small font-strong text-text-inverse-strong shadow-raised",
+						"interactive focus-visible:focus-outline hover:hover-overlay pressed:press-overlay",
+					)}
+				>
+					{generateNewCodeLabel}
+				</SubmitButton>
+			</div>
 		</Form>
 	);
 }

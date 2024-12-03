@@ -2,7 +2,7 @@
 "use client";
 
 import { cn } from "@acdh-oeaw/style-variants";
-import { type ReactNode , useActionState } from "react";
+import { type ReactNode, useActionState } from "react";
 import { FieldError, Input, Label, TextField } from "react-aria-components";
 
 import { setup2faAction } from "@/app/(app)/[locale]/(auth)/auth/2fa/setup/_actions/setup-2fa-action";
