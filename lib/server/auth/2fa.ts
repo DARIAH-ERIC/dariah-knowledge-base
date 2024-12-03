@@ -1,3 +1,4 @@
+// eslint-disable-next-line check-file/filename-naming-convention
 import { and, eq } from "drizzle-orm";
 
 import { db } from "@/db";

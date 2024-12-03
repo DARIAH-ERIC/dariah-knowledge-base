@@ -28,6 +28,7 @@ export function LocaleSwitcher(): ReactNode {
 
 				const separator = index !== 0 ? <span className="cursor-default">|</span> : null;
 
+				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 				if (locale === currentLocale) {
 					return (
 						<Fragment key={locale}>
@@ -44,7 +45,7 @@ export function LocaleSwitcher(): ReactNode {
 				const children = (
 					<Fragment>
 						<span className="sr-only">{t("switch-locale-to", { locale: label })}</span>
-						<span aria-hidden={true}>{locale.toUpperCase()}</span>
+						<span aria-hidden={true}>{(locale as Locale).toUpperCase()}</span>
 					</Fragment>
 				);
 

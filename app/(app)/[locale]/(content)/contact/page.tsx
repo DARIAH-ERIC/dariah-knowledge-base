@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { ContactForm } from "@/app/(app)/[locale]/(content)/contact/_components/contact-form";
 import { MainContent } from "@/components/main-content";
 import type { Locale } from "@/config/i18n.config";
+import { globalGETRateLimit } from "@/lib/server/auth/requests";
 
 interface ContactPageProps {
 	params: Promise<{
@@ -37,6 +38,11 @@ export default async function ContactPage(props: Readonly<ContactPageProps>): Pr
 	setRequestLocale(locale);
 
 	const t = await getTranslations("ContactPage");
+	const e = await getTranslations("errors");
+
+	if (!(await globalGETRateLimit())) {
+		return e("too-many-requests");
+	}
 
 	return (
 		<MainContent className="layout-grid content-start">

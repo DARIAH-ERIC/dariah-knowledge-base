@@ -2,9 +2,8 @@
 "use client";
 
 import { cn } from "@acdh-oeaw/style-variants";
-import type { ReactNode } from "react";
+import { type ReactNode , useActionState } from "react";
 import { FieldError, Input, Label, TextField } from "react-aria-components";
-import { useActionState } from "react";
 
 import { verifyPasswordReset2faWithRecoveryCodeAction } from "@/app/(app)/[locale]/(auth)/auth/reset-password/2fa/_actions/verify-password-reset-2fa-with-recovery-code-action";
 import { Form } from "@/components/form";
@@ -31,11 +30,11 @@ export function PasswordResetRecoveryCodeFormContent(
 	return (
 		<Form action={action} className="grid gap-y-8" validationErrors={getFieldErrors(state)}>
 			<FormErrorMessage
-				className="min-h-12 border border-stroke-error-weak bg-fill-error-weak px-4 py-2.5 text-small font-strong text-text-error rounded-2"
+				className="min-h-12 rounded-2 border border-stroke-error-weak bg-fill-error-weak px-4 py-2.5 text-small font-strong text-text-error"
 				state={state}
 			/>
 			<FormSuccessMessage
-				className="min-h-12 border border-stroke-success-weak bg-fill-success-weak px-4 py-2.5 text-small font-strong text-text-success rounded-2"
+				className="min-h-12 rounded-2 border border-stroke-success-weak bg-fill-success-weak px-4 py-2.5 text-small font-strong text-text-success"
 				state={state}
 			/>
 

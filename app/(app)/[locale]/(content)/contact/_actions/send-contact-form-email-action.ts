@@ -11,6 +11,7 @@ import {
 	createErrorActionState,
 	createSuccessActionState,
 } from "@/lib/server/actions";
+import { globalPOSTRateLimit } from "@/lib/server/auth/requests";
 import { sendEmail } from "@/lib/server/email/send-email";
 
 const ContactFormSchema = v.object({
@@ -24,8 +25,11 @@ export async function sendContactFormEmailAction(
 	formData: FormData,
 ): Promise<ActionState> {
 	const t = await getTranslations("sendContactFormEmailAction");
+	const e = await getTranslations("errors");
 
-	// TODO: rate limit
+	if (!(await globalPOSTRateLimit())) {
+		return createErrorActionState({ message: e("too-many-requests") });
+	}
 
 	if (!isValidFormSubmission(formData)) {
 		return createErrorActionState({ message: t("invalid-input") });
