@@ -31,7 +31,7 @@ export function AccountMenuContent(props: AccountMenuContentProps): ReactNode {
 					src={null}
 				/> */}
 				{user.username}
-				<ChevronDownIcon className="size-5 shrink-0 text-icon-neutral" />
+				<ChevronDownIcon className="size-6 shrink-0 text-icon-neutral" />
 			</Button>
 			<Popover
 				className={cn(

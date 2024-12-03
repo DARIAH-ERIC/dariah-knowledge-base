@@ -1,3 +1,4 @@
+// eslint-disable-next-line check-file/folder-naming-convention
 "use server";
 
 import { getFormDataValues } from "@acdh-oeaw/lib";
@@ -11,11 +12,11 @@ import { recoveryCodeBucket, resetUser2FAWithRecoveryCode } from "@/lib/server/a
 import { validatePasswordResetSessionRequest } from "@/lib/server/auth/password-reset-sessions";
 import { globalPOSTRateLimit } from "@/lib/server/auth/requests";
 
-const VerifyPasswordReset2FAWithRecoveryCodeActionInputSchema = v.object({
+const VerifyPasswordReset2faWithRecoveryCodeActionInputSchema = v.object({
 	code: v.pipe(v.string(), v.nonEmpty()),
 });
 
-export async function verifyPasswordReset2FAWithRecoveryCodeAction(
+export async function verifyPasswordReset2faWithRecoveryCodeAction(
 	_prev: ActionState,
 	formData: FormData,
 ): Promise<ActionState> {
@@ -41,7 +42,7 @@ export async function verifyPasswordReset2FAWithRecoveryCodeAction(
 	}
 
 	const result = await v.safeParseAsync(
-		VerifyPasswordReset2FAWithRecoveryCodeActionInputSchema,
+		VerifyPasswordReset2faWithRecoveryCodeActionInputSchema,
 		getFormDataValues(formData),
 	);
 

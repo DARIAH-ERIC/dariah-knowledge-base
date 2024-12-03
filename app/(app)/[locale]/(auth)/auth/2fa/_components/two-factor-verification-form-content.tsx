@@ -5,7 +5,7 @@ import { cn } from "@acdh-oeaw/style-variants";
 import { type ReactNode, useActionState } from "react";
 import { FieldError, Input, Label, TextField } from "react-aria-components";
 
-import { verify2FAAction } from "@/app/(app)/[locale]/(auth)/auth/2fa/_actions/verify-2fa-action";
+import { verify2faAction } from "@/app/(app)/[locale]/(auth)/auth/2fa/_actions/verify-2fa-action";
 import { Form } from "@/components/form";
 import { FormErrorMessage } from "@/components/form-error-message";
 import { FormSuccessMessage } from "@/components/form-success-message";
@@ -22,7 +22,7 @@ export function TwoFactorVerificationFormContent(
 ): ReactNode {
 	const { codeLabel, submitLabel } = props;
 
-	const [state, action] = useActionState(verify2FAAction, createInitialActionState({}));
+	const [state, action] = useActionState(verify2faAction, createInitialActionState({}));
 
 	return (
 		<Form action={action} className="grid gap-y-8" validationErrors={getFieldErrors(state)}>

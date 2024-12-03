@@ -32,8 +32,8 @@
 		"invalid-key": "Invalid key."
 	},
 	"signInAction": {
-		"incorrect-password": "Incorrect password",
-		"invalid-account": "Account does not exist"
+		"incorrect-password": "Incorrect password.",
+		"invalid-account": "Account does not exist."
 	},
 	"signUpAction": {
 		"email-in-use": "Email is already used.",

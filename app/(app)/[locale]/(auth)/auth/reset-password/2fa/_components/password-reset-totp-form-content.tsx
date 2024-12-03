@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 import { FieldError, Input, Label, TextField } from "react-aria-components";
 import { useActionState } from "react";
 
-import { verifyPasswordReset2FAWithTOTPAction } from "@/app/(app)/[locale]/(auth)/auth/reset-password/2fa/_actions/verify-password-reset-2fa-with-totp-action";
+import { verifyPasswordReset2faWithTOTPAction } from "@/app/(app)/[locale]/(auth)/auth/reset-password/2fa/_actions/verify-password-reset-2fa-with-totp-action";
 import { Form } from "@/components/form";
 import { FormErrorMessage } from "@/components/form-error-message";
 import { FormSuccessMessage } from "@/components/form-success-message";
@@ -22,7 +22,7 @@ export function PasswordResetTOTPFormContent(props: PasswordResetTOTPFormContent
 	const { codeLabel, submitLabel } = props;
 
 	const [state, action] = useActionState(
-		verifyPasswordReset2FAWithTOTPAction,
+		verifyPasswordReset2faWithTOTPAction,
 		createInitialActionState({}),
 	);
 

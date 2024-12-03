@@ -4,12 +4,15 @@ import type { ReactNode } from "react";
 import type { ActionState } from "@/lib/server/actions";
 
 interface FormSuccessMessageProps {
+	children?: ReactNode | ((state: ActionState) => ReactNode);
 	className?: string;
 	state: ActionState;
 }
 
 export function FormSuccessMessage(props: FormSuccessMessageProps): ReactNode {
-	const { className, state, ...rest } = props;
+	const { children, className, state, ...rest } = props;
+
+	// TODO: useRenderProps
 
 	return (
 		<div
@@ -18,7 +21,15 @@ export function FormSuccessMessage(props: FormSuccessMessageProps): ReactNode {
 			aria-live="polite"
 			className={cn(className, { "sr-only": state.status !== "success" })}
 		>
-			<div key={state.timestamp}>{state.status === "success" ? state.message : null}</div>
+			<div key={state.timestamp}>
+				{state.status === "success"
+					? children != null
+						? typeof children === "function"
+							? children(state)
+							: children
+						: state.message
+					: null}
+			</div>
 		</div>
 	);
 }

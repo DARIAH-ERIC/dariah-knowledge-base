@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 import { FieldError, Input, Label, TextField } from "react-aria-components";
 import { useActionState } from "react";
 
-import { reset2FAAction } from "@/app/(app)/[locale]/(auth)/auth/2fa/reset/_actions/reset-2fa-action";
+import { reset2faAction } from "@/app/(app)/[locale]/(auth)/auth/2fa/reset/_actions/reset-2fa-action";
 import { Form } from "@/components/form";
 import { FormErrorMessage } from "@/components/form-error-message";
 import { FormSuccessMessage } from "@/components/form-success-message";
@@ -22,7 +22,7 @@ interface TwoFactorResetFormContentProps {
 export function TwoFactorResetFormContent(props: TwoFactorResetFormContentProps): ReactNode {
 	const { recoveryCodeLabel, submitLabel } = props;
 
-	const [state, action] = useActionState(reset2FAAction, createInitialActionState({}));
+	const [state, action] = useActionState(reset2faAction, createInitialActionState({}));
 
 	return (
 		<Form action={action} className="grid gap-y-8" validationErrors={getFieldErrors(state)}>

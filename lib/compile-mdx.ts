@@ -1,4 +1,4 @@
-import "server-only"
+import "server-only";
 
 import { createMdxProcessors, run, type TableOfContents } from "@acdh-oeaw/mdx-lib";
 import type { MDXModule } from "mdx/types";

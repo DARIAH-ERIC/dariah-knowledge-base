@@ -17,12 +17,21 @@ import { updateUserTOTPKey } from "@/lib/server/auth/users";
 
 const totpUpdateBucket = new RefillingTokenBucket<string>(3, 60 * 10);
 
-const Setup2FAAction = v.object({
-	code: v.pipe(v.string(), v.nonEmpty(), v.length(28)),
+const Setup2faActionInputSchema = v.object({
+	code: v.pipe(v.string(), v.nonEmpty()),
 	key: v.pipe(v.string(), v.nonEmpty()),
 });
 
-export async function setup2FAAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
+const TOTPKeySchema = v.pipe(
+	v.string(),
+	v.length(28),
+	v.transform(decodeBase64),
+	v.check((key) => {
+		return key.byteLength === 20;
+	}),
+);
+
+export async function setup2faAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
 	const locale = await getLocale();
 	const t = await getTranslations("setup2FAAction");
 	const e = await getTranslations("errors");
@@ -46,7 +55,7 @@ export async function setup2FAAction(_prev: ActionState, formData: FormData): Pr
 		return createErrorActionState({ message: e("too-many-requests") });
 	}
 
-	const result = await v.safeParseAsync(Setup2FAAction, getFormDataValues(formData));
+	const result = await v.safeParseAsync(Setup2faActionInputSchema, getFormDataValues(formData));
 
 	if (!result.success) {
 		const errors = v.flatten(result.issues);
@@ -57,17 +66,16 @@ export async function setup2FAAction(_prev: ActionState, formData: FormData): Pr
 		});
 	}
 
-	const { code, key: encodedKey } = result.output;
+	const { code, key: encryptedKey } = result.output;
 
-	let key: Uint8Array;
-	try {
-		key = decodeBase64(encodedKey);
-	} catch {
+	const keyResult = await v.safeParseAsync(TOTPKeySchema, encryptedKey);
+
+	if (!keyResult.success) {
 		return createErrorActionState({ message: t("invalid-key") });
 	}
-	if (key.byteLength !== 20) {
-		return createErrorActionState({ message: t("invalid-key") });
-	}
+
+	const key = keyResult.output;
+
 	if (!totpUpdateBucket.consume(user.id, 1)) {
 		return createErrorActionState({ message: e("too-many-requests") });
 	}

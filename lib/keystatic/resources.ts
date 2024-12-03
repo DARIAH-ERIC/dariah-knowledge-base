@@ -1,4 +1,4 @@
-import "server-only"
+import "server-only";
 
 import { createReaders } from "@acdh-oeaw/keystatic-lib/reader";
 

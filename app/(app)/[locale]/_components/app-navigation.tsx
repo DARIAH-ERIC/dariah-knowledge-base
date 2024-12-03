@@ -102,14 +102,14 @@ export function AppNavigation(props: AppNavigationProps): ReactNode {
 									<MenuTrigger>
 										<Button
 											className={cn(
-												"inline-flex items-center gap-x-3 px-4 py-6 text-text-strong",
+												"inline-flex items-center gap-x-2 px-4 py-6 text-text-strong",
 												"interactive focus-visible:focus-outline hover:hover-overlay pressed:press-overlay",
 											)}
 										>
 											{item.label}
 											<ChevronDownIcon
 												aria-hidden={true}
-												className="size-5 shrink-0 text-icon-neutral"
+												className="size-6 shrink-0 text-icon-neutral"
 											/>
 										</Button>
 										<Popover

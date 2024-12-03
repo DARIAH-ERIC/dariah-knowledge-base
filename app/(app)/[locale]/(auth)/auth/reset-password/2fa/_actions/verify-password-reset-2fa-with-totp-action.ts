@@ -1,3 +1,4 @@
+// eslint-disable-next-line check-file/folder-naming-convention
 "use server";
 
 import { getFormDataValues } from "@acdh-oeaw/lib";
@@ -16,11 +17,11 @@ import {
 import { globalPOSTRateLimit } from "@/lib/server/auth/requests";
 import { getUserTOTPKey } from "@/lib/server/auth/users";
 
-const VerifyPasswordReset2FAWithTOTPActionInputSchema = v.object({
+const VerifyPasswordReset2faWithTOTPActionInputSchema = v.object({
 	code: v.pipe(v.string(), v.nonEmpty()),
 });
 
-export async function verifyPasswordReset2FAWithTOTPAction(
+export async function verifyPasswordReset2faWithTOTPAction(
 	_prev: ActionState,
 	formData: FormData,
 ): Promise<ActionState> {
@@ -45,7 +46,7 @@ export async function verifyPasswordReset2FAWithTOTPAction(
 	}
 
 	const result = await v.safeParseAsync(
-		VerifyPasswordReset2FAWithTOTPActionInputSchema,
+		VerifyPasswordReset2faWithTOTPActionInputSchema,
 		getFormDataValues(formData),
 	);
 

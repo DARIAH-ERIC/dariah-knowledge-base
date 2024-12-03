@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 import { FieldError, Input, Label, TextField } from "react-aria-components";
 import { useActionState } from "react";
 
-import { setup2FAAction } from "@/app/(app)/[locale]/(auth)/auth/2fa/setup/_actions/setup-2fa-action";
+import { setup2faAction } from "@/app/(app)/[locale]/(auth)/auth/2fa/setup/_actions/setup-2fa-action";
 import { Form } from "@/components/form";
 import { FormErrorMessage } from "@/components/form-error-message";
 import { FormSuccessMessage } from "@/components/form-success-message";
@@ -22,7 +22,7 @@ interface TwoFactorSetUpFormContentProps {
 export function TwoFactorSetUpFormContent(props: TwoFactorSetUpFormContentProps): ReactNode {
 	const { encodedTOTPKey, submitLabel, verifyLabel } = props;
 
-	const [state, action] = useActionState(setup2FAAction, createInitialActionState({}));
+	const [state, action] = useActionState(setup2faAction, createInitialActionState({}));
 
 	return (
 		<Form action={action} className="grid gap-y-8" validationErrors={getFieldErrors(state)}>

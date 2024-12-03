@@ -11,11 +11,11 @@ import { type ActionState, createErrorActionState } from "@/lib/server/actions";
 import { recoveryCodeBucket, resetUser2FAWithRecoveryCode } from "@/lib/server/auth/2fa";
 import { getCurrentSession } from "@/lib/server/auth/sessions";
 
-const Reset2FAActionInputSchema = v.object({
+const Reset2faActionInputSchema = v.object({
 	code: v.pipe(v.string(), v.nonEmpty()),
 });
 
-export async function reset2FAAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
+export async function reset2faAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
 	const locale = await getLocale();
 	const t = await getTranslations("reset2FAAction");
 	const e = await getTranslations("errors");
@@ -32,7 +32,7 @@ export async function reset2FAAction(_prev: ActionState, formData: FormData): Pr
 		return createErrorActionState({ message: e("too-many-requests") });
 	}
 
-	const result = await v.safeParseAsync(Reset2FAActionInputSchema, getFormDataValues(formData));
+	const result = await v.safeParseAsync(Reset2faActionInputSchema, getFormDataValues(formData));
 
 	if (!result.success) {
 		const errors = v.flatten(result.issues);

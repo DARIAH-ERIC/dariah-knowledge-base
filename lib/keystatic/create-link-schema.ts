@@ -30,5 +30,5 @@ export function createLinkSchema(assetPath: `/${string}/`, locale: Locale) {
 				validation: { isRequired: true },
 			}),
 		},
-	)
+	);
 }

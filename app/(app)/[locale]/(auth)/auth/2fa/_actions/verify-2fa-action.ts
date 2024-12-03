@@ -14,11 +14,11 @@ import { globalPOSTRateLimit } from "@/lib/server/auth/requests";
 import { getCurrentSession, setSessionAs2FAVerified } from "@/lib/server/auth/sessions";
 import { getUserTOTPKey } from "@/lib/server/auth/users";
 
-const Verify2FAActionInputSchema = v.object({
+const Verify2faActionInputSchema = v.object({
 	code: v.pipe(v.string(), v.nonEmpty()),
 });
 
-export async function verify2FAAction(
+export async function verify2faAction(
 	_prev: ActionState,
 	formData: FormData,
 ): Promise<ActionState> {
@@ -42,7 +42,7 @@ export async function verify2FAAction(
 		return createErrorActionState({ message: e("too-many-requests") });
 	}
 
-	const result = await v.safeParseAsync(Verify2FAActionInputSchema, getFormDataValues(formData));
+	const result = await v.safeParseAsync(Verify2faActionInputSchema, getFormDataValues(formData));
 
 	if (!result.success) {
 		const errors = v.flatten(result.issues);

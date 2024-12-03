@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 import { FieldError, Input, Label, TextField } from "react-aria-components";
 import { useActionState } from "react";
 
-import { verifyPasswordReset2FAWithRecoveryCodeAction } from "@/app/(app)/[locale]/(auth)/auth/reset-password/2fa/_actions/verify-password-reset-2fa-with-recovery-code-action";
+import { verifyPasswordReset2faWithRecoveryCodeAction } from "@/app/(app)/[locale]/(auth)/auth/reset-password/2fa/_actions/verify-password-reset-2fa-with-recovery-code-action";
 import { Form } from "@/components/form";
 import { FormErrorMessage } from "@/components/form-error-message";
 import { FormSuccessMessage } from "@/components/form-success-message";
@@ -24,7 +24,7 @@ export function PasswordResetRecoveryCodeFormContent(
 	const { recoveryCodeLabel, submitLabel } = props;
 
 	const [state, action] = useActionState(
-		verifyPasswordReset2FAWithRecoveryCodeAction,
+		verifyPasswordReset2faWithRecoveryCodeAction,
 		createInitialActionState({}),
 	);
 
