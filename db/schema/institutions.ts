@@ -2,6 +2,8 @@ import { relations } from "drizzle-orm";
 import { pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 import { id, timestamps } from "@/db/fields";
+import { countriesTable } from "@/db/schema/countries";
+import { personsTable } from "@/db/schema/persons";
 
 export const institutionTypeEnum = pgEnum("institution_type", [
 	"cooperating_partner",
@@ -25,7 +27,9 @@ export const institutionsTable = pgTable("institutions", {
 
 export const institutionRelations = relations(institutionsTable, ({ many }) => {
 	return {
-		// countries: many(),
+		countries: many(countriesTable),
+		persons: many(personsTable),
+		// services: many(servicesTable),
 	};
 });
 

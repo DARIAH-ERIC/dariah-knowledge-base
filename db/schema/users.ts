@@ -5,7 +5,12 @@ import { bytea } from "@/db/data-types";
 import { id, timestamps } from "@/db/fields";
 import { countriesTable } from "@/db/schema/countries";
 
-export const userRoleEnum = pgEnum("user_role", ["admin", "user"]);
+export const userRoleEnum = pgEnum("user_role", [
+	"admin",
+	"contributor",
+	"national_coordinator",
+	"working_group_chair",
+]);
 
 export const usersTable = pgTable(
 	"users",
@@ -14,7 +19,7 @@ export const usersTable = pgTable(
 		email: text().notNull().unique(),
 		username: text().notNull(),
 		passwordHash: text().notNull(),
-		role: userRoleEnum().notNull().default("user"),
+		role: userRoleEnum().notNull().default("contributor"),
 		// TODO: emailVerified timestamp
 		emailVerified: boolean().notNull().default(false),
 		totpKey: bytea(),
@@ -25,6 +30,7 @@ export const usersTable = pgTable(
 			},
 			{ onDelete: "set null" },
 		),
+		// image: text(),
 		...timestamps,
 	},
 	(table) => {
