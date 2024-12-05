@@ -14,7 +14,7 @@ export const emailVerificationRequestsTable = pgTable("email_verification_reques
 		),
 	email: text().notNull(),
 	code: text().notNull(),
-	expiresAt: timestamp("expires_at", { mode: "date", withTimezone: true }).notNull(),
+	expiresAt: timestamp({ mode: "date", withTimezone: true }).notNull(),
 });
 
 export type DbEmailVerificationRequest = typeof emailVerificationRequestsTable.$inferSelect;

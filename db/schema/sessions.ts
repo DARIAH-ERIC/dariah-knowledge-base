@@ -12,7 +12,7 @@ export const sessionsTable = pgTable("sessions", {
 			},
 			{ onDelete: "cascade" },
 		),
-	expiresAt: timestamp("expires_at", { mode: "date", withTimezone: true }).notNull(),
+	expiresAt: timestamp({ mode: "date", withTimezone: true }).notNull(),
 	twoFactorVerified: boolean().notNull().default(false),
 });
 

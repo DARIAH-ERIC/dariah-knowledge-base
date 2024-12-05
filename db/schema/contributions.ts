@@ -2,7 +2,7 @@ import { relations } from "drizzle-orm";
 import { pgTable, timestamp, uuid } from "drizzle-orm/pg-core";
 
 import { id, timestamps } from "@/db/fields";
-import { countriesTable } from "@/db/schema";
+import { countriesTable } from "@/db/schema/countries";
 import { personsTable } from "@/db/schema/persons";
 import { rolesTable } from "@/db/schema/roles";
 import { workingGroupsTable } from "@/db/schema/working-groups";
@@ -26,7 +26,7 @@ export const contributionsTable = pgTable("contributions", {
 	...timestamps,
 });
 
-export const contributionsRelations = relations(contributionsTable, ({ one }) => {
+export const contributionRelations = relations(contributionsTable, ({ one }) => {
 	return {
 		country: one(countriesTable, {
 			fields: [contributionsTable.countryId],

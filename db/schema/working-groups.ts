@@ -12,7 +12,7 @@ export const workingGroupsTable = pgTable("working_groups", {
 	...timestamps,
 });
 
-export const workingGroupsRelations = relations(workingGroupsTable, ({ many }) => {
+export const workingGroupRelations = relations(workingGroupsTable, ({ many }) => {
 	return {
 		chairs: many(contributionsTable),
 	};

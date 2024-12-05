@@ -14,7 +14,7 @@ export const passwordResetSessionsTable = pgTable("password_reset_sessions", {
 		),
 	email: text().notNull(),
 	code: text().notNull(),
-	expiresAt: timestamp("expires_at", { mode: "date", withTimezone: true }).notNull(),
+	expiresAt: timestamp({ mode: "date", withTimezone: true }).notNull(),
 	emailVerified: boolean().notNull().default(false),
 	twoFactorVerified: boolean().notNull().default(false),
 });

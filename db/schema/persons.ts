@@ -13,7 +13,7 @@ export const personsTable = pgTable("persons", {
 	...timestamps,
 });
 
-export const personsRelations = relations(personsTable, ({ many }) => {
+export const personRelations = relations(personsTable, ({ many }) => {
 	return {
 		contributions: many(contributionsTable),
 		institutions: many(institutionsTable),
