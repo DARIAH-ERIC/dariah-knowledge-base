@@ -1,3 +1,5 @@
+import "@/styles/cms.css";
+
 import type { Metadata } from "next";
 import { type ReactNode, Suspense } from "react";
 import { LocalizedStringProvider as Translations } from "react-aria-components/i18n";
@@ -8,6 +10,7 @@ export const metadata: Metadata = {
 	robots: {
 		index: false,
 	},
+	title: "CMS",
 };
 
 export default function RootLayout(): ReactNode {

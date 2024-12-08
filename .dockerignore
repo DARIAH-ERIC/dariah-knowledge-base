@@ -39,6 +39,9 @@ out/
 /playwright-report/
 /test-results/
 
+# generated dbml schema
+/public/schema.dbml
+
 
 ## .dockerignore ##
 

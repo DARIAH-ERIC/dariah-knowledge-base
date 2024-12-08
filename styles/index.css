@@ -168,11 +168,11 @@
 	}
 
 	.max-w-text {
-		max-width: var(--max-width-text, 42rem);
+		max-width: var(--max-width-text, 46rem);
 	}
 
 	.content-max-w-text > * {
-		max-width: var(--max-width-text, 42rem);
+		max-width: var(--max-width-text, 46rem);
 	}
 
 	/** Interaction states. */
@@ -341,10 +341,11 @@
 		}
 
 		& :where(code) {
+			margin-inline: 2px;
 			color: var(--color-typography-strong);
 			font-weight: var(--font-weight-strong);
 			font-size: var(--font-size-tiny);
-			font-family: var(--font-geist-mono), monospace;
+			font-family: var(--font-family-mono);
 		}
 
 		& :where(pre) {
@@ -357,11 +358,12 @@
 			color: var(--color-text-inverse-strong);
 			font-weight: var(--font-weight-weak);
 			font-size: var(--font-size-tiny);
-			font-family: var(--font-geist-mono), monospace;
+			font-family: var(--font-family-mono);
 			line-height: var(--line-height-small);
 		}
 
 		& :where(pre code) {
+			margin-inline: 0;
 			padding: 0;
 			border-width: 0;
 			border-radius: 0;
