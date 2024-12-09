@@ -67,7 +67,7 @@
 		"arctic": "^2.2.2",
 		"client-only": "^0.0.1",
 		"drizzle-orm": "^0.37.0",
-		"drizzle-valibot": "^0.2.0",
+		"drizzle-valibot": "^0.3.0",
 		"fast-glob": "^3.3.2",
 		"image-dimensions": "^2.3.0",
 		"lucide-react": "^0.464.0",
