@@ -9,7 +9,7 @@ interface LinkProps {
 	link: LinkSchema;
 }
 
-export function Link(props: LinkProps): ReactNode {
+export function Link(props: Readonly<LinkProps>): ReactNode {
 	const { children, link, ...rest } = props;
 
 	return (

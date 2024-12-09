@@ -9,7 +9,7 @@ interface TableOfContentsProps {
 	title?: string;
 }
 
-export function TableOfContents(props: TableOfContentsProps): ReactNode {
+export function TableOfContents(props: Readonly<TableOfContentsProps>): ReactNode {
 	const { tableOfContents, title } = props;
 
 	const t = useTranslations("mdx");
@@ -37,7 +37,7 @@ interface TableOfContentsLevelProps {
 	headings: TableOfContents;
 }
 
-function TableOfContentsLevel(props: TableOfContentsLevelProps): ReactNode {
+function TableOfContentsLevel(props: Readonly<TableOfContentsLevelProps>): ReactNode {
 	const { depth = 0, headings } = props;
 
 	return (
