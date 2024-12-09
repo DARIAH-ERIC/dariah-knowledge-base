@@ -58,7 +58,7 @@ export const createMetadata = createSingleton("/metadata/", (paths, locale) => {
 });
 
 export const createNavigation = createSingleton("/navigation/", (paths, locale) => {
-	const link = createLinkSchema(paths.assetPath, locale);
+	const link = createLinkSchema(paths.downloadPath, locale);
 
 	return singleton({
 		label: createLabel("Navigation", locale),
