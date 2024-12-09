@@ -9,7 +9,7 @@ const out = join(process.cwd(), "public", "schema.dbml");
 
 // eslint-disable-next-line @typescript-eslint/require-await
 async function generate() {
-	pgGenerate({ schema, out, relational: true });
+	pgGenerate({ schema, out, relational: false });
 }
 
 generate()

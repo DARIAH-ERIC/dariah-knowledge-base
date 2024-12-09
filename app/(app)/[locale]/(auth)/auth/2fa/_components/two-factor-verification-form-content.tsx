@@ -39,6 +39,7 @@ export function TwoFactorVerificationFormContent(
 
 			<TextField
 				autoComplete="one-time-code"
+				autoFocus={true}
 				className="grid gap-y-1"
 				isRequired={true}
 				name="code"
