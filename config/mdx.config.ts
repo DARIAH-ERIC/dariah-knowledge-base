@@ -6,8 +6,9 @@ import {
 	withCustomHeadingIds,
 	withFootnotes,
 	withIframeTitles,
-	// withImageSizes,
+	withImageSizes,
 	withTableOfContents,
+	withUnwrappedMdxFlowContent,
 } from "@acdh-oeaw/mdx-lib";
 import withSyntaxHighlighter from "@shikijs/rehype";
 import type { ElementContent } from "hast";
@@ -64,9 +65,10 @@ export async function createConfig(locale: Locale): Promise<MdxProcessorOptions>
 			withCustomHeadingIds,
 			withHeadingIds,
 			[withIframeTitles, { components: ["Embed", "Video"] }],
-			// [withImageSizes, { components: ["Figure"] }],
+			[withImageSizes, { components: ["Figure"] }],
 			[withSyntaxHighlighter, syntaxHighlighterConfig],
 			withTableOfContents,
+			[withUnwrappedMdxFlowContent, { components: ["LinkButton"] }],
 		],
 	};
 

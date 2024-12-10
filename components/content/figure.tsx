@@ -1,7 +1,7 @@
 import { cn } from "@acdh-oeaw/style-variants";
 import type { ReactNode } from "react";
 
-import { Image } from "@/components/image";
+import { ServerImage as Image } from "@/components/server-image";
 import type { FigureAlignment } from "@/lib/keystatic/component-options";
 
 interface FigureProps {
@@ -21,9 +21,10 @@ export function Figure(props: Readonly<FigureProps>): ReactNode {
 
 	return (
 		<figure className={cn("grid gap-y-2", alignment === "center" ? "justify-center" : undefined)}>
+			{/* @ts-expect-error @see https://github.com/vercel/next.js/discussions/67365 */}
 			<Image
 				alt={alt}
-				className="overflow-hidden rounded-1"
+				className="overflow-hidden rounded-2"
 				height={height}
 				src={src}
 				width={width}

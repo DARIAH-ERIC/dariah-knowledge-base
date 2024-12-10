@@ -18,7 +18,7 @@ export function Tabs(props: Readonly<TabsProps>): ReactNode {
 	const tabs = getChildrenElements<TabProps>(children);
 
 	return (
-		<AriaTabs>
+		<AriaTabs className="my-4">
 			<AriaTabList className="flex flex-wrap items-center gap-x-4 border-b border-stroke-weak">
 				{tabs.map((tab, index) => {
 					const { title } = tab.props;
@@ -28,7 +28,7 @@ export function Tabs(props: Readonly<TabsProps>): ReactNode {
 					return (
 						<AriaTab
 							key={id}
-							className="cursor-default border-b-2 border-transparent transition selected:border-current selected:font-strong"
+							className="-mb-px cursor-default border-b-2 border-transparent py-3 transition selected:border-current selected:font-strong"
 							id={id}
 						>
 							{title}
@@ -43,7 +43,7 @@ export function Tabs(props: Readonly<TabsProps>): ReactNode {
 				const id = String(index);
 
 				return (
-					<AriaTabPanel key={id} id={id}>
+					<AriaTabPanel key={id} className="grid" id={id}>
 						{children}
 					</AriaTabPanel>
 				);

@@ -8,8 +8,8 @@ import { LinkButton } from "@/components/content/link-button";
 import { TableOfContents } from "@/components/content/table-of-contents";
 import { Tab, Tabs } from "@/components/content/tabs";
 import { Video } from "@/components/content/video";
-import { Image } from "@/components/image";
 import { Link } from "@/components/link";
+import { ServerImage as Image } from "@/components/server-image";
 
 const components = {
 	a: Link,
