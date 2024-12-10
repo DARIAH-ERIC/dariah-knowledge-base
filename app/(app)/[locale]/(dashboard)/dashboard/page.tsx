@@ -10,10 +10,9 @@ import { Link } from "@/components/link";
 import { Logo } from "@/components/logo";
 import { MainContent } from "@/components/main-content";
 import { NavLink } from "@/components/nav-link";
-import { urls } from "@/config/auth.config";
 import type { Locale } from "@/config/i18n.config";
 import { createHref } from "@/lib/create-href";
-import { redirect } from "@/lib/i18n/navigation";
+import { assertAuthenticatedSession } from "@/lib/server/auth/assert-authenticated";
 import { globalGETRateLimit } from "@/lib/server/auth/requests";
 import { getCurrentSession } from "@/lib/server/auth/sessions";
 
@@ -56,20 +55,9 @@ export default async function DashboardPage(
 		return e("too-many-requests");
 	}
 
-	const { session, user } = await getCurrentSession();
-
-	if (session == null) {
-		return redirect({ href: urls.signIn, locale });
-	}
-	if (!user.emailVerified) {
-		return redirect({ href: urls.verifyEmail, locale });
-	}
-	if (!user.registered2FA) {
-		return redirect({ href: urls["2faSetup"], locale });
-	}
-	if (!session.twoFactorVerified) {
-		return redirect({ href: urls["2fa"], locale });
-	}
+	const auth = await getCurrentSession();
+	assertAuthenticatedSession(auth, locale);
+	const { user } = auth;
 
 	const links = {
 		home: {

@@ -46,7 +46,6 @@ export async function validateSessionToken(token: string): Promise<SessionValida
 		role: row.user.role,
 		emailVerified: row.user.emailVerified,
 		registered2FA: row.user.totpKey != null,
-		countryId: null,
 	};
 
 	if (Date.now() >= session.expiresAt.getTime()) {
@@ -126,4 +125,6 @@ export async function setSessionAs2FAVerified(sessionId: Session["id"]): Promise
 		.where(eq(sessionsTable.id, sessionId));
 }
 
-type SessionValidationResult = { session: Session; user: User } | { session: null; user: null };
+export type AuthenticatedSession = { session: Session; user: User };
+export type UnauthenticatedSession = { session: null; user: null };
+export type SessionValidationResult = AuthenticatedSession | UnauthenticatedSession;
