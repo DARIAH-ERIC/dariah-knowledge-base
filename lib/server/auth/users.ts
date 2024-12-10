@@ -23,7 +23,7 @@ export async function createUser(email: string, username: string, password: stri
 	const [row] = await db
 		.insert(usersTable)
 		.values({ email, username, passwordHash, recoveryCode: encryptedRecoveryCode })
-		.returning({ id: usersTable.id, role: usersTable.role });
+		.returning({ id: usersTable.id, role: usersTable.type });
 
 	if (row == null) {
 		throw new DatabaseError();
@@ -131,7 +131,7 @@ export async function getUserFromEmail(email: string): Promise<User | null> {
 			id: usersTable.id,
 			email: usersTable.email,
 			username: usersTable.username,
-			role: usersTable.role,
+			role: usersTable.type,
 			emailVerified: usersTable.emailVerified,
 			totpKey: usersTable.totpKey,
 		})

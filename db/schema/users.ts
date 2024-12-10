@@ -3,14 +3,10 @@ import { boolean, index, pgEnum, pgTable, text, uuid } from "drizzle-orm/pg-core
 
 import { bytea } from "@/db/data-types";
 import { id, timestamps } from "@/db/fields";
+import { rolesTable } from "@/db/schema";
 import { countriesTable } from "@/db/schema/countries";
 
-export const userRoleEnum = pgEnum("user_role", [
-	"admin",
-	"contributor",
-	"national_coordinator",
-	"working_group_chair",
-]);
+export const userTypeEnum = pgEnum("user_type", ["admin", "user"]);
 
 export const usersTable = pgTable(
 	"users",
@@ -18,19 +14,27 @@ export const usersTable = pgTable(
 		id,
 		email: text().notNull().unique(),
 		username: text().notNull(),
+		// image: text(),
 		passwordHash: text().notNull(),
-		role: userRoleEnum().notNull().default("contributor"),
 		// TODO: emailVerified timestamp
 		emailVerified: boolean().notNull().default(false),
 		totpKey: bytea(),
 		recoveryCode: bytea().notNull(),
+		type: userTypeEnum().notNull().default("user"),
+
 		countryId: uuid().references(
 			() => {
 				return countriesTable.id;
 			},
 			{ onDelete: "set null" },
 		),
-		// image: text(),
+		roles: uuid()
+			.references(() => {
+				return rolesTable.id;
+			})
+			// FIXME:
+			.array(),
+
 		...timestamps,
 	},
 	(table) => {
