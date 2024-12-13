@@ -318,7 +318,7 @@ export const createVideo = createComponent((_paths, _locale) => {
 	return {
 		Video: wrapper({
 			label: "Video",
-			description: "Insert a video",
+			description: "Insert a video.",
 			icon: <VideoIcon />,
 			schema: {
 				provider: fields.select({

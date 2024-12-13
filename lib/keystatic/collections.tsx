@@ -42,7 +42,11 @@ export const createDocumentation = createCollection("/documentation/", (paths, l
 			}),
 			content: fields.mdx({
 				label: "Content",
-				options: createContentFieldOptions(paths),
+				options: {
+					...createContentFieldOptions(paths),
+					/** Prefer `<Link>` component. */
+					link: false,
+				},
 				components: {
 					...createDisclosure(paths, locale),
 					...createEmbed(paths, locale),
