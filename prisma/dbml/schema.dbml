@@ -152,13 +152,13 @@ Table persons {
 
 Table projects_funding_leverage {
   id String [pk]
-  amount Int
+  amount Decimal
   funders String
   name String [not null]
   projectMonths Int
   scope ProjectScope
   startDate DateTime
-  totalAmount Int
+  totalAmount Decimal
   reportId String [not null]
   report reports [not null]
   createdAt DateTime [default: `now()`, not null]
@@ -169,9 +169,9 @@ Table reports {
   id String [pk]
   comments Json
   contributionsCount Int
-  operationalCost Int
+  operationalCost Decimal
   operationalCostDetail Json
-  operationalCostThreshold Int
+  operationalCostThreshold Decimal
   status ReportStatus [not null, default: 'draft']
   year Int [not null]
   countryId String [not null]

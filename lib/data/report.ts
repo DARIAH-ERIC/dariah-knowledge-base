@@ -31,10 +31,10 @@ interface GetReportByIdParams {
 	id: Report["id"];
 }
 
-export function getReportById(params: GetReportByIdParams) {
+export async function getReportById(params: GetReportByIdParams) {
 	const { id } = params;
 
-	return db.report.findFirst({
+	const report = await db.report.findFirst({
 		where: {
 			id,
 		},
@@ -42,6 +42,13 @@ export function getReportById(params: GetReportByIdParams) {
 			eventReport: true,
 		},
 	});
+
+	if (!report) return;
+
+	return {
+		...report,
+		operationalCostThreshold: report.operationalCostThreshold?.toNumber(),
+	};
 }
 
 interface GetReportByCountryCodeParams {
@@ -160,10 +167,10 @@ interface GetProjectsFundingLeveragesParams {
 	reportId: Report["id"];
 }
 
-export function getProjectsFundingLeverages(params: GetProjectsFundingLeveragesParams) {
+export async function getProjectsFundingLeverages(params: GetProjectsFundingLeveragesParams) {
 	const { reportId } = params;
 
-	return db.projectsFundingLeverage.findMany({
+	const projectFundingLeverages = await db.projectsFundingLeverage.findMany({
 		where: {
 			report: {
 				id: reportId,
@@ -172,6 +179,13 @@ export function getProjectsFundingLeverages(params: GetProjectsFundingLeveragesP
 		orderBy: {
 			createdAt: "asc",
 		},
+	});
+
+	return projectFundingLeverages.map((projectFundingLeverage) => {
+		return {
+			...projectFundingLeverage,
+			amount: projectFundingLeverage.amount?.toNumber(),
+		};
 	});
 }
 

@@ -1,6 +1,7 @@
 "use server";
 
 import { log } from "@acdh-oeaw/lib";
+import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { getTranslations } from "next-intl/server";
 import { z } from "zod";
@@ -69,7 +70,7 @@ export async function updateReportStatusAction(
 		const calculation = await calculateOperationalCost({ countryId, reportId });
 		await updateReportCalculation({
 			id: reportId,
-			operationalCost: calculation.operationalCost,
+			operationalCost: new Prisma.Decimal(calculation.operationalCost),
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
 			operationalCostDetail: calculation as any,
 		});

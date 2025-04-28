@@ -104,7 +104,7 @@ export async function getProjectFundingLeverages(params: GetProjectFundingLevera
 
 		const startDate = entry.startDate;
 		const duration = entry.projectMonths;
-		const amount = entry.amount;
+		const amount = entry.amount.toNumber();
 
 		const month = entry.startDate.getMonth();
 		const endDate = new Date(startDate);
