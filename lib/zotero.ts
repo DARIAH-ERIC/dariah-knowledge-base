@@ -1,7 +1,9 @@
 import { createUrl, createUrlSearchParams, keyByToMap, request } from "@acdh-oeaw/lib";
+import { revalidateTag } from "next/cache";
 
 import { groupId } from "@/config/zotero.config";
 import { createBibliography } from "@/lib/create-bibliography";
+import { checkZoteroCache, updateZoteroCache } from "@/lib/data/zotero-cache";
 import { parseLinkHeader } from "@/lib/parse-link-header";
 
 export interface ZoteroCollection {
@@ -83,8 +85,18 @@ export async function getCollectionItems(id: string) {
 
 	const data: Array<ZoteroItem> = [];
 
+	const collectionHasChanged = await checkCollectionVersion(url);
+
+	if (collectionHasChanged) {
+		revalidateTag("zotero");
+	}
+
 	do {
-		const response = await fetch(url, { headers, cache: "force-cache" });
+		const response = await fetch(url, {
+			headers,
+			cache: "force-cache",
+			next: { tags: ["zotero"] },
+		});
 		const { items } = (await response.json()) as { items: Array<ZoteroItem> };
 
 		data.push(...items);
@@ -100,6 +112,17 @@ export async function getCollectionItems(id: string) {
 	} while (url != null);
 
 	return data;
+}
+
+export async function checkCollectionVersion(url: URL) {
+	const response = await fetch(url, { headers });
+	const lastModifiedVersion = response.headers.get("last-modified-version");
+	const cachedItem = await checkZoteroCache(url, lastModifiedVersion!);
+	const collectionHasChanged = Boolean(!cachedItem);
+	if (collectionHasChanged) {
+		await updateZoteroCache(url, lastModifiedVersion!);
+	}
+	return collectionHasChanged;
 }
 
 interface GetPublicationsParams {

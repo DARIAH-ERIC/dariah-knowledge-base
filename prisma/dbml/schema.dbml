@@ -324,6 +324,12 @@ Table users {
   country countries
 }
 
+Table zotero_cache {
+  id String [pk]
+  url String [unique, not null]
+  lastModifiedVersion String [not null]
+}
+
 Table BodyToRole {
   rolesId String [ref: > roles.id]
   bodiesId String [ref: > bodies.id]

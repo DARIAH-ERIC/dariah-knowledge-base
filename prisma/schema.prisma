@@ -663,3 +663,12 @@ model User {
 //   @@unique([identifier, token])
 //   @@map(name: "verification_tokens")
 // }
+
+model ZoteroCache {
+	id String @id @default(uuid()) @db.Uuid
+
+	url                     String   @unique
+	lastModifiedVersion     String
+
+	@@map(name: "zotero_cache")
+}
