@@ -151,11 +151,14 @@ export async function ReportSummary(props: ReportSummaryProps) {
 				<div>Financial value of the national in-kind contribution:</div>
 				<div>
 					Threshold:{" "}
-					{number(calculation.operationalCostThreshold, { style: "currency", currency: "EUR" })}
+					{number(Number(calculation.operationalCostThreshold), {
+						style: "currency",
+						currency: "EUR",
+					})}
 				</div>
 				<div>
 					Cost calculation:{" "}
-					{number(calculation.operationalCost, { style: "currency", currency: "EUR" })}
+					{number(Number(calculation.operationalCost), { style: "currency", currency: "EUR" })}
 				</div>
 			</div>
 

@@ -43,11 +43,15 @@ interface AddedProjectsFundingLeverage {
 	scope: string;
 }
 
+type ProjectsFundingLeverageSerialized = Omit<ProjectsFundingLeverage, "amount"> & {
+	amount: number | undefined;
+};
+
 interface ProjectsFundingLeveragesFormContentProps {
 	comments: ReportCommentsSchema["projectFundingLeverages"];
-	previousProjectsFundingLeverages: Array<ProjectsFundingLeverage> | null;
+	previousProjectsFundingLeverages: Array<ProjectsFundingLeverageSerialized> | null;
 	previousReportId: Report["id"] | undefined;
-	projectsFundingLeverages: Array<ProjectsFundingLeverage>;
+	projectsFundingLeverages: Array<ProjectsFundingLeverageSerialized>;
 	reportId: Report["id"];
 }
 
@@ -112,7 +116,7 @@ export function ProjectsFundingLeveragesFormContent(
 							/>
 
 							<NumberInputField
-								defaultValue={projectsFundingLeverage.amount ?? undefined}
+								defaultValue={Number(projectsFundingLeverage.amount)}
 								isReadOnly={true}
 								label="Total amount"
 								name={`projectsFundingLeverages.${String(index)}.amount`}
@@ -195,7 +199,7 @@ function AddedProjectsFundingLeveragesSection(): ReactNode {
 						/>
 
 						<NumberInputField
-							defaultValue={addedProjectsFundingLeverage.amount}
+							defaultValue={Number(addedProjectsFundingLeverage.amount)}
 							isReadOnly={true}
 							label="Total amount"
 							name={`addedProjectsFundingLeverages.${String(index)}.amount`}
