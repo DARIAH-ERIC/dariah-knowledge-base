@@ -12,6 +12,8 @@ import {
 	ResizableTableContainer,
 	Row as AriaRow,
 	type RowProps,
+	SearchField as AriaSearchField,
+	type SearchFieldProps as AriaSearchFieldProps,
 	Table as AriaTable,
 	TableBody,
 	TableHeader as AriaTableHeader,
@@ -20,6 +22,8 @@ import {
 	useTableOptions,
 } from "react-aria-components";
 
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { cn, variants } from "@/lib/styles";
 
 export { TableBody };
@@ -119,4 +123,21 @@ const cellStyles = variants({
 
 export function Cell(props: CellProps) {
 	return <AriaCell {...props} className={cellStyles()} />;
+}
+
+interface SearchInputProps extends AriaSearchFieldProps {
+	label: string;
+	placeholder: string;
+	filter: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export function TableFilter(props: SearchInputProps) {
+	const { label, placeholder, filter, ...rest } = props;
+
+	return (
+		<AriaSearchField {...rest}>
+			<Label className="sr-only">{label}</Label>
+			<Input onChange={filter} placeholder={placeholder} />
+		</AriaSearchField>
+	);
 }
