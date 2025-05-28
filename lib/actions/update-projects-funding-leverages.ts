@@ -19,7 +19,9 @@ const formSchema = z.object({
 		.array(
 			z.object({
 				name: z.string(),
-				amount: z.coerce.number(),
+				amount: z.coerce.number().transform((val) => {
+					return val.toFixed(2);
+				}),
 				funders: z.string().optional(),
 				projectMonths: z.coerce.number(),
 				scope: z.enum(Object.values(ProjectScope) as [ProjectScope, ...Array<ProjectScope>]),
