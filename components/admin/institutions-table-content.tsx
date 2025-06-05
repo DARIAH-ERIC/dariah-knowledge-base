@@ -3,6 +3,7 @@
 import { keyByToMap } from "@acdh-oeaw/lib";
 import { parseAbsoluteToLocal } from "@internationalized/date";
 import { type Country, InstitutionType, type Prisma } from "@prisma/client";
+import { useListData } from "@react-stately/data";
 import { MoreHorizontalIcon, PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import { useFormatter } from "next-intl";
 import { Fragment, type ReactNode, useId, useMemo, useState } from "react";
@@ -34,11 +35,21 @@ import { FormError as FormErrorMessage } from "@/components/ui/form-error";
 import { FormSuccess as FormSuccessMessage } from "@/components/ui/form-success";
 import { IconButton } from "@/components/ui/icon-button";
 import { Modal, ModalOverlay } from "@/components/ui/modal";
-import { Cell, Column, Row, Table, TableBody, TableHeader } from "@/components/ui/table";
+import {
+	Cell,
+	Column,
+	Row,
+	Table,
+	TableBody,
+	TableFilterSelect,
+	TableHeader,
+} from "@/components/ui/table";
 import { createInstitutionAction } from "@/lib/actions/admin/create-institution";
 import { deleteInstitutionAction } from "@/lib/actions/admin/delete-institution";
 import { updateInstitutionAction } from "@/lib/actions/admin/update-institution";
 import { createKey } from "@/lib/create-key";
+
+const EMPTY_FILTER = "_all_";
 
 type Action =
 	| {
@@ -92,13 +103,26 @@ export function AdminInstitutionsTableContent(
 		setAction(null);
 	}
 
+	const list = useListData({
+		initialItems: institutions,
+		filter: (item, countryId) => {
+			if (!countryId || countryId === EMPTY_FILTER) {
+				return true;
+			}
+
+			return item.countries.some((country) => {
+				return country.id === countryId;
+			});
+		},
+	});
+
 	const [sortDescriptor, setSortDescriptor] = useState({
 		column: "name" as "country" | "endDate" | "name" | "startDate" | "types",
 		direction: "ascending" as "ascending" | "descending",
 	});
 
 	const items = useMemo(() => {
-		const items = institutions.toSorted((a, z) => {
+		const items = [...list.items].toSorted((a, z) => {
 			switch (sortDescriptor.column) {
 				case "country": {
 					const idA = a.countries[0]?.id;
@@ -141,9 +165,18 @@ export function AdminInstitutionsTableContent(
 		}
 
 		return items;
-	}, [sortDescriptor, institutions, countriesById]);
+	}, [sortDescriptor, list.items, countriesById]);
 
-	const pagination = usePagination({ items });
+	const pagination = usePagination({ items: items });
+
+	const countryFilterOptions = useMemo(() => {
+		return [
+			{ id: EMPTY_FILTER, label: "Show all" },
+			...Array.from(countriesById.values()).map((country) => {
+				return { id: country.id, label: country.name };
+			}),
+		];
+	}, [countriesById]);
 
 	return (
 		<Fragment>
@@ -160,6 +193,16 @@ export function AdminInstitutionsTableContent(
 
 			<div className="flex justify-end">
 				<Pagination pagination={pagination} />
+			</div>
+			<div className="flex justify-end">
+				<TableFilterSelect
+					defaultSelectedKey={EMPTY_FILTER}
+					items={countryFilterOptions}
+					label="Filter by Country"
+					onSelectionChange={(key) => {
+						list.setFilterText(String(key));
+					}}
+				/>
 			</div>
 
 			<Table

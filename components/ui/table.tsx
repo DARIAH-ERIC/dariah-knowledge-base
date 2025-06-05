@@ -9,9 +9,12 @@ import {
 	ColumnResizer,
 	composeRenderProps,
 	Group,
+	type Key,
 	ResizableTableContainer,
 	Row as AriaRow,
 	type RowProps,
+	SearchField as AriaSearchField,
+	type SearchFieldProps as AriaSearchFieldProps,
 	Table as AriaTable,
 	TableBody,
 	TableHeader as AriaTableHeader,
@@ -20,6 +23,9 @@ import {
 	useTableOptions,
 } from "react-aria-components";
 
+import { SelectField, SelectItem } from "@/components/ui/blocks/select-field";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { cn, variants } from "@/lib/styles";
 
 export { TableBody };
@@ -119,4 +125,50 @@ const cellStyles = variants({
 
 export function Cell(props: CellProps) {
 	return <AriaCell {...props} className={cellStyles()} />;
+}
+
+interface SearchInputProps extends AriaSearchFieldProps {
+	label: string;
+	placeholder: string;
+	filter: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export function TableFilter(props: SearchInputProps) {
+	const { label, placeholder, filter, ...rest } = props;
+
+	return (
+		<AriaSearchField {...rest}>
+			<Label className="sr-only">{label}</Label>
+			<Input onChange={filter} placeholder={placeholder} />
+		</AriaSearchField>
+	);
+}
+
+interface TableFilterSelectProps {
+	defaultSelectedKey?: Key;
+	label: string;
+	items: Array<{ id: string; label: string }>;
+	onSelectionChange: (key: Key) => void;
+}
+
+export function TableFilterSelect(props: TableFilterSelectProps) {
+	const { defaultSelectedKey, onSelectionChange, items, label } = props;
+
+	return (
+		<SelectField
+			className="w-64"
+			defaultSelectedKey={defaultSelectedKey}
+			label={label}
+			onSelectionChange={onSelectionChange}
+			placement="bottom"
+		>
+			{items.map((item) => {
+				return (
+					<SelectItem key={item.id} id={item.id} textValue={item.label}>
+						{item.label}
+					</SelectItem>
+				);
+			})}
+		</SelectField>
+	);
 }
