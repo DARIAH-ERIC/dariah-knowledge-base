@@ -292,13 +292,13 @@ enum ProjectScope {
 model ProjectsFundingLeverage {
   id String @id @default(uuid()) @db.Uuid
 
-  amount        Int?
+  amount        Decimal? @db.Decimal(12, 2)
   funders       String?
   name          String
   projectMonths Int?          @map(name: "project_months")
   scope         ProjectScope?
   startDate     DateTime?     @map(name: "start_date")
-  totalAmount   Int?          @map(name: "total_amount")
+  totalAmount   Decimal? @db.Decimal(12, 2) @map(name: "total_amount")
 
   reportId String @map(name: "report_id") @db.Uuid
 
@@ -320,9 +320,9 @@ model Report {
 
   comments                 Json?
   contributionsCount       Int?
-  operationalCost          Int?
+  operationalCost          Decimal? @db.Decimal(12, 2)
   operationalCostDetail    Json?
-  operationalCostThreshold Int?
+  operationalCostThreshold Decimal? @db.Decimal(12, 2)
   status                   ReportStatus @default(draft)
   year                     Int
 
