@@ -561,6 +561,8 @@ model WorkingGroup {
   startDate DateTime? @map(name: "start_date")
 
   chairs Contribution[]
+	member_tracking		String # describe how you keep track of the WG members, e.g. via mailing list?
+  mailing_list 			String # If you use a mailing list for the WG communication, provide here.
 
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
