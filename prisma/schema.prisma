@@ -570,6 +570,31 @@ model WorkingGroup {
   @@map(name: "working_groups")
 }
 
+model WGReport {
+  id String @id @default(uuid()) @db.Uuid
+
+  comments                 Json?
+  numberMebmers			       Int?
+  status                   ReportStatus @default(draft)
+  year                     Int
+
+	narrativeReport 				 String # this should allow a long rich text 
+	facultativeQuestions 		 String # this should allow a long rich text 
+
+	workingGroupId String? @map(name: "working_group_id") @db.Uuid
+  workingGroup WorkingGroup? @relation(fields: [workingGroupId], references: [id])
+
+  eventReport                EventReport?
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  @@unique([workingGroupId, year])
+  @@index(fields: [year])
+  @@map(name: "wgreports")
+}
+
+
 // -------------------------------------------------------------------------------------------------
 
 model Account {
