@@ -594,6 +594,19 @@ model WGReport {
   @@map(name: "wgreports")
 }
 
+model WGEventDetail {
+	id String @id @default(uuid()) @db.Uuid
+
+	eventTitle	String
+	eventLink 	String # URL
+  working_groups WorkingGroup[] # multiple WGs can organise one event
+
+  eventDate   DateTime?  # not finally decided yet, if necessary.
+
+	eventRole 	String # role of WG in the organisation of the event (something like organiser, presenter ...) - enum not final yet
+
+}
+
 
 // -------------------------------------------------------------------------------------------------
 
