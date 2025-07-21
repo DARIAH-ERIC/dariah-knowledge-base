@@ -68,6 +68,7 @@ Table event_reports {
   report reports [not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
+  WGReport wgreports [not null]
 }
 
 Table institutions {
@@ -287,8 +288,42 @@ Table working_groups {
   name String [not null]
   startDate DateTime
   chairs contributions [not null]
+  member_tracking String
+  mailing_list String
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
+  WGReport wgreports [not null]
+  WGEventDetail WGEventDetail
+  wGEventDetailId String
+}
+
+Table wgreports {
+  id String [pk]
+  comments Json
+  numberMebmers Int
+  status ReportStatus [not null, default: 'draft']
+  year Int [not null]
+  narrativeReport String [not null]
+  facultativeQuestions String [not null]
+  workingGroupId String
+  workingGroup working_groups
+  eventReport event_reports
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  eventReportId String
+
+  indexes {
+    (workingGroupId, year) [unique]
+  }
+}
+
+Table WGEventDetail {
+  id String [pk]
+  eventTitle String [not null]
+  eventLink String [not null]
+  working_groups working_groups [not null]
+  eventDate DateTime
+  eventRole String [not null]
 }
 
 Table accounts {
@@ -546,6 +581,12 @@ Ref: service_reports.reportId > reports.id [delete: Cascade]
 Ref: service_reports.serviceId > services.id [delete: Cascade]
 
 Ref: service_kpis.serviceReportId > service_reports.id [delete: Cascade]
+
+Ref: working_groups.wGEventDetailId > WGEventDetail.id
+
+Ref: wgreports.workingGroupId > working_groups.id
+
+Ref: wgreports.eventReportId > event_reports.id
 
 Ref: accounts.userId > users.id [delete: Cascade]
 
