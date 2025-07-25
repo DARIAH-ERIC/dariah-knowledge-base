@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 
 import { Link } from "@/components/link";
-import { createHref } from "@/lib/create-href";
+import { createHref } from "@/lib/navigation/create-href";
 
 interface SkipLinkProps {
 	children: ReactNode;

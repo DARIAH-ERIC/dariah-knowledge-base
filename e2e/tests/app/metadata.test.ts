@@ -2,8 +2,8 @@ import { createUrl } from "@acdh-oeaw/lib";
 import { jsonLdScriptProps } from "react-schemaorg";
 
 import { env } from "@/config/env.config";
-import { locales } from "@/config/i18n.config";
 import { expect, test } from "@/e2e/lib/test";
+import { locales } from "@/lib/i18n/locales";
 
 test("should set a canonical url", async ({ page }) => {
 	for (const locale of locales) {
@@ -17,13 +17,13 @@ test("should set a canonical url", async ({ page }) => {
 	}
 });
 
-/** FIXME: @see https://github.com/vercel/next	.js/issues/45620 */
+/** FIXME: @see https://github.com/vercel/next.js/issues/45620 */
 test.fixme("should set document title on not-found page", async ({ page }) => {
 	await page.goto("/unknown");
-	await expect(page).toHaveTitle("Page not found | DARIAH Unified National Reporting");
+	await expect(page).toHaveTitle("Page not found | DARIAH Knowledge Base");
 
 	await page.goto("/de/unknown");
-	await expect(page).toHaveTitle("Seite nicht gefunden | DARIAH Unified National Reporting");
+	await expect(page).toHaveTitle("Seite nicht gefunden | DARIAH Knowledge Base");
 });
 
 /** FIXME: @see https://github.com/vercel/next.js/issues/45620 */
@@ -47,10 +47,10 @@ test.describe("should set page metadata", () => {
 		await expect(twCard).toHaveAttribute("content", "summary_large_image");
 
 		const twCreator = page.locator('meta[name="twitter:creator"]');
-		await expect(twCreator).toHaveAttribute("content", "@dariaheu");
+		await expect(twCreator).toHaveAttribute("content", "https://x.com/dariaheu");
 
 		const twSite = page.locator('meta[name="twitter:site"]');
-		await expect(twSite).toHaveAttribute("content", "@dariaheu");
+		await expect(twSite).toHaveAttribute("content", "https://x.com/dariaheu");
 
 		// const googleSiteVerification = page.locator('meta[name="google-site-verification"]');
 		// await expect(googleSiteVerification).toHaveAttribute("content", "");
@@ -59,7 +59,7 @@ test.describe("should set page metadata", () => {
 	test("with en locale", async ({ page }) => {
 		await page.goto("/en");
 
-		await expect(page).toHaveTitle("DARIAH Unified National Reporting");
+		await expect(page).toHaveTitle("DARIAH Knowledge Base");
 
 		const metaDescription = page.locator('meta[name="description"]');
 		await expect(metaDescription).toHaveAttribute(
@@ -68,7 +68,7 @@ test.describe("should set page metadata", () => {
 		);
 
 		const ogTitle = page.locator('meta[property="og:title"]');
-		await expect(ogTitle).toHaveAttribute("content", "DARIAH Unified National Reporting");
+		await expect(ogTitle).toHaveAttribute("content", "DARIAH Knowledge Base");
 
 		const ogDescription = page.locator('meta[property="og:description"]');
 		await expect(ogDescription).toHaveAttribute(
@@ -83,14 +83,14 @@ test.describe("should set page metadata", () => {
 		);
 
 		const ogLocale = page.locator('meta[property="og:locale"]');
-		await expect(ogLocale).toHaveAttribute("content", "en");
+		await expect(ogLocale).toHaveAttribute("content", "en-GB");
 	});
 
 	// eslint-disable-next-line playwright/no-skipped-test
 	test.skip("with de locale", async ({ page }) => {
 		await page.goto("/de");
 
-		await expect(page).toHaveTitle("DARIAH Unified National Reporting");
+		await expect(page).toHaveTitle("DARIAH Knowledge Base");
 
 		const metaDescription = page.locator('meta[name="description"]');
 		await expect(metaDescription).toHaveAttribute(
@@ -99,7 +99,7 @@ test.describe("should set page metadata", () => {
 		);
 
 		const ogTitle = page.locator('meta[property="og:title"]');
-		await expect(ogTitle).toHaveAttribute("content", "DARIAH Unified National Reporting");
+		await expect(ogTitle).toHaveAttribute("content", "DARIAH Knowledge Base");
 
 		const ogDescription = page.locator('meta[property="og:description"]');
 		await expect(ogDescription).toHaveAttribute(
@@ -128,8 +128,9 @@ test.describe("should add json+ld metadata", () => {
 			jsonLdScriptProps({
 				"@context": "https://schema.org",
 				"@type": "WebSite",
-				name: "DARIAH Unified National Reporting",
+				name: "DARIAH Knowledge Base",
 				description: "Key performance indicators for DARIAH member countries.",
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 			}).dangerouslySetInnerHTML?.__html,
 		);
 	});
@@ -144,8 +145,9 @@ test.describe("should add json+ld metadata", () => {
 			jsonLdScriptProps({
 				"@context": "https://schema.org",
 				"@type": "WebSite",
-				name: "DARIAH Unified National Reporting",
+				name: "DARIAH Knowledge Base",
 				description: "Wichtige Leistungsindikatoren für DARIAH-Mitgliedsländer.",
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 			}).dangerouslySetInnerHTML?.__html,
 		);
 	});
@@ -159,7 +161,7 @@ test("should serve an open-graph image", async ({ page, request }) => {
 		await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
 			"content",
 			expect.stringContaining(
-				String(createUrl({ baseUrl: env.NEXT_PUBLIC_APP_BASE_URL, pathname: imagePath })) + `?`,
+				`${String(createUrl({ baseUrl: env.NEXT_PUBLIC_APP_BASE_URL, pathname: imagePath }))}?`,
 			),
 		);
 

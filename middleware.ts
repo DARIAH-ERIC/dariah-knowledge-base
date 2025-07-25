@@ -1,16 +1,14 @@
-import createI18nMiddleware from "next-intl/middleware";
+import type { MiddlewareConfig, NextMiddleware } from "next/server";
 
-import { defaultLocale, locales } from "@/config/i18n.config";
-import { sessionCookieExtensionMiddleware } from "@/lib/server/auth/session-cookie-extension-middleware";
+import { middleware as i18nMiddlware } from "@/lib/i18n/middleware";
+import { middleware as sessionCookieExtensionMiddleware } from "@/lib/server/auth/session-cookie-extension-middleware";
 import { composeMiddleware } from "@/lib/server/compose-middlewares";
 
-const i18nMiddleware = createI18nMiddleware({
-	defaultLocale,
-	locales,
-});
+export const middleware: NextMiddleware = composeMiddleware(
+	i18nMiddlware,
+	sessionCookieExtensionMiddleware,
+);
 
-export default composeMiddleware(i18nMiddleware, sessionCookieExtensionMiddleware);
-
-export const config = {
+export const config: MiddlewareConfig = {
 	matcher: ["/", "/en/:path*"],
 };

@@ -2,8 +2,7 @@
 
 import { isNonEmptyString } from "@acdh-oeaw/lib";
 import type { EventReport, Report } from "@prisma/client";
-import type { ReactNode } from "react";
-import { useFormState } from "react-dom";
+import { type ReactNode, useActionState } from "react";
 
 import { SubmitButton } from "@/components/submit-button";
 import { NumberInputField } from "@/components/ui/blocks/number-input-field";
@@ -33,7 +32,7 @@ export function EventReportFormContent(props: EventReportFormContentProps): Reac
 		reportId,
 	} = props;
 
-	const [formState, formAction] = useFormState(updateEventReportAction, undefined);
+	const [formState, formAction] = useActionState(updateEventReportAction, undefined);
 
 	return (
 		<Form

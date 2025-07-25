@@ -1,20 +1,19 @@
 import type { Metadata, ResolvingMetadata } from "next";
-import { useTranslations } from "next-intl";
-import { getTranslations, unstable_setRequestLocale as setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { ContactForm } from "@/components/contact-form";
 import { MainContent } from "@/components/main-content";
 import { PageLeadIn } from "@/components/page-lead-in";
 import { PageTitle } from "@/components/page-title";
-import type { Locale } from "@/config/i18n.config";
+import type { IntlLocale } from "@/lib/i18n/locales";
 import { contactPageSearchParams } from "@/lib/schemas/email";
 
 interface ContactPageProps {
-	params: {
-		locale: Locale;
-	};
-	searchParams: Record<string, Array<string> | string>;
+	params: Promise<{
+		locale: IntlLocale;
+	}>;
+	searchParams: Promise<Record<string, Array<string> | string>>;
 }
 
 export async function generateMetadata(
@@ -23,7 +22,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: "ContactPage" });
 
 	const metadata: Metadata = {
@@ -33,18 +32,18 @@ export async function generateMetadata(
 	return metadata;
 }
 
-export default function ContactPage(props: ContactPageProps): ReactNode {
+export default async function ContactPage(props: ContactPageProps): Promise<ReactNode> {
 	const { params, searchParams } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	setRequestLocale(locale);
 
-	const t = useTranslations("ContactPage");
+	const t = await getTranslations("ContactPage");
 
-	const contactSearchParams = contactPageSearchParams.parse(searchParams);
+	const contactSearchParams = contactPageSearchParams.parse(await searchParams);
 
 	return (
-		<MainContent className="container grid max-w-screen-md content-start gap-8 py-8">
+		<MainContent className="container grid max-w-(--breakpoint-md) content-start gap-8 py-8">
 			<PageTitle>{t("title")}</PageTitle>
 			<PageLeadIn>{t("lead-in")}</PageLeadIn>
 

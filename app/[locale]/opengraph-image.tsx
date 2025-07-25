@@ -1,8 +1,8 @@
 import type { ImageResponse } from "next/og";
-import { getTranslations } from "next-intl/server";
 
 import { MetadataImage } from "@/components/metadata-image";
-import type { Locale } from "@/config/i18n.config";
+import type { IntlLocale } from "@/lib/i18n/locales";
+import { getMetadata } from "@/lib/i18n/metadata";
 
 export const runtime = "edge";
 
@@ -15,7 +15,7 @@ export const size = {
 
 interface OpenGraphImageProps {
 	params: {
-		locale: Locale;
+		locale: IntlLocale;
 	};
 }
 
@@ -23,9 +23,9 @@ export default async function OpenGraphImage(props: OpenGraphImageProps): Promis
 	const { params } = props;
 
 	const { locale } = params;
-	const t = await getTranslations({ locale, namespace: "LocaleLayout" });
+	const meta = await getMetadata(locale);
 
-	const title = t("meta.title");
+	const title = meta.title;
 
 	return MetadataImage({ locale, size, title });
 }

@@ -1,20 +1,20 @@
 import type { Metadata, ResolvingMetadata } from "next";
-import { getTranslations, unstable_setRequestLocale as setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { type ReactNode, Suspense } from "react";
 
 import { AdminWorkingGroupsTableContent } from "@/components/admin/working-groups-table-content";
 import { MainContent } from "@/components/main-content";
 import { PageTitle } from "@/components/page-title";
-import type { Locale } from "@/config/i18n.config";
 import { getContributions } from "@/lib/data/contributions";
 import { getPersons } from "@/lib/data/person";
 import { getWorkingGroups } from "@/lib/data/working-group";
+import type { IntlLocale } from "@/lib/i18n/locales";
 import { assertAuthenticated } from "@/lib/server/auth/assert-authenticated";
 
 interface DashboardAdminWorkingGroupsPageProps {
-	params: {
-		locale: Locale;
-	};
+	params: Promise<{
+		locale: IntlLocale;
+	}>;
 }
 
 export async function generateMetadata(
@@ -23,7 +23,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: "DashboardAdminWorkingGroupsPage" });
 
 	const metadata: Metadata = {
@@ -38,7 +38,7 @@ export default async function DashboardAdminWorkingGroupsPage(
 ): Promise<ReactNode> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	setRequestLocale(locale);
 
 	const t = await getTranslations("DashboardAdminWorkingGroupsPage");
@@ -46,7 +46,7 @@ export default async function DashboardAdminWorkingGroupsPage(
 	await assertAuthenticated(["admin"]);
 
 	return (
-		<MainContent className="container grid !max-w-screen-2xl content-start gap-y-8 py-8">
+		<MainContent className="container grid max-w-(--breakpoint-2xl)! content-start gap-y-8 py-8">
 			<PageTitle>{t("title")}</PageTitle>
 
 			<DashboardAdminWorkingGroupsContent />

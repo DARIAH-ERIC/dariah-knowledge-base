@@ -7,5 +7,5 @@ interface PageLeadInProps {
 export function PageLeadIn(props: PageLeadInProps): ReactNode {
 	const { children } = props;
 
-	return <div className="prose prose-sm max-w-screen-md text-pretty">{children}</div>;
+	return <div className="prose prose-sm max-w-(--breakpoint-md) text-pretty">{children}</div>;
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import type { ElementRef } from "react";
 import {
 	composeRenderProps,
 	DateField as AriaDateField,
@@ -8,7 +7,6 @@ import {
 	type DateValue as AriaDateValue,
 } from "react-aria-components";
 
-import { type ForwardedRef, forwardRef } from "@/lib/forward-ref";
 import { type VariantProps, variants } from "@/lib/styles";
 
 export type { AriaDateValue as DateValue };
@@ -23,15 +21,11 @@ export interface DateFieldProps<T extends AriaDateValue>
 	extends AriaDateFieldProps<T>,
 		DateFieldStyles {}
 
-export const DateField = forwardRef(function DateField<T extends AriaDateValue>(
-	props: DateFieldProps<T>,
-	forwardedRef: ForwardedRef<ElementRef<typeof AriaDateField>>,
-) {
+export function DateField<T extends AriaDateValue>(props: DateFieldProps<T>) {
 	const { children, className, ...rest } = props;
 
 	return (
 		<AriaDateField<T>
-			ref={forwardedRef}
 			{...rest}
 			className={composeRenderProps(className, (className, renderProps) => {
 				return dateFieldStyles({ ...renderProps, className });
@@ -40,4 +34,4 @@ export const DateField = forwardRef(function DateField<T extends AriaDateValue>(
 			{children}
 		</AriaDateField>
 	);
-});
+}

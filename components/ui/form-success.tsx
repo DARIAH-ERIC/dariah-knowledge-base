@@ -1,10 +1,9 @@
 "use client";
 
 import { CheckIcon } from "lucide-react";
-import type { ComponentPropsWithoutRef, ElementRef } from "react";
+import type { ComponentPropsWithoutRef } from "react";
 import { useFormStatus } from "react-dom";
 
-import { type ForwardedRef, forwardRef } from "@/lib/forward-ref";
 import { type VariantProps, variants } from "@/lib/styles";
 
 export const formSuccessStyles = variants({
@@ -26,10 +25,7 @@ export interface FormSuccessProps
 	extends Omit<ComponentPropsWithoutRef<"div">, "aria-atomic" | "aria-live" | "aria-relevant">,
 		FormSuccessStyles {}
 
-export const FormSuccess = forwardRef(function FormSuccess(
-	props: FormSuccessProps,
-	forwardedRef: ForwardedRef<ElementRef<"div">>,
-) {
+export function FormSuccess(props: FormSuccessProps) {
 	const { children, className, ...rest } = props;
 
 	/** TODO: Consider moving up a level once `useActionState` lands in `react`. */
@@ -41,7 +37,6 @@ export const FormSuccess = forwardRef(function FormSuccess(
 
 	return (
 		<div
-			ref={forwardedRef}
 			{...rest}
 			aria-atomic={true}
 			aria-live="polite"
@@ -52,4 +47,4 @@ export const FormSuccess = forwardRef(function FormSuccess(
 			{message}
 		</div>
 	);
-});
+}

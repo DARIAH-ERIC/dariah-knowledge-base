@@ -3,9 +3,8 @@
 import type { Country, Institution, Report } from "@prisma/client";
 import { useListData } from "@react-stately/data";
 import { PlusIcon } from "lucide-react";
-import { Fragment, type ReactNode, useId } from "react";
+import { Fragment, type ReactNode, useActionState, useId } from "react";
 import { Group } from "react-aria-components";
-import { useFormState } from "react-dom";
 
 import { SubmitButton } from "@/components/submit-button";
 import { ContextualHelp } from "@/components/ui/blocks/contextual-help";
@@ -47,7 +46,7 @@ interface InstitutionsFormContentProps {
 export function InstitutionsFormContent(props: InstitutionsFormContentProps): ReactNode {
 	const { comments, countryId, institutions, reportId, year } = props;
 
-	const [formState, formAction] = useFormState(updateInstitutionsAction, undefined);
+	const [formState, formAction] = useActionState(updateInstitutionsAction, undefined);
 
 	return (
 		<Form

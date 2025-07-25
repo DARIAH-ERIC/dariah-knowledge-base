@@ -3,9 +3,8 @@
 import { ProjectScope, type ProjectsFundingLeverage, type Report } from "@prisma/client";
 import { useListData } from "@react-stately/data";
 import { PlusIcon } from "lucide-react";
-import { Fragment, type ReactNode, useId } from "react";
+import { Fragment, type ReactNode, useActionState, useId } from "react";
 import { Group } from "react-aria-components";
-import { useFormState } from "react-dom";
 
 import { SubmitButton } from "@/components/submit-button";
 import { DateInputField } from "@/components/ui/blocks/date-input-field";
@@ -66,7 +65,7 @@ export function ProjectsFundingLeveragesFormContent(
 		reportId,
 	} = props;
 
-	const [formState, formAction] = useFormState(updateProjectsFundingLeveragesAction, undefined);
+	const [formState, formAction] = useActionState(updateProjectsFundingLeveragesAction, undefined);
 
 	return (
 		<Form

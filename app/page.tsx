@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-restricted-imports
 import { redirect } from "next/navigation";
 
-import { defaultLocale } from "@/config/i18n.config";
+import { defaultLocale } from "@/lib/i18n/locales";
 
 /**
  * This page only renders when the app is built statically with `output: "export"`.

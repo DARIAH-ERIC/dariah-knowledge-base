@@ -1,18 +1,18 @@
 import type { Metadata, ResolvingMetadata } from "next";
-import { getTranslations, unstable_setRequestLocale as setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { Link } from "@/components/link";
 import { MainContent } from "@/components/main-content";
 import { PageTitle } from "@/components/page-title";
-import type { Locale } from "@/config/i18n.config";
-import { createHref } from "@/lib/create-href";
+import type { IntlLocale } from "@/lib/i18n/locales";
+import { createHref } from "@/lib/navigation/create-href";
 import { assertAuthenticated } from "@/lib/server/auth/assert-authenticated";
 
 interface DashboardAdminPageProps {
-	params: {
-		locale: Locale;
-	};
+	params: Promise<{
+		locale: IntlLocale;
+	}>;
 }
 
 export async function generateMetadata(
@@ -21,7 +21,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: "DashboardAdminPage" });
 
 	const metadata: Metadata = {
@@ -36,7 +36,7 @@ export default async function DashboardAdminPage(
 ): Promise<ReactNode> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	setRequestLocale(locale);
 
 	const t = await getTranslations("DashboardAdminPage");

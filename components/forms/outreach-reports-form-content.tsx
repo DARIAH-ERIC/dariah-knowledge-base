@@ -12,9 +12,8 @@ import {
 } from "@prisma/client";
 import { useListData } from "@react-stately/data";
 import { PlusIcon } from "lucide-react";
-import { Fragment, type ReactNode, useId } from "react";
+import { Fragment, type ReactNode, useActionState, useId } from "react";
 import { Group } from "react-aria-components";
-import { useFormState } from "react-dom";
 
 import { SubmitButton } from "@/components/submit-button";
 import { ContextualHelp } from "@/components/ui/blocks/contextual-help";
@@ -66,7 +65,7 @@ export function OutreachReportsFormContent(props: OutreachReportsFormContentProp
 		reportId,
 	} = props;
 
-	const [formState, formAction] = useFormState(updateOutreachReportsAction, undefined);
+	const [formState, formAction] = useActionState(updateOutreachReportsAction, undefined);
 
 	const outreachReportsByOutreachId = keyByToMap(outreachReports, (outreachReport) => {
 		return outreachReport.outreach.id;
@@ -282,7 +281,7 @@ function CreateOutreachFormDialog(props: CreateOutreachFormDialogProps): ReactNo
 	const outreachTypes = Object.values(OutreachType);
 
 	// FIXME: only close dialog when submit was successful.
-	const [_formState, formAction] = useFormState(createOutreachAction, undefined);
+	const [_formState, formAction] = useActionState(createOutreachAction, undefined);
 
 	return (
 		<ModalOverlay>

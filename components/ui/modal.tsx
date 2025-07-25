@@ -1,6 +1,5 @@
 "use client";
 
-import type { ElementRef } from "react";
 import {
 	composeRenderProps,
 	Modal as AriaModal,
@@ -9,7 +8,6 @@ import {
 	type ModalOverlayProps as AriaModalProps,
 } from "react-aria-components";
 
-import { type ForwardedRef, forwardRef } from "@/lib/forward-ref";
 import { type VariantProps, variants } from "@/lib/styles";
 
 export const modalOverlayStyles = variants({
@@ -23,15 +21,11 @@ export type ModalOverlayStyles = VariantProps<typeof modalOverlayStyles>;
 
 export interface ModalOverlayProps extends AriaModalOverlayProps, ModalOverlayStyles {}
 
-export const ModalOverlay = forwardRef(function ModalOverlay(
-	props: ModalOverlayProps,
-	forwardedRef: ForwardedRef<ElementRef<typeof AriaModalOverlay>>,
-) {
+export function ModalOverlay(props: ModalOverlayProps) {
 	const { children, className, ...rest } = props;
 
 	return (
 		<AriaModalOverlay
-			ref={forwardedRef}
 			{...rest}
 			className={composeRenderProps(className, (className, renderProps) => {
 				return modalOverlayStyles({ ...renderProps, className });
@@ -40,7 +34,7 @@ export const ModalOverlay = forwardRef(function ModalOverlay(
 			{children}
 		</AriaModalOverlay>
 	);
-});
+}
 
 export const modalStyles = variants({
 	base: [
@@ -52,15 +46,11 @@ export type ModalStyles = VariantProps<typeof modalStyles>;
 
 export interface ModalProps extends AriaModalProps, ModalStyles {}
 
-export const Modal = forwardRef(function Modal(
-	props: ModalProps,
-	forwardedRef: ForwardedRef<ElementRef<typeof AriaModal>>,
-) {
+export function Modal(props: ModalProps) {
 	const { children, className, ...rest } = props;
 
 	return (
 		<AriaModal
-			ref={forwardedRef}
 			{...rest}
 			className={composeRenderProps(className, (className, renderProps) => {
 				return modalStyles({ ...renderProps, className });
@@ -69,4 +59,4 @@ export const Modal = forwardRef(function Modal(
 			{children}
 		</AriaModal>
 	);
-});
+}

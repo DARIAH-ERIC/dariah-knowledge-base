@@ -1,7 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
-import { useFormState } from "react-dom";
+import { type ReactNode, useActionState } from "react";
 
 import { SubmitButton } from "@/components/submit-button";
 import { Form } from "@/components/ui/form";
@@ -11,7 +10,7 @@ import { ingestDataFromSshompAction } from "@/lib/actions/admin/sshomp";
 import { createKey } from "@/lib/create-key";
 
 export function AdminSshompIngestFormContent(): ReactNode {
-	const [formState, formAction] = useFormState(ingestDataFromSshompAction, undefined);
+	const [formState, formAction] = useActionState(ingestDataFromSshompAction, undefined);
 
 	return (
 		<Form

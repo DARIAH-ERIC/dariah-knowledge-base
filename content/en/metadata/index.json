@@ -1,0 +1,15 @@
+{
+	"description": "Key performance indicators for DARIAH member countries.",
+	"title": "DARIAH Knowledge Base",
+	"manifest": {
+		"description": "Key performance indicators for DARIAH member countries.",
+		"name": "DARIAH Knowledge Base",
+		"short-name": "DARIAH Knowledge Base"
+	},
+	"social": [
+		{
+			"kind": "twitter",
+			"href": "https://x.com/dariaheu"
+		}
+	]
+}

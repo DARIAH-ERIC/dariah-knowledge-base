@@ -8,9 +8,8 @@ import {
 	SoftwareStatus,
 } from "@prisma/client";
 import { MoreHorizontalIcon, PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
-import { Fragment, type ReactNode, useId, useMemo, useState } from "react";
+import { Fragment, type ReactNode, useActionState, useId, useMemo, useState } from "react";
 import type { Key } from "react-aria-components";
-import { useFormState } from "react-dom";
 
 import { Pagination } from "@/components/admin/pagination";
 import { EMPTY_FILTER, useFilteredItems } from "@/components/admin/use-filtered-items";
@@ -302,7 +301,7 @@ function DeleteSoftwareDialog(props: DeleteSoftwareDialogProps) {
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(deleteSoftwareAction, undefined);
+	const [formState, formAction] = useActionState(deleteSoftwareAction, undefined);
 
 	if (action?.kind !== "delete") return null;
 
@@ -372,7 +371,7 @@ function CreateSoftwareDialog(props: CreateSoftwareDialogProps) {
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(createSoftwareAction, undefined);
+	const [formState, formAction] = useActionState(createSoftwareAction, undefined);
 
 	if (action?.kind !== "create") return null;
 
@@ -425,7 +424,7 @@ function EditSoftwareDialog(props: EditSoftwareDialogProps) {
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(updateSoftwareAction, undefined);
+	const [formState, formAction] = useActionState(updateSoftwareAction, undefined);
 
 	if (action?.kind !== "edit") return null;
 
@@ -593,7 +592,7 @@ function SoftwareStatistics(props: SoftwareStatisticsProps) {
 			<p>There are currently {software.length} software entries in the database.</p>
 			<dl className="grid gap-y-2">
 				<div>
-					<dt className="text-xs font-semibold uppercase tracking-wide">Grouped by status</dt>
+					<dt className="text-xs font-semibold tracking-wide uppercase">Grouped by status</dt>
 					<dd>
 						<ul>
 							{Object.values(SoftwareStatus).map((status) => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
-import { type ElementRef, Fragment } from "react";
+import { Fragment } from "react";
 import {
 	Button as AriaSelectTrigger,
 	type ButtonProps as AriaSelectTriggerProps,
@@ -18,7 +18,6 @@ import {
 	type SelectValueProps as AriaSelectValueProps,
 } from "react-aria-components";
 
-import { type ForwardedRef, forwardRef } from "@/lib/forward-ref";
 import { type VariantProps, variants } from "@/lib/styles";
 
 export const selectStyles = variants({
@@ -29,15 +28,11 @@ export type SelectStyles = VariantProps<typeof selectStyles>;
 
 export interface SelectProps<T extends object> extends AriaSelectProps<T>, SelectStyles {}
 
-export const Select = forwardRef(function Select<T extends object>(
-	props: SelectProps<T>,
-	forwardedRef: ForwardedRef<ElementRef<typeof AriaSelect>>,
-) {
+export function Select<T extends object>(props: SelectProps<T>) {
 	const { children, className, ...rest } = props;
 
 	return (
 		<AriaSelect<T>
-			ref={forwardedRef}
 			{...rest}
 			className={composeRenderProps(className, (className, renderProps) => {
 				return selectStyles({ ...renderProps, className });
@@ -46,7 +41,7 @@ export const Select = forwardRef(function Select<T extends object>(
 			{children}
 		</AriaSelect>
 	);
-});
+}
 
 export const selectTriggerStyles = variants({
 	base: [
@@ -55,10 +50,10 @@ export const selectTriggerStyles = variants({
 		"text-sm leading-normal text-neutral-950 dark:text-neutral-0",
 		"border border-neutral-950/10 hover:border-neutral-950/20 dark:border-neutral-0/10 dark:hover:border-neutral-0/20",
 		"bg-neutral-0 dark:bg-neutral-0/5",
-		"shadow-sm dark:shadow-none",
+		"shadow-xs dark:shadow-none",
 		"invalid:border-negative-500 invalid:shadow-negative-500/10 invalid:hover:border-negative-500 dark:invalid:border-negative-500 dark:invalid:hover:border-negative-500",
 		"disabled:border-neutral-950/20 disabled:bg-neutral-950/5 disabled:opacity-50 disabled:shadow-none dark:disabled:border-neutral-0/15 dark:disabled:hover:border-neutral-0/15",
-		"outline outline-0 outline-neutral-950 invalid:outline-negative-500 focus:outline-1 focus-visible:outline-2 dark:outline-neutral-0 forced-colors:outline-[Highlight]",
+		"outline-solid outline-0 outline-neutral-950 invalid:outline-negative-500 focus:outline-1 focus-visible:outline-2 dark:outline-neutral-0 forced-colors:outline-[Highlight]",
 	],
 });
 
@@ -66,15 +61,11 @@ export type SelectTriggerStyles = VariantProps<typeof selectTriggerStyles>;
 
 export interface SelectTriggerProps extends AriaSelectTriggerProps, SelectTriggerStyles {}
 
-export const SelectTrigger = forwardRef(function SelectTrigger(
-	props: SelectTriggerProps,
-	forwardedRef: ForwardedRef<ElementRef<typeof AriaSelectTrigger>>,
-) {
+export function SelectTrigger(props: SelectTriggerProps) {
 	const { children, className, ...rest } = props;
 
 	return (
 		<AriaSelectTrigger
-			ref={forwardedRef}
 			{...rest}
 			className={composeRenderProps(className, (className, renderProps) => {
 				return selectTriggerStyles({ ...renderProps, className });
@@ -90,7 +81,7 @@ export const SelectTrigger = forwardRef(function SelectTrigger(
 			})}
 		</AriaSelectTrigger>
 	);
-});
+}
 
 export const selectValueStyles = variants({
 	base: ["placeholder-shown:text-neutral-500"],
@@ -102,15 +93,11 @@ export interface SelectValueProps<T extends object>
 	extends AriaSelectValueProps<T>,
 		SelectValueStyles {}
 
-export const SelectValue = forwardRef(function SelectValue<T extends object>(
-	props: SelectValueProps<T>,
-	forwardedRef: ForwardedRef<ElementRef<typeof AriaSelectValue>>,
-) {
+export function SelectValue<T extends object>(props: SelectValueProps<T>) {
 	const { children, className, ...rest } = props;
 
 	return (
 		<AriaSelectValue<T>
-			ref={forwardedRef}
 			{...rest}
 			className={composeRenderProps(className, (className, renderProps) => {
 				return selectValueStyles({ ...renderProps, className });
@@ -119,25 +106,21 @@ export const SelectValue = forwardRef(function SelectValue<T extends object>(
 			{children}
 		</AriaSelectValue>
 	);
-});
+}
 
 export const selectPopoverStyles = variants({
-	base: ["w-max min-w-[--trigger-width]"],
+	base: ["w-max min-w-(--trigger-width)"],
 });
 
 export type SelectPopoverStyles = VariantProps<typeof selectPopoverStyles>;
 
 export interface SelectPopoverProps extends AriaSelectPopoverProps, SelectPopoverStyles {}
 
-export const SelectPopover = forwardRef(function SelectPopover(
-	props: SelectPopoverProps,
-	forwardedRef: ForwardedRef<ElementRef<typeof AriaSelectPopover>>,
-) {
+export function SelectPopover(props: SelectPopoverProps) {
 	const { children, className, ...rest } = props;
 
 	return (
 		<AriaSelectPopover
-			ref={forwardedRef}
 			{...rest}
 			className={composeRenderProps(className, (className, renderProps) => {
 				return selectPopoverStyles({ ...renderProps, className });
@@ -146,11 +129,11 @@ export const SelectPopover = forwardRef(function SelectPopover(
 			{children}
 		</AriaSelectPopover>
 	);
-});
+}
 
 export const selectListBoxStyles = variants({
 	base: [
-		"max-h-80 overflow-auto outline outline-1 outline-transparent transition",
+		"max-h-80 overflow-auto outline-solid outline-1 outline-transparent transition",
 		"select-none",
 		"rounded-md p-1",
 		"bg-neutral-0 dark:bg-neutral-800",
@@ -166,15 +149,11 @@ export interface SelectListBoxProps<T extends object>
 	extends AriaSelectListBoxProps<T>,
 		SelectListBoxStyles {}
 
-export const SelectListBox = forwardRef(function SelectListBox<T extends object>(
-	props: SelectListBoxProps<T>,
-	forwardedRef: ForwardedRef<ElementRef<typeof AriaSelectListBox>>,
-) {
+export function SelectListBox<T extends object>(props: SelectListBoxProps<T>) {
 	const { children, className, ...rest } = props;
 
 	return (
 		<AriaSelectListBox<T>
-			ref={forwardedRef}
 			{...rest}
 			className={composeRenderProps(className, (className, renderProps) => {
 				return selectListBoxStyles({ ...renderProps, className });
@@ -183,7 +162,7 @@ export const SelectListBox = forwardRef(function SelectListBox<T extends object>
 			{children}
 		</AriaSelectListBox>
 	);
-});
+}
 
 export const selectListBoxItemStyles = variants({
 	base: [
@@ -204,15 +183,11 @@ export interface SelectListBoxItemProps<T extends object>
 	textValue: NonNullable<AriaSelectListBoxItemProps<T>["textValue"]>;
 }
 
-export const SelectListBoxItem = forwardRef(function SelectListBoxItem<T extends object>(
-	props: SelectListBoxItemProps<T>,
-	forwardedRef: ForwardedRef<ElementRef<typeof AriaSelectListBoxItem<T>>>,
-) {
+export function SelectListBoxItem<T extends object>(props: SelectListBoxItemProps<T>) {
 	const { children, className, ...rest } = props;
 
 	return (
 		<AriaSelectListBoxItem<T>
-			ref={forwardedRef}
 			{...rest}
 			className={composeRenderProps(className, (className, renderProps) => {
 				return selectListBoxItemStyles({ ...renderProps, className });
@@ -232,4 +207,4 @@ export const SelectListBoxItem = forwardRef(function SelectListBoxItem<T extends
 			})}
 		</AriaSelectListBoxItem>
 	);
-});
+}

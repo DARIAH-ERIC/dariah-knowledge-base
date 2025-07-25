@@ -1,9 +1,8 @@
 "use client";
 
 import type { Country, Report, Software } from "@prisma/client";
-import type { ReactNode } from "react";
+import { type ReactNode, useActionState } from "react";
 import { Group } from "react-aria-components";
-import { useFormState } from "react-dom";
 
 import { SubmitButton } from "@/components/submit-button";
 import { ContextualHelp } from "@/components/ui/blocks/contextual-help";
@@ -14,8 +13,8 @@ import { FormError as FormErrorMessage } from "@/components/ui/form-error";
 import { FormSuccess as FormSuccessMessage } from "@/components/ui/form-success";
 import { LinkButton } from "@/components/ui/link-button";
 import { updateSoftwareAction } from "@/lib/actions/update-software";
-import { createHref } from "@/lib/create-href";
 import { createKey } from "@/lib/create-key";
+import { createHref } from "@/lib/navigation/create-href";
 import type { ReportCommentsSchema } from "@/lib/schemas/report";
 
 interface SoftwareFormContentProps {
@@ -29,7 +28,7 @@ interface SoftwareFormContentProps {
 export function SoftwareFormContent(props: SoftwareFormContentProps): ReactNode {
 	const { comments, countryId, reportId, softwares, sshompBaseUrl } = props;
 
-	const [formState, formAction] = useFormState(updateSoftwareAction, undefined);
+	const [formState, formAction] = useActionState(updateSoftwareAction, undefined);
 
 	return (
 		<Form

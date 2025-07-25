@@ -3,9 +3,8 @@
 import { type Prisma, ProjectScope } from "@prisma/client";
 import { MoreHorizontalIcon, PencilIcon, Trash2Icon } from "lucide-react";
 import { useFormatter } from "next-intl";
-import { Fragment, type ReactNode, useId, useMemo, useState } from "react";
+import { Fragment, type ReactNode, useActionState, useId, useMemo, useState } from "react";
 import type { Key } from "react-aria-components";
-import { useFormState } from "react-dom";
 
 import { Pagination } from "@/components/admin/pagination";
 import { usePagination } from "@/components/admin/use-pagination";
@@ -263,7 +262,7 @@ function DeleteProjectFundingLeverageDialog(props: DeleteProjectFundingLeverageD
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(deleteProjectFundingLeverageAction, undefined);
+	const [formState, formAction] = useActionState(deleteProjectFundingLeverageAction, undefined);
 
 	if (action?.kind !== "delete") return null;
 
@@ -332,7 +331,7 @@ function EditProjectFundingLeverageDialog(props: EditProjectFundingLeverageDialo
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(updateProjectFundingLeverageAction, undefined);
+	const [formState, formAction] = useActionState(updateProjectFundingLeverageAction, undefined);
 
 	if (action?.kind !== "edit") return null;
 

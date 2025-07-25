@@ -23,7 +23,7 @@ export function Card(props: CardProps): ReactNode {
 	return (
 		<CardContent {...rest}>
 			{image != null ? (
-				<div className="relative -mx-6 -mt-6 aspect-video overflow-auto rounded-t-md border-b">
+				<div className="relative -mx-6 -mt-6 aspect-video overflow-auto rounded-t-md border-b border-neutral-200 dark:border-neutral-800">
 					<img alt="" className="absolute inset-0 size-full object-cover" src={image} />
 				</div>
 			) : null}

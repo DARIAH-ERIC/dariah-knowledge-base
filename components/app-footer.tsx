@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 
 import { AppNavLink } from "@/components/app-nav-link";
 import type { LinkProps } from "@/components/link";
-import { createHref } from "@/lib/create-href";
+import { createHref } from "@/lib/navigation/create-href";
 
 export function AppFooter(): ReactNode {
 	const t = useTranslations("AppFooter");
@@ -22,7 +22,7 @@ export function AppFooter(): ReactNode {
 	} satisfies Record<string, { href: LinkProps["href"]; label: string }>;
 
 	return (
-		<footer className="border-t">
+		<footer className="border-t border-neutral-200 dark:border-neutral-800">
 			<div className="container flex items-center justify-between gap-4 py-4">
 				<nav aria-label={t("navigation-secondary")} className="-mx-3">
 					<ul className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm" role="list">

@@ -1,8 +1,8 @@
 import { createUrl } from "@acdh-oeaw/lib";
 
 import { env } from "@/config/env.config";
-import { locales } from "@/config/i18n.config";
 import { expect, test } from "@/e2e/lib/test";
+import { defaultLocale, locales } from "@/lib/i18n/locales";
 
 test.describe("app", () => {
 	if (env.NEXT_PUBLIC_BOTS !== "enabled") {
@@ -71,8 +71,8 @@ test.describe("app", () => {
 		// TODO: use toMatchSnapshot
 		expect(body.toString()).toEqual(
 			JSON.stringify({
-				name: "DARIAH Unified National Reporting",
-				short_name: "DARIAH UNR",
+				name: "DARIAH Knowledge Base",
+				short_name: "DARIAH Knowledge Base",
 				description: "Key performance indicators for DARIAH member countries.",
 				start_url: "/",
 				display: "standalone",
@@ -137,7 +137,7 @@ test.describe("app", () => {
 	});
 
 	test("should skip to main content with skip-link", async ({ createIndexPage }) => {
-		const locale = "en";
+		const locale = defaultLocale;
 
 		const { indexPage } = await createIndexPage(locale);
 		await indexPage.goto();

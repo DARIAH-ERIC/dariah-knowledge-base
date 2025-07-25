@@ -130,12 +130,12 @@ export function AdminReportsTableContent(props: AdminReportsTableContentProps): 
 								<Cell>{row.year}</Cell>
 								<Cell>{row.status}</Cell>
 								<Cell>
-									<div className="grid select-text gap-y-2 overflow-x-auto">
+									<div className="grid gap-y-2 overflow-x-auto select-text">
 										{row.comments
 											? Object.entries(row.comments).map(([field, comment]) => {
 													return (
 														<div key={field} className="grid gap-y-1">
-															<span className="text-2xs font-semibold uppercase tracking-wide text-neutral-600 dark:text-neutral-400">
+															<span className="text-2xs font-semibold tracking-wide text-neutral-600 uppercase dark:text-neutral-400">
 																{field}
 															</span>
 															<pre>{comment}</pre>

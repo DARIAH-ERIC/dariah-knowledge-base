@@ -11,9 +11,8 @@ import {
 	// ServiceStatus,
 } from "@prisma/client";
 import { useListData } from "@react-stately/data";
-import type { ReactNode } from "react";
+import { type ReactNode, useActionState } from "react";
 import { Group } from "react-aria-components";
-import { useFormState } from "react-dom";
 
 import { SubmitButton } from "@/components/submit-button";
 import { ContextualHelp } from "@/components/ui/blocks/contextual-help";
@@ -27,8 +26,8 @@ import { FormError as FormErrorMessage } from "@/components/ui/form-error";
 import { FormSuccess as FormSuccessMessage } from "@/components/ui/form-success";
 import { LinkButton } from "@/components/ui/link-button";
 import { updateServiceReportsAction } from "@/lib/actions/update-service-reports";
-import { createHref } from "@/lib/create-href";
 import { createKey } from "@/lib/create-key";
+import { createHref } from "@/lib/navigation/create-href";
 import type { ReportCommentsSchema } from "@/lib/schemas/report";
 
 interface ServiceReportWithKpis
@@ -61,7 +60,7 @@ export function ServiceReportsFormContent(props: ServiceReportsFormContentProps)
 
 	// const serviceStatuses = Object.values(ServiceStatus);
 
-	const [formState, formAction] = useFormState(updateServiceReportsAction, undefined);
+	const [formState, formAction] = useActionState(updateServiceReportsAction, undefined);
 
 	const serviceReportsByServiceId = keyByToMap(serviceReports, (serviceReport) => {
 		return serviceReport.service.id;

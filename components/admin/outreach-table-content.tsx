@@ -4,9 +4,8 @@ import { keyByToMap } from "@acdh-oeaw/lib";
 import { type Country, OutreachType, type Prisma } from "@prisma/client";
 import { MoreHorizontalIcon, PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import { useFormatter } from "next-intl";
-import { Fragment, type ReactNode, useId, useMemo, useState } from "react";
+import { Fragment, type ReactNode, useActionState, useId, useMemo, useState } from "react";
 import type { Key } from "react-aria-components";
-import { useFormState } from "react-dom";
 
 import { Pagination } from "@/components/admin/pagination";
 import { EMPTY_FILTER, useFilteredItems } from "@/components/admin/use-filtered-items";
@@ -310,7 +309,7 @@ function DeleteOutreachDialog(props: DeleteOutreachDialogProps) {
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(deleteOutreachAction, undefined);
+	const [formState, formAction] = useActionState(deleteOutreachAction, undefined);
 
 	if (action?.kind !== "delete") return null;
 
@@ -380,7 +379,7 @@ function CreateOutreachDialog(props: CreateOutreachDialogProps) {
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(createOutreachAction, undefined);
+	const [formState, formAction] = useActionState(createOutreachAction, undefined);
 
 	if (action?.kind !== "create") return null;
 
@@ -433,7 +432,7 @@ function EditOutreachDialog(props: EditOutreachDialogProps) {
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(updateOutreachAction, undefined);
+	const [formState, formAction] = useActionState(updateOutreachAction, undefined);
 
 	if (action?.kind !== "edit") return null;
 

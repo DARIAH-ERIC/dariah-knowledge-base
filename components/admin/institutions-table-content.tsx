@@ -4,9 +4,8 @@ import { keyByToMap } from "@acdh-oeaw/lib";
 import { type Country, InstitutionType, type Prisma } from "@prisma/client";
 import { MoreHorizontalIcon, PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import { useFormatter } from "next-intl";
-import { Fragment, type ReactNode, useId, useMemo, useState } from "react";
+import { Fragment, type ReactNode, useActionState, useId, useMemo, useState } from "react";
 import type { Key } from "react-aria-components";
-import { useFormState } from "react-dom";
 
 import { Pagination } from "@/components/admin/pagination";
 import { EMPTY_FILTER, useFilteredItems } from "@/components/admin/use-filtered-items";
@@ -319,7 +318,7 @@ function DeleteInstitutionDialog(props: DeleteInstitutionDialogProps) {
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(deleteInstitutionAction, undefined);
+	const [formState, formAction] = useActionState(deleteInstitutionAction, undefined);
 
 	if (action?.kind !== "delete") return null;
 
@@ -389,7 +388,7 @@ function CreateInstitutionDialog(props: CreateInstitutionDialogProps) {
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(createInstitutionAction, undefined);
+	const [formState, formAction] = useActionState(createInstitutionAction, undefined);
 
 	if (action?.kind !== "create") return null;
 
@@ -442,7 +441,7 @@ function EditInstitutionDialog(props: EditInstitutionDialogProps) {
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(updateInstitutionAction, undefined);
+	const [formState, formAction] = useActionState(updateInstitutionAction, undefined);
 
 	if (action?.kind !== "edit") return null;
 

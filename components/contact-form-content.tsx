@@ -1,7 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
-import { useFormState } from "react-dom";
+import { type ReactNode, useActionState } from "react";
 
 import { SubmitButton } from "@/components/submit-button";
 import { TextAreaField } from "@/components/ui/blocks/text-area-field";
@@ -23,7 +22,7 @@ interface ContactFormContentProps extends ContactPageSearchParams {
 export function ContactFormContent(props: ContactFormContentProps): ReactNode {
 	const { email, emailLabel, message, messageLabel, sendLabel, subject, subjectLabel } = props;
 
-	const [formState, formAction] = useFormState(sendContactEmailAction, undefined);
+	const [formState, formAction] = useActionState(sendContactEmailAction, undefined);
 
 	return (
 		<Form

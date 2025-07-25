@@ -5,11 +5,12 @@ import type { NextWebVitalsMetric } from "next/app";
 import { useSearchParams } from "next/navigation";
 import Script from "next/script";
 import { useReportWebVitals } from "next/web-vitals";
+import { useLocale } from "next-intl";
 import { Fragment, type ReactNode, Suspense, useEffect } from "react";
 
 import { env } from "@/config/env.config";
-import type { Locale } from "@/config/i18n.config";
-import { useLocale, usePathname } from "@/lib/navigation";
+import type { IntlLocale } from "@/lib/i18n/locales";
+import { usePathname } from "@/lib/navigation/navigation";
 
 declare global {
 	interface Window {
@@ -31,7 +32,7 @@ export function AnalyticsScript(props: AnalyticsProps): ReactNode {
 		<Fragment>
 			<Script
 				dangerouslySetInnerHTML={{
-					__html: `(${String(createAnalyticsScript)})("${baseUrl.endsWith("/") ? baseUrl : baseUrl + "/"}", "${String(id)}");`,
+					__html: `(${String(createAnalyticsScript)})("${baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`}", "${String(id)}");`,
 				}}
 				id="analytics-script"
 			/>
@@ -47,13 +48,13 @@ function createAnalyticsScript(baseUrl: string, id: number): void {
 	_paq.push(["disableCookies"]);
 	_paq.push(["enableHeartBeatTimer"]);
 	const u = baseUrl;
-	_paq.push(["setTrackerUrl", u + "matomo.php"]);
+	_paq.push(["setTrackerUrl", `${u}matomo.php`]);
 	_paq.push(["setSiteId", id]);
 	const d = document,
 		g = d.createElement("script"),
 		s = d.getElementsByTagName("script")[0];
 	g.async = true;
-	g.src = u + "matomo.js";
+	g.src = `${u}matomo.js`;
 	s?.parentNode?.insertBefore(g, s);
 }
 
@@ -75,7 +76,7 @@ function PageViewTracker(): ReactNode {
 /**
  * Track urls without locale prefix, and separate custom event for locale.
  */
-function trackPageView(locale: Locale, url: URL): void {
+function trackPageView(locale: IntlLocale, url: URL): void {
 	/** @see https://developer.matomo.org/guides/tracking-javascript-guide#custom-variables */
 	window._paq?.push(["setCustomVariable", 1, "Locale", locale, "page"]);
 	window._paq?.push(["setCustomUrl", url]);

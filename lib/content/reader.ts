@@ -9,9 +9,9 @@ import { cache } from "react";
 import { env } from "@/config/env.config";
 import config from "@/keystatic.config";
 
-export const reader = cache(() => {
-	if (isDraftModeEnabled()) {
-		const branch = cookies().get("ks-branch")?.value;
+export const reader = cache(async () => {
+	if (await isDraftModeEnabled()) {
+		const branch = (await cookies()).get("ks-branch")?.value;
 
 		assert(
 			env.NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO_OWNER != null &&
@@ -23,7 +23,7 @@ export const reader = cache(() => {
 			return createGitHubReader(config, {
 				repo: `${env.NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO_OWNER}/${env.NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO_NAME}`,
 				ref: branch,
-				token: cookies().get("keystatic-gh-access-token")?.value,
+				token: (await cookies()).get("keystatic-gh-access-token")?.value,
 			});
 		}
 	}
@@ -31,9 +31,9 @@ export const reader = cache(() => {
 	return createReader(process.cwd(), config);
 });
 
-function isDraftModeEnabled(): boolean {
+async function isDraftModeEnabled(): Promise<boolean> {
 	try {
-		return draftMode().isEnabled;
+		return (await draftMode()).isEnabled;
 	} catch {
 		return false;
 	}

@@ -1,8 +1,7 @@
 "use client";
 
 import type { Country, Report } from "@prisma/client";
-import type { ReactNode } from "react";
-import { useFormState } from "react-dom";
+import { type ReactNode, useActionState } from "react";
 
 import { SubmitButton } from "@/components/submit-button";
 import { Form } from "@/components/ui/form";
@@ -20,7 +19,7 @@ interface ConfirmationFormContentProps {
 export function ConfirmationFormContent(props: ConfirmationFormContentProps): ReactNode {
 	const { countryId, isConfirmationAvailable, reportId } = props;
 
-	const [formState, formAction] = useFormState(updateReportStatusAction, undefined);
+	const [formState, formAction] = useActionState(updateReportStatusAction, undefined);
 
 	return (
 		<Form

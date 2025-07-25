@@ -13,9 +13,8 @@ import {
 	ServiceType,
 } from "@prisma/client";
 import { MoreHorizontalIcon, PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
-import { Fragment, type ReactNode, useId, useMemo, useState } from "react";
+import { Fragment, type ReactNode, useActionState, useId, useMemo, useState } from "react";
 import type { Key } from "react-aria-components";
-import { useFormState } from "react-dom";
 
 import { Pagination } from "@/components/admin/pagination";
 import { EMPTY_FILTER, useFilteredItems } from "@/components/admin/use-filtered-items";
@@ -354,7 +353,7 @@ function DeleteServicesDialog(props: DeleteServicesDialogProps) {
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(deleteServiceAction, undefined);
+	const [formState, formAction] = useActionState(deleteServiceAction, undefined);
 
 	if (action?.kind !== "delete") return null;
 
@@ -426,7 +425,7 @@ function CreateServicesDialog(props: CreateServicesDialogProps) {
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(createServiceAction, undefined);
+	const [formState, formAction] = useActionState(createServiceAction, undefined);
 
 	if (action?.kind !== "create") return null;
 
@@ -483,7 +482,7 @@ function EditServicesDialog(props: EditServicesDialogProps) {
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(updateServiceAction, undefined);
+	const [formState, formAction] = useActionState(updateServiceAction, undefined);
 
 	if (action?.kind !== "edit") return null;
 
@@ -732,7 +731,7 @@ function ServicesEditForm(props: ServicesEditFormProps) {
 					name="dariahBranding"
 					type="checkbox"
 				/>
-				<span className="select-none text-sm font-medium leading-normal text-neutral-950 transition disabled:opacity-50 dark:text-neutral-0">
+				<span className="text-sm leading-normal font-medium text-neutral-950 transition select-none disabled:opacity-50 dark:text-neutral-0">
 					DARIAH branding
 				</span>
 			</label>
@@ -743,7 +742,7 @@ function ServicesEditForm(props: ServicesEditFormProps) {
 					name="eoscOnboarding"
 					type="checkbox"
 				/>
-				<span className="select-none text-sm font-medium leading-normal text-neutral-950 transition disabled:opacity-50 dark:text-neutral-0">
+				<span className="text-sm leading-normal font-medium text-neutral-950 transition select-none disabled:opacity-50 dark:text-neutral-0">
 					EOSC onboarding
 				</span>
 			</label>
@@ -754,7 +753,7 @@ function ServicesEditForm(props: ServicesEditFormProps) {
 					name="monitoring"
 					type="checkbox"
 				/>
-				<span className="select-none text-sm font-medium leading-normal text-neutral-950 transition disabled:opacity-50 dark:text-neutral-0">
+				<span className="text-sm leading-normal font-medium text-neutral-950 transition select-none disabled:opacity-50 dark:text-neutral-0">
 					Monitoring
 				</span>
 			</label>
@@ -765,7 +764,7 @@ function ServicesEditForm(props: ServicesEditFormProps) {
 					name="privateSupplier"
 					type="checkbox"
 				/>
-				<span className="select-none text-sm font-medium leading-normal text-neutral-950 transition disabled:opacity-50 dark:text-neutral-0">
+				<span className="text-sm leading-normal font-medium text-neutral-950 transition select-none disabled:opacity-50 dark:text-neutral-0">
 					Private supplier
 				</span>
 			</label>
@@ -822,7 +821,7 @@ function ServiceStatistics(props: ServiceStatisticsProps) {
 			<p>There are currently {services.length} services in the database.</p>
 			<dl className="grid gap-y-2">
 				<div>
-					<dt className="text-xs font-semibold uppercase tracking-wide">Grouped by size</dt>
+					<dt className="text-xs font-semibold tracking-wide uppercase">Grouped by size</dt>
 					<dd>
 						<ul>
 							{Array.from(serviceSizesById.values()).map((size) => {
@@ -838,7 +837,7 @@ function ServiceStatistics(props: ServiceStatisticsProps) {
 					</dd>
 				</div>
 				<div>
-					<dt className="text-xs font-semibold uppercase tracking-wide">Grouped by status</dt>
+					<dt className="text-xs font-semibold tracking-wide uppercase">Grouped by status</dt>
 					<dd>
 						<ul>
 							{Object.values(ServiceStatus).map((status) => {
@@ -854,7 +853,7 @@ function ServiceStatistics(props: ServiceStatisticsProps) {
 					</dd>
 				</div>
 				<div>
-					<dt className="text-xs font-semibold uppercase tracking-wide">Grouped by type</dt>
+					<dt className="text-xs font-semibold tracking-wide uppercase">Grouped by type</dt>
 					<dd>
 						<ul>
 							{Object.values(ServiceType).map((type) => {

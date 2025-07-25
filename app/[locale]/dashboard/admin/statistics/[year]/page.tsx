@@ -1,12 +1,11 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
-import { getTranslations, unstable_setRequestLocale as setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { type ReactNode, Suspense } from "react";
 
 import { AdminStatisticsContent } from "@/components/admin/statistics-content";
 import { MainContent } from "@/components/main-content";
 import { PageTitle } from "@/components/page-title";
-import type { Locale } from "@/config/i18n.config";
 import {
 	getContributionsCount,
 	getInstitutionsCount,
@@ -16,21 +15,22 @@ import {
 	getServicesCount,
 } from "@/lib/data/stats";
 import { getReportYears } from "@/lib/get-report-years";
+import type { IntlLocale } from "@/lib/i18n/locales";
 import { dashboardAdminStatisticsPageParams } from "@/lib/schemas/dashboard";
 import { assertAuthenticated } from "@/lib/server/auth/assert-authenticated";
 
 interface DashboardAdminStatisticsPageProps {
-	params: {
-		locale: Locale;
+	params: Promise<{
+		locale: IntlLocale;
 		year: string;
-	};
+	}>;
 }
 
 // export const dynamicParams = false;
 
 export async function generateStaticParams(_props: {
-	params: Pick<DashboardAdminStatisticsPageProps["params"], "locale">;
-}): Promise<Array<Pick<DashboardAdminStatisticsPageProps["params"], "year">>> {
+	params: Pick<Awaited<DashboardAdminStatisticsPageProps["params"]>, "locale">;
+}): Promise<Array<Pick<Awaited<DashboardAdminStatisticsPageProps["params"]>, "year">>> {
 	const years = await Promise.resolve(getReportYears());
 
 	const params = years.map((year) => {
@@ -46,7 +46,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: "DashboardAdminStatisticsPage" });
 
 	const metadata: Metadata = {
@@ -61,19 +61,19 @@ export default async function DashboardAdminStatisticsPage(
 ): Promise<ReactNode> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	setRequestLocale(locale);
 
 	const t = await getTranslations("DashboardAdminStatisticsPage");
 
 	await assertAuthenticated(["admin"]);
 
-	const result = dashboardAdminStatisticsPageParams.safeParse(params);
+	const result = dashboardAdminStatisticsPageParams.safeParse(await params);
 	if (!result.success) notFound();
 	const { year } = result.data;
 
 	return (
-		<MainContent className="container grid !max-w-screen-2xl content-start gap-y-8 py-8">
+		<MainContent className="container grid max-w-(--breakpoint-2xl)! content-start gap-y-8 py-8">
 			<PageTitle>{t("title")}</PageTitle>
 
 			<DashboardAdminStatisticsPageContent year={year} />

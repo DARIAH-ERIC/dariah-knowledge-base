@@ -5,9 +5,16 @@ import type { Contribution, Person, Prisma } from "@prisma/client";
 import { useListData } from "@react-stately/data";
 import { MoreHorizontalIcon, PencilIcon, PlusIcon, Trash2Icon, TrashIcon } from "lucide-react";
 import { useFormatter } from "next-intl";
-import { Fragment, type ReactNode, useCallback, useId, useMemo, useState } from "react";
+import {
+	Fragment,
+	type ReactNode,
+	useActionState,
+	useCallback,
+	useId,
+	useMemo,
+	useState,
+} from "react";
 import { Group, type Key } from "react-aria-components";
-import { useFormState } from "react-dom";
 
 import { Pagination } from "@/components/admin/pagination";
 import { usePagination } from "@/components/admin/use-pagination";
@@ -313,7 +320,7 @@ function DeleteWorkingGroupDialog(props: DeleteWorkingGroupDialogProps) {
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(deleteWorkingGroupAction, undefined);
+	const [formState, formAction] = useActionState(deleteWorkingGroupAction, undefined);
 
 	if (action?.kind !== "delete") return null;
 
@@ -384,7 +391,7 @@ function CreateWorkingGroupDialog(props: CreateWorkingGroupDialogProps) {
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(createWorkingGroupAction, undefined);
+	const [formState, formAction] = useActionState(createWorkingGroupAction, undefined);
 
 	if (action?.kind !== "create") return null;
 
@@ -439,7 +446,7 @@ function EditWorkingGroupDialog(props: EditWorkingGroupDialogProps) {
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(updateWorkingGroupAction, undefined);
+	const [formState, formAction] = useActionState(updateWorkingGroupAction, undefined);
 
 	if (action?.kind !== "edit") return null;
 
@@ -535,7 +542,7 @@ function WorkingGroupEditForm(props: WorkingGroupEditFormProps) {
 
 			<FormFieldArray aria-labelledby={chairsLabelId} className="flex flex-col gap-y-4">
 				<div
-					className="text-sm font-semibold leading-tight tracking-tight text-neutral-950 dark:text-neutral-0"
+					className="text-sm leading-tight font-semibold tracking-tight text-neutral-950 dark:text-neutral-0"
 					id={chairsLabelId}
 				>
 					Chairs

@@ -1,6 +1,6 @@
 import { cookies, draftMode } from "next/headers";
 
-export function POST(request: Request): Response {
+export async function POST(request: Request): Promise<Response> {
 	if (request.headers.get("origin") !== new URL(request.url).origin) {
 		return new Response("Invalid origin", { status: 400 });
 	}
@@ -10,8 +10,8 @@ export function POST(request: Request): Response {
 		return new Response("Missing referer", { status: 400 });
 	}
 
-	draftMode().disable();
-	cookies().delete("ks-branch");
+	(await draftMode()).disable();
+	(await cookies()).delete("ks-branch");
 
 	return Response.redirect(referrer, 303);
 }

@@ -3,15 +3,13 @@ import { cookies } from "next/headers";
 import { sessionCookieMaxAgeSeconds, sessionCookieName } from "@/config/auth.config";
 import { env } from "@/config/env.config";
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export async function getSessionToken(): Promise<string | null> {
-	const cookieStore = cookies();
+	const cookieStore = await cookies();
 	return cookieStore.get(sessionCookieName)?.value ?? null;
 }
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export async function setSessionTokenCookie(token: string): Promise<void> {
-	const cookieStore = cookies();
+	const cookieStore = await cookies();
 	cookieStore.set(sessionCookieName, token, {
 		httpOnly: true,
 		sameSite: "lax",
@@ -21,9 +19,8 @@ export async function setSessionTokenCookie(token: string): Promise<void> {
 	});
 }
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export async function deleteSessionTokenCookie(): Promise<void> {
-	const cookieStore = cookies();
+	const cookieStore = await cookies();
 	cookieStore.set(sessionCookieName, "", {
 		httpOnly: true,
 		sameSite: "lax",

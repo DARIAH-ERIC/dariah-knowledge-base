@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 
 import { rewriteUrl } from "@/lib/rewrite-url";
 
-export function GET(_request: Request): Response {
+export async function GET(_request: Request): Promise<Response> {
 	const request = rewriteUrl(_request);
 	const url = new URL(request.url);
 	const params = url.searchParams;
@@ -15,8 +15,8 @@ export function GET(_request: Request): Response {
 		return new Response("Missing `branch` or `to` params", { status: 400 });
 	}
 
-	draftMode().enable();
-	cookies().set("ks-branch", branch);
+	(await draftMode()).enable();
+	(await cookies()).set("ks-branch", branch);
 
 	const toUrl = new URL(to, url.origin);
 	toUrl.protocol = url.protocol;

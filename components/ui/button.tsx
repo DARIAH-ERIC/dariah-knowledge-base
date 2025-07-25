@@ -1,6 +1,5 @@
 "use client";
 
-import type { ElementRef } from "react";
 import {
 	Button as AriaButton,
 	type ButtonProps as AriaButtonProps,
@@ -8,7 +7,6 @@ import {
 } from "react-aria-components";
 
 import { TouchTarget } from "@/components/ui/touch-target";
-import { type ForwardedRef, forwardRef } from "@/lib/forward-ref";
 import { type VariantProps, variants } from "@/lib/styles";
 
 export const buttonStyles = variants({
@@ -26,12 +24,12 @@ export const buttonStyles = variants({
 				"border-neutral-950/90 dark:border-neutral-0/5",
 				"bg-neutral-900 text-neutral-0 dark:bg-neutral-600",
 				"hover:bg-neutral-900/90 dark:hover:bg-neutral-600/90",
-				"shadow-sm dark:shadow-none",
+				"shadow-xs dark:shadow-none",
 				"disabled:shadow-none",
 			],
 			outline: [
 				"border-neutral-950/10 dark:border-neutral-0/15",
-				"bg-transparent hover:bg-neutral-950/[2.5%] pressed:bg-neutral-950/[2.5%] dark:hover:bg-neutral-0/[2.5%] dark:pressed:bg-neutral-950/[2.5%]",
+				"bg-transparent hover:bg-neutral-950/2.5 pressed:bg-neutral-950/2.5 dark:hover:bg-neutral-0/2.5 dark:pressed:bg-neutral-950/2.5",
 				"text-neutral-950 dark:text-neutral-0",
 			],
 			plain: [
@@ -51,15 +49,11 @@ export type ButtonStyles = VariantProps<typeof buttonStyles>;
 
 export interface ButtonProps extends AriaButtonProps, ButtonStyles {}
 
-export const Button = forwardRef(function Button(
-	props: ButtonProps,
-	forwardedRef: ForwardedRef<ElementRef<typeof AriaButton>>,
-) {
+export function Button(props: ButtonProps) {
 	const { children, className, variant, ...rest } = props;
 
 	return (
 		<AriaButton
-			ref={forwardedRef}
 			{...rest}
 			className={composeRenderProps(className, (className, renderProps) => {
 				return buttonStyles({ ...renderProps, className, variant });
@@ -70,4 +64,4 @@ export const Button = forwardRef(function Button(
 			})}
 		</AriaButton>
 	);
-});
+}

@@ -1,8 +1,7 @@
 "use client";
 
 import { isNonEmptyString } from "@acdh-oeaw/lib";
-import type { ReactNode } from "react";
-import { useFormState } from "react-dom";
+import { type ReactNode, useActionState } from "react";
 
 import { SubmitButton } from "@/components/submit-button";
 import { TextInputField } from "@/components/ui/blocks/text-input-field";
@@ -22,7 +21,7 @@ interface SignInFormContentProps {
 export function SignInFormContent(props: SignInFormContentProps): ReactNode {
 	const { callbackUrl, emailLabel, passwordLabel, signInLabel } = props;
 
-	const [formState, formAction] = useFormState(signInAction, undefined);
+	const [formState, formAction] = useActionState(signInAction, undefined);
 
 	return (
 		<Form

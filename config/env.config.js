@@ -38,6 +38,7 @@ export const env = createEnv({
 			KEYSTATIC_GITHUB_CLIENT_ID: z.string().min(1).optional(),
 			KEYSTATIC_GITHUB_CLIENT_SECRET: z.string().min(1).optional(),
 			KEYSTATIC_SECRET: z.string().min(1).optional(),
+			NEXT_RUNTIME: z.enum(["edge", "nodejs"]).optional(),
 			SENTRY_AUTH_TOKEN: z.string().min(1).optional(),
 			SSHOC_MARKETPLACE_API_BASE_URL: z.string().url(),
 			SSHOC_MARKETPLACE_BASE_URL: z.string().url(),
@@ -58,6 +59,9 @@ export const env = createEnv({
 			NEXT_PUBLIC_MATOMO_BASE_URL: z.string().url().optional(),
 			NEXT_PUBLIC_MATOMO_ID: z.coerce.number().int().positive().optional(),
 			NEXT_PUBLIC_REDMINE_ID: z.coerce.number().int().positive(),
+			NEXT_PUBLIC_SENTRY_DSN: z.string().min(1).optional(),
+			NEXT_PUBLIC_SENTRY_ORG: z.string().min(1).optional(),
+			NEXT_PUBLIC_SENTRY_PROJECT: z.string().min(1).optional(),
 		});
 		return Schema.parse(input);
 	},
@@ -97,6 +101,10 @@ export const env = createEnv({
 		NEXT_PUBLIC_MATOMO_BASE_URL: process.env.NEXT_PUBLIC_MATOMO_BASE_URL,
 		NEXT_PUBLIC_MATOMO_ID: process.env.NEXT_PUBLIC_MATOMO_ID,
 		NEXT_PUBLIC_REDMINE_ID: process.env.NEXT_PUBLIC_REDMINE_ID,
+		NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
+		NEXT_PUBLIC_SENTRY_ORG: process.env.NEXT_PUBLIC_SENTRY_ORG,
+		NEXT_PUBLIC_SENTRY_PROJECT: process.env.NEXT_PUBLIC_SENTRY_PROJECT,
+		NEXT_RUNTIME: process.env.NEXT_RUNTIME,
 		SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
 		SSHOC_MARKETPLACE_API_BASE_URL: process.env.SSHOC_MARKETPLACE_API_BASE_URL,
 		SSHOC_MARKETPLACE_BASE_URL: process.env.SSHOC_MARKETPLACE_BASE_URL,

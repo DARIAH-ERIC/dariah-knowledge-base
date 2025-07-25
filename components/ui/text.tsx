@@ -1,9 +1,7 @@
 "use client";
 
-import type { ElementRef } from "react";
 import { Text as AriaText, type TextProps as AriaTextProps } from "react-aria-components";
 
-import { type ForwardedRef, forwardRef } from "@/lib/forward-ref";
 import { type VariantProps, variants } from "@/lib/styles";
 
 export const textStyles = variants({
@@ -14,15 +12,12 @@ export type TextStyles = VariantProps<typeof textStyles>;
 
 export interface TextProps extends AriaTextProps, TextStyles {}
 
-export const Text = forwardRef(function Text(
-	props: TextProps,
-	forwardedRef: ForwardedRef<ElementRef<typeof AriaText>>,
-) {
+export function Text(props: TextProps) {
 	const { children, className, ...rest } = props;
 
 	return (
-		<AriaText ref={forwardedRef} {...rest} className={textStyles({ className })}>
+		<AriaText {...rest} className={textStyles({ className })}>
 			{children}
 		</AriaText>
 	);
-});
+}

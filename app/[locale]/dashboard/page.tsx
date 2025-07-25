@@ -1,7 +1,7 @@
 import type { Country } from "@prisma/client";
 import type { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
-import { getTranslations, unstable_setRequestLocale as setRequestLocale } from "next-intl/server";
+import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { MainContent } from "@/components/main-content";
@@ -9,17 +9,17 @@ import { PageLeadIn } from "@/components/page-lead-in";
 import { PageTitle } from "@/components/page-title";
 import { SubmitButton } from "@/components/submit-button";
 import { LinkButton } from "@/components/ui/link-button";
-import type { Locale } from "@/config/i18n.config";
-import { createHref } from "@/lib/create-href";
 import { getCountryById } from "@/lib/data/country";
 import { createReportForCountryId, getReportByCountryId } from "@/lib/data/report";
-import { redirect } from "@/lib/navigation";
+import type { IntlLocale } from "@/lib/i18n/locales";
+import { createHref } from "@/lib/navigation/create-href";
+import { redirect } from "@/lib/navigation/navigation";
 import { assertAuthenticated } from "@/lib/server/auth/assert-authenticated";
 
 interface DashboardPageProps {
-	params: {
-		locale: Locale;
-	};
+	params: Promise<{
+		locale: IntlLocale;
+	}>;
 }
 
 export async function generateMetadata(
@@ -28,7 +28,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: "DashboardPage" });
 
 	const metadata: Metadata = {
@@ -41,7 +41,7 @@ export async function generateMetadata(
 export default async function DashboardPage(props: DashboardPageProps): Promise<ReactNode> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	setRequestLocale(locale);
 
 	const t = await getTranslations("DashboardPage");
@@ -99,6 +99,7 @@ interface DashboardPageContentProps {
 async function DashboardPageContent(props: DashboardPageContentProps) {
 	const { country, year } = props;
 
+	const locale = await getLocale();
 	const t = await getTranslations("DashboardPageContent");
 
 	const report = await getReportByCountryId({ countryId: country.id, year });
@@ -112,14 +113,15 @@ async function DashboardPageContent(props: DashboardPageContentProps) {
 
 						await createReportForCountryId({ countryId: country.id, year });
 
-						redirect(
-							createHref({
+						redirect({
+							href: createHref({
 								pathname: `/dashboard/reports/${String(year)}/countries/${country.code}/edit/welcome`,
 							}),
-						);
+							locale,
+						});
 					}}
 				>
-					<SubmitButton>{t("create-page-for-year", { year })}</SubmitButton>
+					<SubmitButton>{t("create-page-for-year", { year: String(year) })}</SubmitButton>
 				</form>
 			) : (
 				<LinkButton
@@ -127,7 +129,7 @@ async function DashboardPageContent(props: DashboardPageContentProps) {
 						pathname: `/dashboard/reports/${String(year)}/countries/${country.code}/edit/welcome`,
 					})}
 				>
-					{t("edit-page-for-year", { year })}
+					{t("edit-page-for-year", { year: String(year) })}
 				</LinkButton>
 			)}
 		</div>

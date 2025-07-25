@@ -1,12 +1,13 @@
 /** @typedef {import("typescript-eslint").Config} Config */
 
+import { resolve } from "node:path";
+
 import baseConfig from "@acdh-oeaw/eslint-config";
 import nextConfig from "@acdh-oeaw/eslint-config-next";
 import playwrightConfig from "@acdh-oeaw/eslint-config-playwright";
 import reactConfig from "@acdh-oeaw/eslint-config-react";
 import tailwindcssConfig from "@acdh-oeaw/eslint-config-tailwindcss";
 import gitignore from "eslint-config-flat-gitignore";
-// @ts-expect-error Missing type declaration.
 import checkFilePlugin from "eslint-plugin-check-file";
 
 /** @type {Config} */
@@ -16,10 +17,16 @@ const config = [
 	...reactConfig,
 	...nextConfig,
 	...tailwindcssConfig,
+	{
+		settings: {
+			tailwindcss: {
+				config: resolve("./styles/index.css"),
+			},
+		},
+	},
 	...playwrightConfig,
 	{
 		plugins: {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 			"check-file": checkFilePlugin,
 		},
 		rules: {
@@ -54,11 +61,11 @@ const config = [
 				{
 					name: "next/navigation",
 					importNames: ["redirect", "permanentRedirect", "useRouter", "usePathname"],
-					message: "Please use `@/lib/navigation` instead.",
+					message: "Please use `@/lib/navigation/navigation` instead.",
 				},
 				{
 					name: "next/router",
-					message: "Please use `@/lib/navigation` instead.",
+					message: "Please use `@/lib/navigation/navigation` instead.",
 				},
 			],
 			"no-restricted-syntax": [

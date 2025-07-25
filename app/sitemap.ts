@@ -5,7 +5,7 @@ import { glob } from "fast-glob";
 import type { MetadataRoute } from "next";
 
 import { env } from "@/config/env.config";
-import { locales } from "@/config/i18n.config";
+import { locales } from "@/lib/i18n/locales";
 
 const baseUrl = env.NEXT_PUBLIC_APP_BASE_URL;
 

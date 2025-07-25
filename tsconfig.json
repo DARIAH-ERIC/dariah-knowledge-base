@@ -12,7 +12,7 @@
 		"resolveJsonModule": true
 	},
 	"include": ["./**/*.ts", "./**/*.tsx", ".next/types/**/*.ts", "./**/*.js"],
-	"exclude": ["node_modules", "out"],
+	"exclude": [".next", "content", "node_modules", "out", "public"],
 	"mdx": {
 		"plugins": ["remark-frontmatter", "remark-mdx-frontmatter", "remark-gfm"]
 	}

@@ -11,7 +11,7 @@ on:
 jobs:
   env:
     name: Generate environment variables
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Derive environment from git ref
         id: environment
@@ -40,7 +40,7 @@ jobs:
   vars:
     name: Generate public url
     needs: [env]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     environment:
       name: ${{ needs.env.outputs.environment }}
     steps:
@@ -60,7 +60,7 @@ jobs:
   build:
     name: Build and push docker image
     needs: [env, vars]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       packages: write
@@ -112,6 +112,9 @@ jobs:
             "NEXT_PUBLIC_MATOMO_BASE_URL=${{ vars.NEXT_PUBLIC_MATOMO_BASE_URL }}"
             "NEXT_PUBLIC_MATOMO_ID=${{ vars.NEXT_PUBLIC_MATOMO_ID }}"
             "NEXT_PUBLIC_REDMINE_ID=${{ vars.SERVICE_ID }}"
+            "NEXT_PUBLIC_SENTRY_DSN=${{ vars.NEXT_PUBLIC_SENTRY_DSN }}"
+            "NEXT_PUBLIC_SENTRY_ORG=${{ vars.NEXT_PUBLIC_SENTRY_ORG }}"
+            "NEXT_PUBLIC_SENTRY_PROJECT=${{ vars.NEXT_PUBLIC_SENTRY_PROJECT }}"
           secrets: |
             "AUTH_SECRET=${{ secrets.K8S_SECRET_AUTH_SECRET }}"
             "EMAIL_CONTACT_ADDRESS=${{ secrets.K8S_SECRET_EMAIL_CONTACT_ADDRESS }}"

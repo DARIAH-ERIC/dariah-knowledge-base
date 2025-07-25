@@ -3,9 +3,9 @@ import { getTranslations } from "next-intl/server";
 
 import { MainContent } from "@/components/main-content";
 import { PageTitle } from "@/components/page-title";
-import { defaultLocale } from "@/config/i18n.config";
 import { ColorSchemeScript } from "@/lib/color-scheme-script";
 import * as fonts from "@/lib/fonts";
+import { defaultLocale } from "@/lib/i18n/locales";
 import { cn } from "@/lib/styles";
 
 export async function generateMetadata(
@@ -29,7 +29,7 @@ export default async function NotFoundPage() {
 
 	return (
 		<html
-			className={cn(fonts.body.variable, fonts.heading.variable)}
+			className={cn(fonts.body.variable)}
 			lang={defaultLocale}
 			/**
 			 * Suppressing hydration warning because we add `data-ui-color-scheme` before first paint.

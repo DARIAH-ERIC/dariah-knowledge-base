@@ -13,7 +13,7 @@ export function RequiredIndicator(props: RequiredIndicatorProps) {
 		<Fragment>
 			<span
 				aria-hidden={true}
-				className="inline-flex -translate-y-px translate-x-0.5 text-negative-500"
+				className="inline-flex translate-x-0.5 -translate-y-px text-negative-500"
 			>
 				*
 			</span>

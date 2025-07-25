@@ -4,7 +4,7 @@ import * as Sentry from "@sentry/nextjs";
 import Error from "next/error";
 import { useEffect } from "react";
 
-import { defaultLocale } from "@/config/i18n.config";
+import { defaultLocale } from "@/lib/i18n/locales";
 
 interface GlobalErrorProps {
 	error: Error & { digest?: string };

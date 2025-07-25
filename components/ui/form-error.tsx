@@ -1,10 +1,9 @@
 "use client";
 
 import { AlertCircleIcon } from "lucide-react";
-import type { ComponentPropsWithoutRef, ElementRef } from "react";
+import type { ComponentPropsWithoutRef } from "react";
 import { useFormStatus } from "react-dom";
 
-import { type ForwardedRef, forwardRef } from "@/lib/forward-ref";
 import { type VariantProps, variants } from "@/lib/styles";
 
 export const formErrorStyles = variants({
@@ -26,10 +25,7 @@ export interface FormErrorProps
 	extends Omit<ComponentPropsWithoutRef<"div">, "aria-atomic" | "aria-live" | "aria-relevant">,
 		FormErrorStyles {}
 
-export const FormError = forwardRef(function FormError(
-	props: FormErrorProps,
-	forwardedRef: ForwardedRef<ElementRef<"div">>,
-) {
+export function FormError(props: FormErrorProps) {
 	const { children, className, ...rest } = props;
 
 	/** TODO: Consider moving up a level once `useActionState` lands in `react`. */
@@ -41,7 +37,6 @@ export const FormError = forwardRef(function FormError(
 
 	return (
 		<div
-			ref={forwardedRef}
 			{...rest}
 			aria-atomic={true}
 			aria-live="polite"
@@ -52,4 +47,4 @@ export const FormError = forwardRef(function FormError(
 			{message}
 		</div>
 	);
-});
+}

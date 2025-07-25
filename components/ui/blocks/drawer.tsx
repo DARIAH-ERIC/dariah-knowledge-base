@@ -27,7 +27,7 @@ export function Drawer(props: DialogProps): ReactNode {
 		<ModalOverlay>
 			<Modal
 				{...rest}
-				className="relative grid content-stretch justify-start !p-0 entering:duration-200 entering:ease-out entering:animate-in entering:slide-in-from-left exiting:duration-150 exiting:ease-in exiting:animate-out exiting:slide-out-to-left"
+				className="relative grid content-stretch justify-start p-0! entering:duration-200 entering:ease-out entering:animate-in entering:slide-in-from-left exiting:duration-150 exiting:ease-in exiting:animate-out exiting:slide-out-to-left"
 				isDismissable={true}
 			>
 				<DialogContent className="rounded-none">

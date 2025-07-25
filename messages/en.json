@@ -188,7 +188,7 @@
 	},
 	"IndexPage": {},
 	"IndexPageHeroSection": {
-		"badge": "DARIAH Unified National Reporting",
+		"badge": "DARIAH Knowledge Base",
 		"go-to-dashboard": "Go to dashboard",
 		"lead-in": "Welcome to the DARIAH National Coordinator Dashboard! This portal is designed to collect valuable data necessary for the evaluation and measurement of DARIAH-EU and its national consortia. If you are a National Coordinator, or part of a National Consortium staff, please login.",
 		"read-documentation": "Read documentation",
@@ -198,25 +198,12 @@
 		"loading": "Loading"
 	},
 	"LocaleLayout": {
-		"meta": {
-			"description": "Key performance indicators for DARIAH member countries.",
-			"title": "DARIAH Unified National Reporting",
-			"twitter": {
-				"creator": "@dariaheu",
-				"site": "@dariaheu"
-			}
-		},
 		"skip-to-main-content": "Skip to main content"
 	},
 	"LocaleSwitcher": {
 		"current-locale": "Current language: {locale}",
 		"switch-locale": "Switch locale",
 		"switch-locale-to": "Switch to {locale}"
-	},
-	"Manifest": {
-		"description": "Key performance indicators for DARIAH member countries.",
-		"name": "DARIAH Unified National Reporting",
-		"short-name": "DARIAH UNR"
 	},
 	"NotFoundPage": {
 		"meta": {

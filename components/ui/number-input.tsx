@@ -1,9 +1,6 @@
 "use client";
 
-import type { ElementRef } from "react";
-
 import { Input, type InputProps } from "@/components/ui/input";
-import { type ForwardedRef, forwardRef } from "@/lib/forward-ref";
 import { type VariantProps, variants } from "@/lib/styles";
 
 export const numberInputStyles = variants({
@@ -14,15 +11,12 @@ export type NumberInputStyles = VariantProps<typeof numberInputStyles>;
 
 export interface NumberInputProps extends InputProps, NumberInputStyles {}
 
-export const NumberInput = forwardRef(function NumberInput(
-	props: NumberInputProps,
-	forwardedRef: ForwardedRef<ElementRef<typeof Input>>,
-) {
+export function NumberInput(props: NumberInputProps) {
 	const { children, className, ...rest } = props;
 
 	return (
-		<Input ref={forwardedRef} {...rest} className={numberInputStyles({ className })}>
+		<Input {...rest} className={numberInputStyles({ className })}>
 			{children}
 		</Input>
 	);
-});
+}

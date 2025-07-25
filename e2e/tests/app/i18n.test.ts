@@ -1,8 +1,8 @@
 import { createUrl } from "@acdh-oeaw/lib";
 
 import { env } from "@/config/env.config";
-import { locales } from "@/config/i18n.config";
 import { expect, test } from "@/e2e/lib/test";
+import { locales } from "@/lib/i18n/locales";
 
 test.describe("i18n", () => {
 	test.describe("should redirect root route to preferred locale", () => {
@@ -78,7 +78,7 @@ test.describe("i18n", () => {
 		await page.goto("/de/imprint");
 		await expect(page).toHaveURL("/de/imprint");
 		await expect(page.getByRole("heading", { name: "Impressum" })).toBeVisible();
-		await expect(page).toHaveTitle("Impressum | DARIAH Unified National Reporting");
+		await expect(page).toHaveTitle("Impressum | DARIAH Knowledge Base");
 
 		await page.getByRole("button", { name: "Sprache wechseln" }).click();
 		await page
@@ -88,7 +88,7 @@ test.describe("i18n", () => {
 
 		await expect(page).toHaveURL("/en/imprint");
 		await expect(page.getByRole("heading", { name: "Imprint" })).toBeVisible();
-		await expect(page).toHaveTitle("Imprint | DARIAH Unified National Reporting");
+		await expect(page).toHaveTitle("Imprint | DARIAH Knowledge Base");
 	});
 
 	test("should set `lang` attribute on `html` element", async ({ page }) => {

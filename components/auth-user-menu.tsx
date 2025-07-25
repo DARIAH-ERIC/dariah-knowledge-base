@@ -1,7 +1,7 @@
 "use client";
 
 import { UserIcon } from "lucide-react";
-import { Header, type Key, Section } from "react-aria-components";
+import { Header, type Key } from "react-aria-components";
 
 import {
 	DropdownMenu,
@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/blocks/dropdown-menu";
 import { IconButton } from "@/components/ui/icon-button";
 import { signOutAction } from "@/lib/actions/auth";
-import { useRouter } from "@/lib/navigation";
+import { useRouter } from "@/lib/navigation/navigation";
 import type { User } from "@/lib/server/auth/sessions";
 
 interface AuthUserMenuProps {
@@ -49,15 +49,13 @@ export function AuthUserMenu(props: AuthUserMenuProps) {
 			</IconButton>
 			{/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
 			<DropdownMenu onAction={onAction} placement="bottom">
-				<Section>
-					<Header className="mb-1.5 border-b px-3 py-1.5 text-xs text-neutral-600 dark:text-neutral-400">
-						Signed in as {user.name}
-					</Header>
-					{isAdminUser ? (
-						<DropdownMenuItem id="admin-dashboard">{adminDashboardLabel}</DropdownMenuItem>
-					) : null}
-					<DropdownMenuItem id="sign-out">{signOutLabel}</DropdownMenuItem>
-				</Section>
+				<Header className="mb-1.5 border-b border-neutral-200 px-3 py-1.5 text-xs text-neutral-600 dark:border-neutral-800 dark:text-neutral-400">
+					Signed in as {user.name}
+				</Header>
+				{isAdminUser ? (
+					<DropdownMenuItem id="admin-dashboard">{adminDashboardLabel}</DropdownMenuItem>
+				) : null}
+				<DropdownMenuItem id="sign-out">{signOutLabel}</DropdownMenuItem>
 			</DropdownMenu>
 		</DropdownMenuTrigger>
 	);

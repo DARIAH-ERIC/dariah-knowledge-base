@@ -18,6 +18,8 @@ USER node
 
 COPY --chown=node:node .npmrc package.json pnpm-lock.yaml ./
 
+ENV SKIP_INSTALL_SIMPLE_GIT_HOOKS=1
+
 RUN pnpm fetch
 
 COPY --chown=node:node ./ ./
@@ -32,6 +34,9 @@ ARG NEXT_PUBLIC_KEYSTATIC_MODE
 ARG NEXT_PUBLIC_MATOMO_BASE_URL
 ARG NEXT_PUBLIC_MATOMO_ID
 ARG NEXT_PUBLIC_REDMINE_ID
+ARG NEXT_PUBLIC_SENTRY_DSN
+ARG NEXT_PUBLIC_SENTRY_ORG
+ARG NEXT_PUBLIC_SENTRY_PROJECT
 
 # disable validation for runtime environment variables
 ENV ENV_VALIDATION=public

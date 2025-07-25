@@ -29,7 +29,7 @@ export async function createSession(userId: string): Promise<{ session: Session;
 	const secret = generateSecureRandomString();
 	const secretHash = await hashSecret(secret);
 
-	const token = id + "." + secret;
+	const token = `${id}.${secret}`;
 
 	const session = {
 		id,

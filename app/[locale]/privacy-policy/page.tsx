@@ -1,18 +1,17 @@
 import type { Metadata, ResolvingMetadata } from "next";
-import { useTranslations } from "next-intl";
-import { getTranslations, unstable_setRequestLocale as setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { Link } from "@/components/link";
 import { MainContent } from "@/components/main-content";
 import { PageTitle } from "@/components/page-title";
-import type { Locale } from "@/config/i18n.config";
-import { createHref } from "@/lib/create-href";
+import type { IntlLocale } from "@/lib/i18n/locales";
+import { createHref } from "@/lib/navigation/create-href";
 
 interface PrivacyPolicyPageProps {
-	params: {
-		locale: Locale;
-	};
+	params: Promise<{
+		locale: IntlLocale;
+	}>;
 }
 
 export async function generateMetadata(
@@ -21,7 +20,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: "PrivacyPolicyPage" });
 
 	const metadata: Metadata = {
@@ -31,24 +30,24 @@ export async function generateMetadata(
 	return metadata;
 }
 
-export default function PrivacyPolicyPage(props: PrivacyPolicyPageProps): ReactNode {
+export default async function PrivacyPolicyPage(props: PrivacyPolicyPageProps): Promise<ReactNode> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	setRequestLocale(locale);
 
-	const t = useTranslations("PrivacyPolicyPage");
+	const t = await getTranslations("PrivacyPolicyPage");
 
 	return (
-		<MainContent className="container grid max-w-screen-md content-start gap-y-8 py-8">
+		<MainContent className="container grid max-w-(--breakpoint-md) content-start gap-y-8 py-8">
 			<PageTitle>{t("title")}</PageTitle>
 
 			<div className="prose prose-sm">
 				<p>
-					This privacy statement describes how the DARIAH Unified National Reporting App collects
-					and uses data while browsing this website. We are committed to ensuring that your personal
-					details are protected when you use our website, or API. If you have any questions about
-					how we use your personal information or comply with data protection legislation, please{" "}
+					This privacy statement describes how the DARIAH Knowledge Base collects and uses data
+					while browsing this website. We are committed to ensuring that your personal details are
+					protected when you use our website, or API. If you have any questions about how we use
+					your personal information or comply with data protection legislation, please{" "}
 					<Link href={createHref({ pathname: "/contact" })}>contact us</Link>.
 				</p>
 

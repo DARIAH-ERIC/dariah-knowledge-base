@@ -1,12 +1,10 @@
 "use client";
 
-import type { ElementRef } from "react";
 import {
 	Heading as AriaFormSectionTitle,
 	type HeadingProps as AriaFormSectionTitleProps,
 } from "react-aria-components";
 
-import { type ForwardedRef, forwardRef } from "@/lib/forward-ref";
 import { type VariantProps, variants } from "@/lib/styles";
 
 export const FormSectionTitleStyles = variants({
@@ -21,19 +19,12 @@ export type FormSectionTitleStyles = VariantProps<typeof FormSectionTitleStyles>
 
 export interface FormSectionTitleProps extends AriaFormSectionTitleProps, FormSectionTitleStyles {}
 
-export const FormSectionTitle = forwardRef(function FormSectionTitle(
-	props: FormSectionTitleProps,
-	forwardedRef: ForwardedRef<ElementRef<typeof AriaFormSectionTitle>>,
-) {
+export function FormSectionTitle(props: FormSectionTitleProps) {
 	const { children, className, ...rest } = props;
 
 	return (
-		<AriaFormSectionTitle
-			ref={forwardedRef}
-			{...rest}
-			className={FormSectionTitleStyles({ className })}
-		>
+		<AriaFormSectionTitle {...rest} className={FormSectionTitleStyles({ className })}>
 			{children}
 		</AriaFormSectionTitle>
 	);
-});
+}

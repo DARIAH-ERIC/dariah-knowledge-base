@@ -1,6 +1,5 @@
 "use client";
 
-import type { ElementRef } from "react";
 import {
 	Menu as AriaMenu,
 	MenuItem as AriaMenuItem,
@@ -16,7 +15,6 @@ import {
 	type SubmenuTriggerProps as AriaSubMenuTriggerProps,
 } from "react-aria-components";
 
-import { type ForwardedRef, forwardRef } from "@/lib/forward-ref";
 import { type VariantProps, variants } from "@/lib/styles";
 
 export {
@@ -27,29 +25,26 @@ export {
 };
 
 export const menuPopoverStyles = variants({
-	base: ["w-max min-w-[--trigger-width]"],
+	base: ["w-max min-w-(--trigger-width)"],
 });
 
 export type MenuPopoverStyles = VariantProps<typeof menuPopoverStyles>;
 
 export interface MenuPopoverProps extends AriaMenuPopoverProps, MenuPopoverStyles {}
 
-export const MenuPopover = forwardRef(function MenuPopover(
-	props: MenuPopoverProps,
-	forwardedRef: ForwardedRef<ElementRef<typeof AriaMenuPopover>>,
-) {
+export function MenuPopover(props: MenuPopoverProps) {
 	const { children, className, ...rest } = props;
 
 	return (
-		<AriaMenuPopover ref={forwardedRef} {...rest} className={menuPopoverStyles({ className })}>
+		<AriaMenuPopover {...rest} className={menuPopoverStyles({ className })}>
 			{children}
 		</AriaMenuPopover>
 	);
-});
+}
 
 export const menuStyles = variants({
 	base: [
-		"outline outline-1 outline-transparent transition",
+		"outline-solid outline-1 outline-transparent transition",
 		// "overflow-y-scroll overscroll-contain",
 		"select-none",
 		"rounded-md p-1",
@@ -65,18 +60,15 @@ export type MenuStyles = VariantProps<typeof menuStyles>;
 
 export interface MenuProps<T extends object> extends AriaMenuProps<T>, MenuStyles {}
 
-export const Menu = forwardRef(function Menu<T extends object>(
-	props: MenuProps<T>,
-	forwardedRef: ForwardedRef<ElementRef<typeof AriaMenu>>,
-) {
+export function Menu<T extends object>(props: MenuProps<T>) {
 	const { children, className, ...rest } = props;
 
 	return (
-		<AriaMenu<T> ref={forwardedRef} {...rest} className={menuStyles({ className })}>
+		<AriaMenu<T> {...rest} className={menuStyles({ className })}>
 			{children}
 		</AriaMenu>
 	);
-});
+}
 
 export const menuItemStyles = variants({
 	base: [
@@ -92,18 +84,15 @@ export type MenuItemStyles = VariantProps<typeof menuItemStyles>;
 
 export interface MenuItemProps<T extends object> extends AriaMenuItemProps<T>, MenuItemStyles {}
 
-export const MenuItem = forwardRef(function MenuItem<T extends object>(
-	props: MenuItemProps<T>,
-	forwardedRef: ForwardedRef<ElementRef<typeof AriaMenuItem<T>>>,
-) {
+export function MenuItem<T extends object>(props: MenuItemProps<T>) {
 	const { children, className, ...rest } = props;
 
 	return (
-		<AriaMenuItem<T> ref={forwardedRef} {...rest} className={menuItemStyles({ className })}>
+		<AriaMenuItem<T> {...rest} className={menuItemStyles({ className })}>
 			{children}
 		</AriaMenuItem>
 	);
-});
+}
 
 export const MenuSeparatorStyles = variants({
 	base: ["my-2 h-px w-full bg-neutral-200 dark:bg-neutral-700"],
@@ -113,17 +102,8 @@ export type menuSeparatorStyles = VariantProps<typeof MenuSeparatorStyles>;
 
 export interface MenuSeparatorProps extends AriaMenuSeparatorProps, menuSeparatorStyles {}
 
-export const MenuSeparator = forwardRef(function MenuSeparator(
-	props: MenuSeparatorProps,
-	forwardedRef: ForwardedRef<ElementRef<typeof AriaMenuSeparator>>,
-) {
+export function MenuSeparator(props: MenuSeparatorProps) {
 	const { className, ...rest } = props;
 
-	return (
-		<AriaMenuSeparator
-			ref={forwardedRef}
-			{...rest}
-			className={MenuSeparatorStyles({ className })}
-		/>
-	);
-});
+	return <AriaMenuSeparator {...rest} className={MenuSeparatorStyles({ className })} />;
+}

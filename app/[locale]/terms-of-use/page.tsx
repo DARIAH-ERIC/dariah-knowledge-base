@@ -1,18 +1,17 @@
 import type { Metadata, ResolvingMetadata } from "next";
-import { useTranslations } from "next-intl";
-import { getTranslations, unstable_setRequestLocale as setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { Link } from "@/components/link";
 import { MainContent } from "@/components/main-content";
 import { PageTitle } from "@/components/page-title";
-import type { Locale } from "@/config/i18n.config";
-import { createHref } from "@/lib/create-href";
+import type { IntlLocale } from "@/lib/i18n/locales";
+import { createHref } from "@/lib/navigation/create-href";
 
 interface TermsOfUsePageProps {
-	params: {
-		locale: Locale;
-	};
+	params: Promise<{
+		locale: IntlLocale;
+	}>;
 }
 
 export async function generateMetadata(
@@ -21,7 +20,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: "TermsOfUsePage" });
 
 	const metadata: Metadata = {
@@ -31,16 +30,16 @@ export async function generateMetadata(
 	return metadata;
 }
 
-export default function TermsOfUsePage(props: TermsOfUsePageProps): ReactNode {
+export default async function TermsOfUsePage(props: TermsOfUsePageProps): Promise<ReactNode> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	setRequestLocale(locale);
 
-	const t = useTranslations("TermsOfUsePage");
+	const t = await getTranslations("TermsOfUsePage");
 
 	return (
-		<MainContent className="container grid max-w-screen-md content-start gap-y-8 py-8">
+		<MainContent className="container grid max-w-(--breakpoint-md) content-start gap-y-8 py-8">
 			<PageTitle>{t("title")}</PageTitle>
 
 			<div className="prose prose-sm">

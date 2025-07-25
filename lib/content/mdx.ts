@@ -27,8 +27,8 @@ export const processMdx = cache(function processMdx<T extends Record<string, unk
 interface DocumentationMetadata extends Omit<DocumentationPage, "content"> {}
 
 export async function getDocumentationContent(id: string) {
-	if (draftMode().isEnabled) {
-		const documentation = await reader().collections.documentation.read(id);
+	if ((await draftMode()).isEnabled) {
+		const documentation = await (await reader()).collections.documentation.read(id);
 		if (documentation == null) notFound();
 
 		const { content, ...frontmatter } = documentation;

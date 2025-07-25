@@ -1,11 +1,11 @@
 "use server";
 
 import { getFormDataValues, log } from "@acdh-oeaw/lib";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import type { z } from "zod";
 
 import { getUserByEmail } from "@/lib/data/user";
-import { redirect } from "@/lib/navigation";
+import { redirect } from "@/lib/navigation/navigation";
 import { type SignInFormSchema, signInFormSchema } from "@/lib/schemas/auth";
 import { getCurrentSession } from "@/lib/server/auth/get-current-session";
 import { verifyPassword } from "@/lib/server/auth/passwords";
@@ -35,6 +35,7 @@ export async function signInAction(
 	prevState: SignInFormState | undefined,
 	formData: FormData,
 ): Promise<SignInFormState> {
+	const locale = await getLocale();
 	const t = await getTranslations("actions.signIn");
 
 	let redirectToPathname = "/dashboard";
@@ -84,10 +85,12 @@ export async function signInAction(
 		};
 	}
 
-	redirect(redirectToPathname);
+	redirect({ href: redirectToPathname, locale });
 }
 
 export async function signOutAction(): Promise<void> {
+	const locale = await getLocale();
+
 	const { session } = await getCurrentSession();
 
 	if (session == null) {
@@ -97,5 +100,5 @@ export async function signOutAction(): Promise<void> {
 	await deleteSession(session.id);
 	await deleteSessionTokenCookie();
 
-	redirect("/");
+	redirect({ href: "/", locale });
 }

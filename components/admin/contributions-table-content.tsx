@@ -4,9 +4,8 @@ import { keyByToMap } from "@acdh-oeaw/lib";
 import type { Country, Person, Prisma, Role, WorkingGroup } from "@prisma/client";
 import { MoreHorizontalIcon, PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import { useFormatter } from "next-intl";
-import { Fragment, type ReactNode, useId, useMemo, useState } from "react";
+import { Fragment, type ReactNode, useActionState, useId, useMemo, useState } from "react";
 import type { Key } from "react-aria-components";
-import { useFormState } from "react-dom";
 
 import { Pagination } from "@/components/admin/pagination";
 import { EMPTY_FILTER, useFilteredItems } from "@/components/admin/use-filtered-items";
@@ -349,7 +348,7 @@ function DeleteContributionDialog(props: DeleteContributionDialogProps) {
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(deleteContributionAction, undefined);
+	const [formState, formAction] = useActionState(deleteContributionAction, undefined);
 
 	if (action?.kind !== "delete") return null;
 
@@ -423,7 +422,7 @@ function CreateContributionDialog(props: CreateContributionDialogProps) {
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(createContributionAction, undefined);
+	const [formState, formAction] = useActionState(createContributionAction, undefined);
 
 	if (action?.kind !== "create") return null;
 
@@ -482,7 +481,7 @@ function EditContributionDialog(props: EditContributionDialogProps) {
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(updateContributionAction, undefined);
+	const [formState, formAction] = useActionState(updateContributionAction, undefined);
 
 	if (action?.kind !== "edit") return null;
 

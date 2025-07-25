@@ -1,6 +1,5 @@
 "use client";
 
-import type { ElementRef } from "react";
 import {
 	composeRenderProps,
 	Link as AriaLink,
@@ -8,7 +7,6 @@ import {
 } from "react-aria-components";
 
 import { TouchTarget } from "@/components/ui/touch-target";
-import { type ForwardedRef, forwardRef } from "@/lib/forward-ref";
 import { type VariantProps, variants } from "@/lib/styles";
 
 export const linkStyles = variants({
@@ -23,15 +21,11 @@ export type LinkStyles = VariantProps<typeof linkStyles>;
 
 export interface LinkProps extends AriaLinkProps, LinkStyles {}
 
-export const Link = forwardRef(function Link(
-	props: LinkProps,
-	forwardedRef: ForwardedRef<ElementRef<typeof AriaLink>>,
-) {
+export function Link(props: LinkProps) {
 	const { children, className, ...rest } = props;
 
 	return (
 		<AriaLink
-			ref={forwardedRef}
 			{...rest}
 			className={composeRenderProps(className, (className, renderProps) => {
 				return linkStyles({ ...renderProps, className });
@@ -42,4 +36,4 @@ export const Link = forwardRef(function Link(
 			})}
 		</AriaLink>
 	);
-});
+}

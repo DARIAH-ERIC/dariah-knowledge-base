@@ -1,18 +1,18 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import { useTranslations } from "next-intl";
-import { getTranslations, unstable_setRequestLocale as setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { Logo } from "@/components/logo";
 import { MainContent } from "@/components/main-content";
 import { LinkButton } from "@/components/ui/link-button";
-import type { Locale } from "@/config/i18n.config";
-import { createHref } from "@/lib/create-href";
+import type { IntlLocale } from "@/lib/i18n/locales";
+import { createHref } from "@/lib/navigation/create-href";
 
 interface IndexPageProps {
-	params: {
-		locale: Locale;
-	};
+	params: Promise<{
+		locale: IntlLocale;
+	}>;
 }
 
 export async function generateMetadata(
@@ -21,7 +21,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	const _t = await getTranslations({ locale, namespace: "IndexPage" });
 
 	const metadata: Metadata = {
@@ -36,10 +36,10 @@ export async function generateMetadata(
 	return metadata;
 }
 
-export default function IndexPage(props: IndexPageProps): ReactNode {
+export default async function IndexPage(props: IndexPageProps): Promise<ReactNode> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	setRequestLocale(locale);
 
 	return (
@@ -53,15 +53,15 @@ function IndexPageHeroSection(): ReactNode {
 	const t = useTranslations("IndexPageHeroSection");
 
 	return (
-		<section className="mx-auto grid w-full max-w-screen-lg content-start justify-items-center gap-y-4 px-4 py-8 text-center md:py-16">
-			<div className="flex items-center gap-2 rounded-lg bg-neutral-100 px-3 py-1 text-sm font-medium leading-tight dark:bg-neutral-800">
+		<section className="mx-auto grid w-full max-w-(--breakpoint-lg) content-start justify-items-center gap-y-4 px-4 py-8 text-center md:py-16">
+			<div className="flex items-center gap-2 rounded-lg bg-neutral-100 px-3 py-1 text-sm leading-tight font-medium dark:bg-neutral-800">
 				<Logo className="size-4 shrink-0 text-brand" />
 				<span>{t("badge")}</span>
 			</div>
-			<h1 className="text-balance text-3xl font-bold leading-tight tracking-tighter text-neutral-950 md:text-5xl lg:text-6xl dark:text-neutral-0">
+			<h1 className="text-3xl font-bold tracking-tighter text-balance text-neutral-950 md:text-5xl lg:text-6xl dark:text-neutral-0">
 				{t("title")}
 			</h1>
-			<div className="w-full text-pretty px-8 text-md text-neutral-700 sm:text-lg dark:text-neutral-300">
+			<div className="w-full px-8 text-md text-pretty text-neutral-700 sm:text-lg dark:text-neutral-300">
 				{t("lead-in")}
 			</div>
 			<div className="my-3 flex items-center gap-x-4">

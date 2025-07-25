@@ -4,8 +4,7 @@ import { groupByToMap, keyByToMap } from "@acdh-oeaw/lib";
 import type { Country, Person, Prisma, Report, Role, WorkingGroup } from "@prisma/client";
 import { useListData } from "@react-stately/data";
 import { PlusIcon } from "lucide-react";
-import { Fragment, type ReactNode, useId } from "react";
-import { useFormState } from "react-dom";
+import { Fragment, type ReactNode, useActionState, useId } from "react";
 
 import { SubmitButton } from "@/components/submit-button";
 import { NumberInputField } from "@/components/ui/blocks/number-input-field";
@@ -66,7 +65,7 @@ export function ContributionsFormContent(props: ContributionsFormContentProps): 
 		year,
 	} = props;
 
-	const [formState, formAction] = useFormState(updateContributionsAction, undefined);
+	const [formState, formAction] = useActionState(updateContributionsAction, undefined);
 
 	const contributionsByRoleId = groupByToMap(contributions, (contribution) => {
 		return contribution.roleId;

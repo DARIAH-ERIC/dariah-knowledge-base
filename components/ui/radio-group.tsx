@@ -1,6 +1,6 @@
 "use client";
 
-import { type ComponentPropsWithoutRef, type ElementRef, Fragment } from "react";
+import { type ComponentPropsWithoutRef, Fragment } from "react";
 import {
 	composeRenderProps,
 	Radio as AriaRadio,
@@ -9,7 +9,6 @@ import {
 	type RadioProps as AriaRadioProps,
 } from "react-aria-components";
 
-import { type ForwardedRef, forwardRef } from "@/lib/forward-ref";
 import { type VariantProps, variants } from "@/lib/styles";
 
 export const radioGroupStyles = variants({
@@ -20,15 +19,11 @@ export type RadioGroupStyles = VariantProps<typeof radioGroupStyles>;
 
 export interface RadioGroupProps extends AriaRadioGroupProps, RadioGroupStyles {}
 
-export const RadioGroup = forwardRef(function RadioGroup(
-	props: RadioGroupProps,
-	forwardedRef: ForwardedRef<ElementRef<typeof AriaRadioGroup>>,
-) {
+export function RadioGroup(props: RadioGroupProps) {
 	const { children, className, ...rest } = props;
 
 	return (
 		<AriaRadioGroup
-			ref={forwardedRef}
 			{...rest}
 			className={composeRenderProps(className, (className, renderProps) => {
 				return radioGroupStyles({ ...renderProps, className });
@@ -37,7 +32,7 @@ export const RadioGroup = forwardRef(function RadioGroup(
 			{children}
 		</AriaRadioGroup>
 	);
-});
+}
 
 export const radioStyles = variants({
 	base: ["group grid grid-cols-[auto_auto] items-center justify-start gap-x-2 text-sm"],
@@ -47,15 +42,11 @@ export type RadioStyles = VariantProps<typeof radioStyles>;
 
 export interface RadioProps extends AriaRadioProps, RadioStyles {}
 
-export const Radio = forwardRef(function Radio(
-	props: RadioProps,
-	forwardedRef: ForwardedRef<ElementRef<typeof AriaRadio>>,
-) {
+export function Radio(props: RadioProps) {
 	const { children, className, ...rest } = props;
 
 	return (
 		<AriaRadio
-			ref={forwardedRef}
 			{...rest}
 			className={composeRenderProps(className, (className, renderProps) => {
 				return radioStyles({ ...renderProps, className });
@@ -71,7 +62,7 @@ export const Radio = forwardRef(function Radio(
 			})}
 		</AriaRadio>
 	);
-});
+}
 
 export const radioBoxStyles = variants({
 	base: [
@@ -79,7 +70,7 @@ export const radioBoxStyles = variants({
 		"rounded-full",
 		"border border-neutral-950/15 group-hover:border-neutral-950/30 dark:border-neutral-0/15 dark:group-hover:border-neutral-0/30",
 		"bg-neutral-0 dark:bg-neutral-0/5",
-		"shadow-sm dark:shadow-none",
+		"shadow-xs dark:shadow-none",
 		"group-selected:bg-neutral-50",
 	],
 });
@@ -88,18 +79,15 @@ export type RadioBoxStyles = VariantProps<typeof radioBoxStyles>;
 
 export interface RadioBoxProps extends ComponentPropsWithoutRef<"div">, RadioBoxStyles {}
 
-export const RadioBox = forwardRef(function RadioBox(
-	props: RadioBoxProps,
-	forwardedRef: ForwardedRef<ElementRef<"div">>,
-) {
+export function RadioBox(props: RadioBoxProps) {
 	const { className, ...rest } = props;
 
 	return (
-		<div ref={forwardedRef} {...rest} className={radioBoxStyles({ className })}>
+		<div {...rest} className={radioBoxStyles({ className })}>
 			<span className={radioBoxIndicatorStyles()} />
 		</div>
 	);
-});
+}
 
 const radioBoxIndicatorStyles = variants({
 	base: [

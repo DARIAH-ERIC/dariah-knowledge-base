@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 
 import { AppLink } from "@/components/app-link";
 import type { LinkProps } from "@/components/link";
-import { useNavLink } from "@/lib/use-nav-link";
+import { useNavLink } from "@/lib/navigation/use-nav-link";
 
 interface AppNavLinkProps extends LinkProps {}
 

@@ -4,9 +4,8 @@ import { keyByToMap } from "@acdh-oeaw/lib";
 import type { Institution, Prisma } from "@prisma/client";
 import { useListData } from "@react-stately/data";
 import { MoreHorizontalIcon, PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
-import { Fragment, type ReactNode, useId, useMemo, useState } from "react";
+import { Fragment, type ReactNode, useActionState, useId, useMemo, useState } from "react";
 import type { Key } from "react-aria-components";
-import { useFormState } from "react-dom";
 
 import { Pagination } from "@/components/admin/pagination";
 import { usePagination } from "@/components/admin/use-pagination";
@@ -257,7 +256,7 @@ function DeletePersonDialog(props: DeletePersonDialogProps) {
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(deletePersonAction, undefined);
+	const [formState, formAction] = useActionState(deletePersonAction, undefined);
 
 	if (action?.kind !== "delete") return null;
 
@@ -334,7 +333,7 @@ function CreatePersonDialog(props: CreatePersonDialogProps) {
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(createPersonAction, undefined);
+	const [formState, formAction] = useActionState(createPersonAction, undefined);
 
 	if (action?.kind !== "create") return null;
 
@@ -394,7 +393,7 @@ function EditPersonDialog(props: EditPersonDialogProps) {
 
 	const formId = useId();
 
-	const [formState, formAction] = useFormState(updatePersonAction, undefined);
+	const [formState, formAction] = useActionState(updatePersonAction, undefined);
 
 	if (action?.kind !== "edit") return null;
 

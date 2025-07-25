@@ -1,7 +1,269 @@
-html {
-	/**
-	 * Overwrite overflow: hidden set by tailwind preset, which breaks react aria components
-	 * overlay positioning.
-	 */
-	overflow: unset;
+/* stylelint-disable custom-property-empty-line-before */
+
+@import "tailwindcss";
+
+@plugin "@tailwindcss/typography";
+@plugin "tailwindcss-animate";
+@plugin "tailwindcss-react-aria-components";
+
+@custom-variant dark (
+	&:where(
+		[data-ui-color-scheme="dark"],
+		[data-ui-color-scheme="dark"] *,
+		.kui-theme.kui-scheme--dark,
+		.kui-theme.kui-scheme--dark *
+		)
+);
+
+@theme inline {
+	--breakpoint-xs: 30rem;
+	--breakpoint-sm: 40rem;
+	--breakpoint-md: 48rem;
+	--breakpoint-lg: 64rem;
+	--breakpoint-xl: 80rem;
+	--breakpoint-2xl: 96rem;
+	--breakpoint-3xl: 120rem;
+
+	--font-body: var(--_font-body, var(--default-font-family));
+
+	--text-2xs: 0.625rem;
+	--text-2xs--line-height: 0.75rem;
+	--text-md: var(--text-base);
+	--text-md--line-height: var(--text-base--line-height);
+
+	--radius-sm: 2px;
+	--radius-md: 4px;
+	--radius-lg: 8px;
+
+	--color-brand: #069;
+
+	--color-neutral-0: #fff;
+	--color-neutral-1000: #000;
+
+	--color-negative-50: var(--color-red-50);
+	--color-negative-100: var(--color-red-100);
+	--color-negative-200: var(--color-red-200);
+	--color-negative-300: var(--color-red-300);
+	--color-negative-400: var(--color-red-400);
+	--color-negative-500: var(--color-red-500);
+	--color-negative-600: var(--color-red-600);
+	--color-negative-700: var(--color-red-700);
+	--color-negative-800: var(--color-red-800);
+	--color-negative-900: var(--color-red-900);
+	--color-negative-950: var(--color-red-950);
+
+	--color-positive-50: var(--color-green-50);
+	--color-positive-100: var(--color-green-100);
+	--color-positive-200: var(--color-green-200);
+	--color-positive-300: var(--color-green-300);
+	--color-positive-400: var(--color-green-400);
+	--color-positive-500: var(--color-green-500);
+	--color-positive-600: var(--color-green-600);
+	--color-positive-700: var(--color-green-700);
+	--color-positive-800: var(--color-green-800);
+	--color-positive-900: var(--color-green-900);
+	--color-positive-950: var(--color-green-950);
+
+	--color-accent-50: var(--color-sky-50);
+	--color-accent-100: var(--color-sky-100);
+	--color-accent-200: var(--color-sky-200);
+	--color-accent-300: var(--color-sky-300);
+	--color-accent-400: var(--color-sky-400);
+	--color-accent-500: var(--color-sky-500);
+	--color-accent-600: var(--color-sky-600);
+	--color-accent-700: var(--color-sky-700);
+	--color-accent-800: var(--color-sky-800);
+	--color-accent-900: var(--color-sky-900);
+	--color-accent-950: var(--color-sky-950);
+}
+
+@layer base {
+	@media (prefers-reduced-motion: reduce) {
+		*,
+		*::before,
+		*::after {
+			transition-duration: 0.01ms !important;
+			animation-duration: 0.01ms !important;
+			animation-iteration-count: 1 !important;
+			scroll-behavior: auto !important;
+		}
+	}
+
+	/** Scale up hit targets on high resolution mobile devices. */
+	@media (resolution >= 200dpi) {
+		:root {
+			font-size: 18px;
+		}
+	}
+
+	:root,
+	[data-ui-color-scheme="light"] {
+		--color-background: var(--color-neutral-0);
+		--color-on-background: var(--color-neutral-950);
+		--color-surface: var(--color-neutral-0);
+		--color-on-surface: var(--color-neutral-950);
+		--color-overlay: var(--color-neutral-0);
+		--color-on-overlay: var(--color-neutral-950);
+		--color-primary: var(--color-neutral-900);
+		--color-on-primary: var(--color-neutral-50);
+		--color-secondary: var(--color-neutral-100);
+		--color-on-secondary: var(--color-neutral-900);
+		--color-muted: var(--color-neutral-100);
+		--color-on-muted: var(--color-neutral-500);
+		--color-accent: var(--color-neutral-100);
+		--color-on-accent: var(--color-neutral-900);
+		--color-negative: var(--color-red-500);
+		--color-on-negative: var(--color-neutral-50);
+		--color-positive: var(--color-green-500);
+		--color-on-positive: var(--color-neutral-50);
+		--color-notice: var(--color-orange-500);
+		--color-on-notice: var(--color-neutral-50);
+		--color-informative: var(--color-sky-500);
+		--color-on-informative: var(--color-neutral-50);
+		--color-border: var(--color-neutral-200);
+		--color-input: var(--color-neutral-200);
+		--color-focus-ring: var(--color-neutral-950);
+
+		color-scheme: light;
+	}
+
+	[data-ui-color-scheme="dark"] {
+		--color-background: var(--color-neutral-950);
+		--color-on-background: var(--color-neutral-50);
+		--color-surface: var(--color-neutral-950);
+		--color-on-surface: var(--color-neutral-50);
+		--color-overlay: var(--color-neutral-950);
+		--color-on-overlay: var(--color-neutral-50);
+		--color-primary: var(--color-neutral-50);
+		--color-on-primary: var(--color-neutral-900);
+		--color-secondary: var(--color-neutral-800);
+		--color-on-secondary: var(--color-neutral-50);
+		--color-muted: var(--color-neutral-800);
+		--color-on-muted: var(--color-neutral-400);
+		--color-accent: var(--color-neutral-800);
+		--color-on-accent: var(--color-neutral-50);
+		--color-negative: var(--color-red-900);
+		--color-on-negative: var(--color-red-50);
+		--color-positive: var(--color-green-900);
+		--color-on-positive: var(--color-green-50);
+		--color-notice: var(--color-orange-900);
+		--color-on-notice: var(--color-orange-50);
+		--color-informative: var(--color-sky-900);
+		--color-on-informative: var(--color-sky-50);
+		--color-border: var(--color-neutral-800);
+		--color-input: var(--color-neutral-800);
+		--color-focus-ring: var(--color-neutral-300);
+
+		color-scheme: dark;
+	}
+
+	:root, [data-ui-color-scheme="light"]: {
+		background-color: var(--color-neutral-0);
+		color: var(--color-neutral-600);
+	}
+
+	[data-ui-color-scheme="dark"]: {
+		background-color: var(--color-neutral-900);
+		color: var(--color-neutral-400);
+	}
+
+	*,
+	*::after,
+	*::before {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+
+	:root {
+		--webkit-tap-highlight-color: transparent;
+
+		font-family: var(--font-body);
+		overflow-wrap: break-word;
+		block-size: 100%;
+		font-synthesis: none;
+		text-rendering: optimizeLegibility;
+		text-size-adjust: none;
+	}
+
+	body {
+		overflow-y: auto;
+		block-size: 100%;
+	}
+
+	:focus {
+		outline: none;
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--color-focus-ring);
+		outline-offset: 0;
+	}
+
+	a {
+		text-underline-offset: 0.15em;
+	}
+
+	p {
+		text-wrap: pretty;
+	}
+
+	table {
+		font-variant-numeric: tabular-nums;
+	}
+}
+
+@layer utilities {
+	.prose {
+		--tw-prose-body: var(--color-neutral-700);
+		--tw-prose-headings: var(--color-neutral-900);
+		--tw-prose-lead: var(--color-neutral-600);
+		--tw-prose-links: var(--color-neutral-900);
+		--tw-prose-bold: var(--color-neutral-900);
+		--tw-prose-counters: var(--color-neutral-500);
+		--tw-prose-bullets: var(--color-neutral-300);
+		--tw-prose-hr: var(--color-neutral-200);
+		--tw-prose-quotes: var(--color-neutral-900);
+		--tw-prose-quote-borders: var(--color-neutral-200);
+		--tw-prose-captions: var(--color-neutral-500);
+		--tw-prose-code: var(--color-neutral-900);
+		--tw-prose-pre-code: var(--color-neutral-200);
+		--tw-prose-pre-bg: var(--color-neutral-800);
+		--tw-prose-th-borders: var(--color-neutral-300);
+		--tw-prose-td-borders: var(--color-neutral-200);
+
+		max-width: none;
+	}
+
+	[data-ui-color-scheme="dark"] .prose {
+		--tw-prose-body: var(--color-neutral-300);
+		--tw-prose-headings: var(--color-neutral-0);
+		--tw-prose-lead: var(--color-neutral-400);
+		--tw-prose-links: var(--color-neutral-0);
+		--tw-prose-bold: var(--color-neutral-0);
+		--tw-prose-counters: var(--color-neutral-400);
+		--tw-prose-bullets: var(--color-neutral-600);
+		--tw-prose-hr: var(--color-neutral-700);
+		--tw-prose-quotes: var(--color-gray-100);
+		--tw-prose-quote-borders: var(--color-neutral-700);
+		--tw-prose-captions: var(--color-neutral-400);
+		--tw-prose-code: var(--color-neutral-0);
+		--tw-prose-pre-code: var(--color-neutral-300);
+		--tw-prose-pre-bg: --alpha(var(--color-neutral-1000) / 50%);
+		--tw-prose-th-borders: var(--color-neutral-600);
+		--tw-prose-td-borders: var(--color-neutral-700);
+	}
+}
+
+@utility container {
+	width: 100%;
+	max-width: var(--breakpoint-2xl);
+	margin-inline: auto;
+	padding-inline: --spacing(4);
+}
+
+@utility container {
+	@variant md {
+		padding-inline: --spacing(8);
+	}
 }

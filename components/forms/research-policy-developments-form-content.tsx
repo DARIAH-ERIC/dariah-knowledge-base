@@ -2,8 +2,7 @@
 
 import type { Report, ResearchPolicyDevelopment } from "@prisma/client";
 import { useListData } from "@react-stately/data";
-import type { ReactNode } from "react";
-import { useFormState } from "react-dom";
+import { type ReactNode, useActionState } from "react";
 
 import { SubmitButton } from "@/components/submit-button";
 import { TextAreaField } from "@/components/ui/blocks/text-area-field";
@@ -38,7 +37,7 @@ export function ResearchPolicyDevelopmentsFormContent(
 		// researchPolicyDevelopments,
 	} = props;
 
-	const [formState, formAction] = useFormState(updateResearchPolicyDevelopmentsAction, undefined);
+	const [formState, formAction] = useActionState(updateResearchPolicyDevelopmentsAction, undefined);
 
 	return (
 		<Form

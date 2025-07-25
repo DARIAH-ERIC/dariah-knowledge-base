@@ -1,4 +1,3 @@
-import type { ElementRef } from "react";
 import {
 	composeRenderProps,
 	OverlayArrow as AriaPopoverArrow,
@@ -7,7 +6,6 @@ import {
 	type PopoverProps as AriaPopoverProps,
 } from "react-aria-components";
 
-import { type ForwardedRef, forwardRef } from "@/lib/forward-ref";
 import { type VariantProps, variants } from "@/lib/styles";
 
 export const popoverStyles = variants({
@@ -28,15 +26,11 @@ export type PopoverStyles = VariantProps<typeof popoverStyles>;
 
 export interface PopoverProps extends AriaPopoverProps, PopoverStyles {}
 
-export const Popover = forwardRef(function Popover(
-	props: PopoverProps,
-	forwardedRef: ForwardedRef<ElementRef<typeof AriaPopover>>,
-) {
+export function Popover(props: PopoverProps) {
 	const { children, className, ...rest } = props;
 
 	return (
 		<AriaPopover
-			ref={forwardedRef}
 			{...rest}
 			className={composeRenderProps(className, (className, renderProps) => {
 				return popoverStyles({ ...renderProps, className });
@@ -45,7 +39,7 @@ export const Popover = forwardRef(function Popover(
 			{children}
 		</AriaPopover>
 	);
-});
+}
 
 export const popoverArrowStyles = variants({
 	base: [],
@@ -55,15 +49,11 @@ export type PopoverArrowStyles = VariantProps<typeof popoverArrowStyles>;
 
 export interface PopoverArrowProps extends AriaPopoverArrowProps, PopoverArrowStyles {}
 
-export const PopoverArrow = forwardRef(function PopoverArrow(
-	props: PopoverArrowProps,
-	forwardedRef: ForwardedRef<ElementRef<typeof AriaPopoverArrow>>,
-) {
+export function PopoverArrow(props: PopoverArrowProps) {
 	const { className, ...rest } = props;
 
 	return (
 		<AriaPopoverArrow
-			ref={forwardedRef}
 			{...rest}
 			className={composeRenderProps(className, (className, renderProps) => {
 				return popoverArrowStyles({ ...renderProps, className });
@@ -79,4 +69,4 @@ export const PopoverArrow = forwardRef(function PopoverArrow(
 			</svg>
 		</AriaPopoverArrow>
 	);
-});
+}

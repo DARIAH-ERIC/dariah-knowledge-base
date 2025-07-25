@@ -2,7 +2,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import type { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { getTranslations, unstable_setRequestLocale as setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { type ReactNode, Suspense } from "react";
 
 import { AppLink } from "@/components/app-link";
@@ -24,12 +24,12 @@ import { Link } from "@/components/link";
 import { LoadingIndicator } from "@/components/loading-indicator";
 import { MainContent } from "@/components/main-content";
 import { PageTitle } from "@/components/page-title";
-import type { Locale } from "@/config/i18n.config";
-import { createHref } from "@/lib/create-href";
 import { getCountryByCode } from "@/lib/data/country";
 import { getReportByCountryCode } from "@/lib/data/report";
 import { getCountryCodes as getStaticCountryCodes } from "@/lib/get-country-codes";
 import { getReportYears } from "@/lib/get-report-years";
+import type { IntlLocale } from "@/lib/i18n/locales";
+import { createHref } from "@/lib/navigation/create-href";
 import {
 	type DashboardCountryReportEditStepPageParams,
 	dashboardCountryReportEditStepPageParams,
@@ -41,20 +41,20 @@ import type { User } from "@/lib/server/auth/sessions";
 import { createZoteroCollectionUrl } from "@/lib/zotero";
 
 interface DashboardCountryReportEditStepPageProps {
-	params: {
+	params: Promise<{
 		code: string;
-		locale: Locale;
+		locale: IntlLocale;
 		step: string;
 		year: string;
-	};
+	}>;
 }
 
 // export const dynamicParams = false;
 
 export async function generateStaticParams(_props: {
-	params: Pick<DashboardCountryReportEditStepPageProps["params"], "locale">;
+	params: Pick<Awaited<DashboardCountryReportEditStepPageProps["params"]>, "locale">;
 }): Promise<
-	Array<Pick<DashboardCountryReportEditStepPageProps["params"], "code" | "step" | "year">>
+	Array<Pick<Awaited<DashboardCountryReportEditStepPageProps["params"]>, "code" | "step" | "year">>
 > {
 	/**
 	 * FIXME: we cannot access the postgres database on acdh servers from github ci/cd, so we cannot
@@ -84,7 +84,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: "DashboardCountryReportEditStepPage" });
 
 	const metadata: Metadata = {
@@ -99,14 +99,14 @@ export default async function DashboardCountryReportEditStepPage(
 ): Promise<ReactNode> {
 	const { params } = props;
 
-	const { locale } = params;
+	const { locale } = await params;
 	setRequestLocale(locale);
 
 	const t = await getTranslations("DashboardCountryReportEditStepPage");
 
 	const { user } = await assertAuthenticated();
 
-	const result = dashboardCountryReportEditStepPageParams.safeParse(params);
+	const result = dashboardCountryReportEditStepPageParams.safeParse(await params);
 	if (!result.success) notFound();
 	const { code, step, year } = result.data;
 

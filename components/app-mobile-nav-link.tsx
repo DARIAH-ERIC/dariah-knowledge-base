@@ -13,7 +13,7 @@ export function AppMobileNavLink(props: AppMobileNavLinkProps): ReactNode {
 	const { children, onClick, ...rest } = props;
 
 	// eslint-disable-next-line @typescript-eslint/unbound-method
-	const { close } = useContext(OverlayTriggerStateContext);
+	const { close } = useContext(OverlayTriggerStateContext)!;
 
 	return (
 		<AppNavLink {...rest} onClick={chain(onClick, close)}>

@@ -1,8 +1,7 @@
 "use client";
 
-import type { ComponentPropsWithoutRef, ElementRef } from "react";
+import type { ComponentPropsWithoutRef } from "react";
 
-import { type ForwardedRef, forwardRef } from "@/lib/forward-ref";
 import { type VariantProps, variants } from "@/lib/styles";
 
 export const FormSectionStyles = variants({
@@ -13,15 +12,12 @@ export type FormSectionStyles = VariantProps<typeof FormSectionStyles>;
 
 export interface FormSectionProps extends ComponentPropsWithoutRef<"section">, FormSectionStyles {}
 
-export const FormSection = forwardRef(function FormSection(
-	props: FormSectionProps,
-	forwardedRef: ForwardedRef<ElementRef<"section">>,
-) {
+export function FormSection(props: FormSectionProps) {
 	const { children, className, ...rest } = props;
 
 	return (
-		<section ref={forwardedRef} {...rest} className={FormSectionStyles({ className })}>
+		<section {...rest} className={FormSectionStyles({ className })}>
 			{children}
 		</section>
 	);
-});
+}

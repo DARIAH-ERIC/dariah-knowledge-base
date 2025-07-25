@@ -38,7 +38,7 @@ export async function ingestDataFromSshompAction(
 
 		return {
 			status: "success" as const,
-			message: t("success") + "\n" + JSON.stringify(stats), // TODO:
+			message: `${t("success")}\n${JSON.stringify(stats)}`, // TODO:
 			timestamp: Date.now(),
 		};
 	} catch (error) {

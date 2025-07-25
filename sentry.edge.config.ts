@@ -1,8 +1,9 @@
 import * as Sentry from "@sentry/nextjs";
 
+import { env } from "@/config/env.config";
+
 Sentry.init({
 	debug: false,
-	dsn: "https://f17ca144b3c50570ee2deeac2c4cc132@o4504360778661888.ingest.us.sentry.io/4507129666338816",
-	ignoreErrors: ["NEXT_NOT_FOUND"],
+	dsn: env.NEXT_PUBLIC_SENTRY_DSN,
 	tracesSampleRate: 1,
 });
